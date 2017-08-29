@@ -11,8 +11,17 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implements UserDAO interface and all its methods.
+ * Implementation for MySQL DBMS.
+ *
+ * @author Anastasia Pashneva
+ */
 public class MysqlUserDAO  implements UserDAO {
 
+    /**
+     * String fields which contain sql queries to table users of MySQL database.
+     */
     private static final String GET_ALL_USERS = "SELECT * FROM users";
     private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String GET_USER_BY_LOGIN = "SELECT * FROM users  WHERE login=?";
@@ -23,6 +32,9 @@ public class MysqlUserDAO  implements UserDAO {
     private static final String UPDATE_USER_STATUS_BY_ID = "UPDATE users SET user_status_id=? WHERE id=?";
     private static final String DELETE_USER_BY_ID = "DELETE FROM users WHERE id=?";
 
+    /**
+     * String fields which contain column names of table users.
+     */
     private static final String ENTITY_ID = "id";
     private static final String USER_LOGIN = "login";
     private static final String USER_PASSWORD = "password";
@@ -46,7 +58,7 @@ public class MysqlUserDAO  implements UserDAO {
             statement.setString(k++, user.getFirstName());
             statement.setString(k++, user.getSecondName());
             statement.setInt(k++, Role.getRoleOrdinal(user.getRole()));
-            statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));
+            /*statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));*/
 
             if (statement.executeUpdate() > 0) {
                 generatedKeys = statement.getGeneratedKeys();
@@ -216,7 +228,7 @@ public class MysqlUserDAO  implements UserDAO {
         }
     }
 
-    @Override
+    /*@Override
     public boolean updateStatus(User user) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -227,7 +239,7 @@ public class MysqlUserDAO  implements UserDAO {
 
             int k = 1;
 
-            statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));
+            *//*statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));*//*
             statement.setInt(k++, user.getId());
 
             statement.executeUpdate();
@@ -237,7 +249,7 @@ public class MysqlUserDAO  implements UserDAO {
         } finally {
             DBConnection.getInstance().close(connection, statement);
         }
-    }
+    }*/
 
     @Override
     public boolean delete(User user) throws DBException {
@@ -269,7 +281,7 @@ public class MysqlUserDAO  implements UserDAO {
             user.setFirstName(resultSet.getString(USER_FIRST_NAME));
             user.setSecondName(resultSet.getString(USER_SECOND_NAME));
             user.setRole(Role.getRole(resultSet.getInt(USER_ROLE_ID)));
-            user.setUserStatus(UserStatus.getUserStatus(resultSet.getInt(USER_STATUS_ID)));
+            /*user.setUserStatus(UserStatus.getUserStatus(resultSet.getInt(USER_STATUS_ID)));*/
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }

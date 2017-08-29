@@ -1,15 +1,21 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
 /**
- * Objects of this enum are strings from table roles.
+ * Objects of this enum are strings from table flight_statuses.
  *
  * @author Anastasia Pashneva
  *
  */
-public enum Role {
-    ADMIN,
-    DISPATCHER,
-    STAFF;
+public enum FlightStatus {
+    BOARDING,
+    CANCELLED,
+    CHECK_IN,
+    SCHEDULED,
+    DELAYED,
+    DEPARTED,
+    GATE_OPEN,
+    GATE_CLOSING,
+    GATE_CLOSED;
 
     /**
      * Method for obtaining object of enum by its ordinal number.
@@ -17,8 +23,8 @@ public enum Role {
      * @param ordinal ordinal number of object which must be obtained.
      * @return instance of enum with determined ordinal number.
      */
-    public static Role getRole(int ordinal) {
-        return Role.values()[ordinal - 1];
+    public static FlightStatus getFlightStatus(int ordinal) {
+        return FlightStatus.values()[ordinal - 1];
     }
 
     /**
@@ -27,19 +33,19 @@ public enum Role {
      * @param name name of object.
      * @return int value of ordinal number of object.
      */
-    public static int getRoleOrdinal(String name) {
-        Role role = Role.valueOf(name) ;
-        return role.ordinal() + 1;
+    public static int getFlightStatusOrdinal(String name) {
+        FlightStatus flightStatus = FlightStatus.valueOf(name) ;
+        return flightStatus.ordinal() + 1;
     }
 
     /**
      * Method for obtaining ordinal number of the enum object by its instance.
      *
-     * @param role object of enum which ordinal number must be obtained.
+     * @param flightStatus object of enum which ordinal number must be obtained.
      * @return int value of ordinal number of object.
      */
-    public static int getRoleOrdinal(Role role) {
-        return role.ordinal() + 1;
+    public static int getFlightStatusOrdinal(FlightStatus flightStatus) {
+        return flightStatus.ordinal() + 1;
     }
 
     /**

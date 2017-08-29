@@ -12,24 +12,24 @@ import java.io.IOException;
 import java.util.*;
 
 /**
- * Security filter. Disabled by default. Uncomment Security filter
- * section in web.xml to enable.
+ * Security filter. Enables to separate access to commands.
  * 
- * @author D.Kolesnikov
+ * @author Anastasia Pashneva
  * 
  */
 public class CommandAccessFilter implements Filter {
 	
 	private static final Logger LOG = Logger.getLogger(CommandAccessFilter.class);
 
-	// commands access	
+	/**
+	 * Commands access
+	 */
 	private Map<Role, List<String>> accessMap = new HashMap<Role, List<String>>();
 	private List<String> commons = new ArrayList<String>();	
 	private List<String> outOfControl = new ArrayList<String>();
 	
 	public void destroy() {
 		LOG.debug("Filter destruction starts");
-		// do nothing
 		LOG.debug("Filter destruction finished");
 	}
 
@@ -40,18 +40,20 @@ public class CommandAccessFilter implements Filter {
 			LOG.debug("Filter finished");
 			chain.doFilter(request, response);
 		} else {
-			String errorMessasge = "You do not have permission to access the requested resource";
 			String message = ResourceBundle.getBundle("resources", request.getLocale())
 					.getString("message.error.no_permissions");
-			/*request.setAttribute("errorMessage", errorMessasge);*/
 			LOG.trace("Set the request attribute: message --> " + message);
-
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpResponse.sendRedirect(Path.COMMAND_MESSAGE_ERROR + message);
-
 		}
 	}
-	
+
+    /**
+     * Method for checking permissions for request.
+     *
+     * @param request object of ServletRequest which permissions must be checked.
+     * @return true - access allowed, otherwise - false.
+     */
 	private boolean accessAllowed(ServletRequest request) {
 			HttpServletRequest httpRequest = (HttpServletRequest) request;
 
@@ -84,7 +86,7 @@ public class CommandAccessFilter implements Filter {
 		
 		// roles
 		accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
-		accessMap.put(Role.CLIENT, asList(fConfig.getInitParameter("client")));
+		accessMap.put(Role.DISPATCHER, asList(fConfig.getInitParameter("client")));
 		LOG.trace("Access map --> " + accessMap);
 
 		// commons
@@ -101,8 +103,7 @@ public class CommandAccessFilter implements Filter {
 	/**
 	 * Extracts parameter values from string.
 	 * 
-	 * @param str
-	 *            parameter values string.
+	 * @param str parameter values string.
 	 * @return list of parameter values.
 	 */
 	private List<String> asList(String str) {

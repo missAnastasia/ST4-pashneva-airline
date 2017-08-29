@@ -2,6 +2,9 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
 
 /**
  * Objects of this class are strings from the table languages.
+ *
+ * @author Anastasia Pashneva
+ *
  */
 public class Language {
 
@@ -12,6 +15,13 @@ public class Language {
     public Language() {
     }
 
+    /**
+     * Constructor of class for creating object without without an identifier.
+     *
+     * @param id
+     * @param name
+     * @param prefix
+     */
     public Language(int id, String name, String prefix) {
         this.id = id;
         this.name = name;

@@ -7,9 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 
 /**
- * Encoding filter.
+ * Encoding filter. Allows to set encoding of ServletRequest object.
  * 
- * @author D.Kolesnikov
+ * @author Anastasia Pashneva
  * 
  */
 public class EncodingFilter implements Filter {

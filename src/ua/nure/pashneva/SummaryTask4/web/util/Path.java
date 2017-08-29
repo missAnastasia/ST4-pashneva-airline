@@ -1,5 +1,8 @@
 package ua.nure.pashneva.SummaryTask4.web.util;
 
+/**
+ * Class which contains paths to jsp pages and commands.
+ */
 public class Path {
 
     public static final String HOST = "localhost:8080";

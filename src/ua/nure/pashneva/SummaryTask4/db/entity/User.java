@@ -4,16 +4,16 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  * Objects of this class are strings from the table users.
  *
  * @author Anastasia Pashneva
+ *
  */
-public class User {
+public class User extends Entity{
 
-    private int id;
-    private String login;
-    private String password;
-    private String firstName;
-    private String secondName;
-    private Role role;
-    private UserStatus userStatus;
+    protected String login;
+    protected String password;
+    protected String firstName;
+    protected String secondName;
+    protected Role role;
+    //private UserStatus userStatus;
 
     public User() {
     }
@@ -26,25 +26,16 @@ public class User {
      * @param firstName
      * @param secondName
      * @param role
-     * @param userStatus
      */
     public User(String login, String password,
                 String firstName, String secondName,
-                Role role, UserStatus userStatus) {
+                Role role/*, UserStatus userStatus*/) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.secondName = secondName;
         this.role = role;
-        this.userStatus = userStatus;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
+        //this.userStatus = userStatus;
     }
 
     public String getLogin() {
@@ -87,11 +78,23 @@ public class User {
         this.role = role;
     }
 
-    public UserStatus getUserStatus() {
+    /*public UserStatus getUserStatus() {
         return userStatus;
     }
 
     public void setUserStatus(UserStatus userStatus) {
         this.userStatus = userStatus;
+    }*/
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", secondName='" + secondName + '\'' +
+                ", role=" + role +
+                ", id=" + id +
+                '}';
     }
 }

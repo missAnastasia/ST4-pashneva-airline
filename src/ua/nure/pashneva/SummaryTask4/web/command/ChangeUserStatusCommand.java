@@ -34,7 +34,7 @@ public class ChangeUserStatusCommand extends Command {
 
         User user = (User) request.getSession().getAttribute("user");
 
-        user.setUserStatus(UserStatus.valueOf(newStatus));
+        /*user.setUserStatus(UserStatus.valueOf(newStatus));*/
 
         try {
             boolean success = DAOFactory.getInstance().getUserDAO().updateStatus(user);

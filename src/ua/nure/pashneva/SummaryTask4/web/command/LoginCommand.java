@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Role;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.db.entity.UserStatus;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
@@ -72,11 +71,11 @@ public class LoginCommand extends Command {
 		Role userRole = user.getRole();
 		LOG.trace("userRole --> " + userRole);
 
-		if (user.getUserStatus().equals(UserStatus.BLOCKED)) {
+		/*if (user.getUserStatus().equals(UserStatus.BLOCKED)) {
 			String message = ResourceBundle.getBundle("resources", request.getLocale())
 					.getString("message.error.blocked_account");
 			throw new AppException(message);
-		}
+		}*/
 
         /*String userCaptchaResponse = request.getParameter("jcaptcha");
         boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
@@ -122,15 +121,16 @@ public class LoginCommand extends Command {
 
 
         if (userRole == Role.ADMIN) {
-            response.sendRedirect(Path.COMMAND_ADMIN_USER_ACCOUNTS);
+            /*response.sendRedirect(Path.COMMAND_ADMIN_USER_ACCOUNTS);*/
 
         }
-
-        if (userRole == Role.CLIENT) {
+        if (userRole == Role.DISPATCHER) {
             //forward = Path.COMMAND_LIST_MENU;
             response.sendRedirect(Path.COMMAND_CONDITIONS);
         }
-
+        if (userRole == Role.STAFF) {
+        	response.sendRedirect(Path.COMMAND);
+		}
 
     }
 

@@ -3,6 +3,7 @@ package ua.nure.pashneva.SummaryTask4.web.filter;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
+import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.*;
@@ -12,6 +13,12 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
 
+/**
+ * Filter for saving cookie for session.
+ *
+ * @author Anastasia Pashneva
+ *
+ */
 public class CookieFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(CookieFilter.class);
@@ -27,7 +34,6 @@ public class CookieFilter implements Filter {
     @Override
     public void destroy() {
         LOG.debug("Filter destruction starts");
-        // no op
         LOG.debug("Filter destruction finished");
     }
 
@@ -42,7 +48,6 @@ public class CookieFilter implements Filter {
 
         HttpSession session = req.getSession();
 
-        //UserAccount userInSession = SessionManager.getLoginedUser(session);
         User userInSession = SessionManager.getLoginedUser(session);
         LOG.trace("userInSession --> " + userInSession);
         if (userInSession != null) {
@@ -52,33 +57,22 @@ public class CookieFilter implements Filter {
             return;
         }
 
-
-        // Connection was created in JDBCFilter.
         Connection conn = SessionManager.getStoredConnection(request);
 
-
-        // Flag check cookie
         String checked = (String) session.getAttribute("COOKIE_CHECKED");
         if (checked == null && conn != null) {
             String userName = SessionManager.getUserNameInCookie(req);
             try {
-                //UserAccount user = DBUtils.findUser(conn, userName);
                 User user = DAOFactory.getInstance().getUserDAO().read(userName);
-
                 LOG.trace("user --> " + user);
                 LOG.trace("user --> " + user.getRole());
                 SessionManager.storeLoginedUser(session, user, user.getRole());
-            } catch (SQLException e) {
-                e.printStackTrace();
             } catch (Exception e) {
-                e.printStackTrace();
+                throw new ServletException(e.getMessage(), e);
             }
-
-            // Mark checked.
             session.setAttribute("COOKIE_CHECKED", "CHECKED");
         }
         LOG.debug("Filter finished");
         chain.doFilter(request, response);
     }
-
 }

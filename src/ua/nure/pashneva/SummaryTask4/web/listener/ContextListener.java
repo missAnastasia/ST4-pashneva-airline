@@ -14,7 +14,7 @@ import java.util.Properties;
 /**
  * Context listener.
  * 
- * @author D.Kolesnikov
+ * @author Anastasia Pashneva
  * 
  */
 public class ContextListener implements ServletContextListener {
@@ -40,7 +40,7 @@ public class ContextListener implements ServletContextListener {
 	}
 
 	/**
-	 * Initializes log4j framework.
+	 * Method for initializing log4j framework.
 	 * 
 	 * @param servletContext
 	 */
@@ -56,8 +56,10 @@ public class ContextListener implements ServletContextListener {
 		}		
 		log("Log4J initialization finished");
 	}
-	
 
+	/**
+	 * Method for initializing CommandContainer class.
+	 */
 	private void initCommandContainer() {
 		
 		// initialize commands container
@@ -69,6 +71,11 @@ public class ContextListener implements ServletContextListener {
 		}
 	}
 
+    /**
+     * Method for initializing localization resources.
+     *
+     * @param servletContext
+     */
 	private void initLocalization(ServletContext servletContext) {
         String localesFileName = servletContext.getInitParameter("locales");
 
@@ -87,6 +94,11 @@ public class ContextListener implements ServletContextListener {
         servletContext.setAttribute("locales", locales);
 	}
 
+    /**
+     * Method for initializing MailManager and Sender classes.
+     *
+     * @param servletContext
+     */
     private void initMailProperties(ServletContext servletContext) {
         String mailServerPropertiesFileName = servletContext.getInitParameter("mail_server_properties");
         String mailSendersPropertiesFileName = servletContext.getInitParameter("mail_senders_properties");
@@ -115,6 +127,11 @@ public class ContextListener implements ServletContextListener {
 
     }
 
+    /**
+     * Method for outputting ContextListener status.
+     *
+     * @param msg message which must be outputted.
+     */
 	private void log(String msg) {
 		System.out.println("[ContextListener] " + msg);
 	}

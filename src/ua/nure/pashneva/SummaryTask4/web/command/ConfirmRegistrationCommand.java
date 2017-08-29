@@ -30,7 +30,7 @@ public class ConfirmRegistrationCommand extends Command {
                     .getString("message.error.failed_to_confirm_registration");
             throw new AppException(message);
         } else {
-            userToConfirm.setUserStatus(UserStatus.UNBLOCKED);
+            /*userToConfirm.setUserStatus(UserStatus.UNBLOCKED);*/
             try {
                 DAOFactory.getInstance().getUserDAO().create(userToConfirm);
             } catch (Exception e) {

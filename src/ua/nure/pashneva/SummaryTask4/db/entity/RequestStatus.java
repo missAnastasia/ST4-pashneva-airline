@@ -1,15 +1,14 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
 /**
- * Objects of this enum are strings from table roles.
+ * Objects of this enum are strings from table request_statuses.
  *
  * @author Anastasia Pashneva
  *
  */
-public enum Role {
-    ADMIN,
-    DISPATCHER,
-    STAFF;
+public enum  RequestStatus {
+    COMPLETED,
+    REJECTED;
 
     /**
      * Method for obtaining object of enum by its ordinal number.
@@ -17,8 +16,8 @@ public enum Role {
      * @param ordinal ordinal number of object which must be obtained.
      * @return instance of enum with determined ordinal number.
      */
-    public static Role getRole(int ordinal) {
-        return Role.values()[ordinal - 1];
+    public static RequestStatus getRequestStatus(int ordinal) {
+        return RequestStatus.values()[ordinal - 1];
     }
 
     /**
@@ -27,19 +26,19 @@ public enum Role {
      * @param name name of object.
      * @return int value of ordinal number of object.
      */
-    public static int getRoleOrdinal(String name) {
-        Role role = Role.valueOf(name) ;
-        return role.ordinal() + 1;
+    public static int getRequestStatusOrdinal(String name) {
+        RequestStatus requestStatus = RequestStatus.valueOf(name) ;
+        return requestStatus.ordinal() + 1;
     }
 
     /**
      * Method for obtaining ordinal number of the enum object by its instance.
      *
-     * @param role object of enum which ordinal number must be obtained.
+     * @param requestStatus object of enum which ordinal number must be obtained.
      * @return int value of ordinal number of object.
      */
-    public static int getRoleOrdinal(Role role) {
-        return role.ordinal() + 1;
+    public static int getRequestStatusOrdinal(RequestStatus requestStatus) {
+        return requestStatus.ordinal() + 1;
     }
 
     /**

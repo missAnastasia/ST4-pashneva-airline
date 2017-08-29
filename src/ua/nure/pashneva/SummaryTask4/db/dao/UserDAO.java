@@ -92,9 +92,9 @@ public interface UserDAO {
      *             The identifier must be present.
      * @return true - user status was successfully updated in database, otherwise - false.
      * @throws DBException
-     */
+     *//*
     boolean updateStatus(User user) throws DBException;
-
+*/
     /**
      * Method of deleting user from database.
      *

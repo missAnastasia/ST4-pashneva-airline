@@ -12,6 +12,13 @@ import java.sql.Connection;
 import java.util.Collection;
 import java.util.Map;
 
+/**
+ * Filter that provides opening connection with datasource according to request.
+ * If request is from servlet than filter allows to get connection to datasource.
+ *
+ * @author Anastasia Pashneva
+ *
+ */
 public class JDBCFilter implements Filter {
 
     private static final Logger LOG = Logger.getLogger(JDBCFilter.class);
@@ -32,8 +39,11 @@ public class JDBCFilter implements Filter {
         LOG.debug("Filter destruction finished");
     }
 
-
-    // Check the target of the request is a servlet?
+    /**
+     * Method for checking the target of the request is a servlet.
+     * @param request object of HttpServletRequest which must be checked.
+     * @return true - request is from servlet, otherwise - false.
+     */
     private boolean needJDBC(HttpServletRequest request) {
 
         //

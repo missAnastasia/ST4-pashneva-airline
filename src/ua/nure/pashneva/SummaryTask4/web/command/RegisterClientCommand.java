@@ -53,7 +53,7 @@ public class RegisterClientCommand extends Command {
         }
 
         User user = new User(login, password, firstName, secondName,
-                Role.CLIENT, UserStatus.BLOCKED);
+                Role.DISPATCHER/*, UserStatus.BLOCKED*/);
 
         try {
             User existingUser = DAOFactory.getInstance().getUserDAO().read(user.getLogin());

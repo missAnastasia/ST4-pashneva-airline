@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Context path="/ST4-airline">
+    <Resource
+            driverClassName="com.mysql.jdbc.Driver"
+            maxTotal="100"
+            maxIdle="30"
+            maxWaitMillis="5000"
+            name="jdbc/db"
+            username="root"
+            password="root"
+            type="javax.sql.DataSource"
+            url="jdbc:mysql://localhost:3306/st4-airline"
+            validationQuery="SELECT 1">
+    </Resource>
+</Context>

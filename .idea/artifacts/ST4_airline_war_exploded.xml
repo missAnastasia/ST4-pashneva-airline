@@ -1,0 +1,13 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="ST4-airline:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/ST4_airline_war_exploded</output-path>
+    <root id="root">
+      <element id="javaee-facet-resources" facet="ST4-airline/web/Web" />
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="ST4-airline" />
+        </element>
+      </element>
+    </root>
+  </artifact>
+</component>

@@ -7,7 +7,7 @@
 
 <body>
 
-<jsp:include page="/WEB-INF/jsp/_header_admin_manager.jsp"/>
+<jsp:include page="/WEB-INF/jsp/_header.jsp"/>
 <jsp:include page="/WEB-INF/jsp/_menu_admin.jsp"/>
 
 </div>

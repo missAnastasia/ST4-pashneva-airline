@@ -7,8 +7,8 @@
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
-<jsp:include page="_header_client.jsp"/>
-<jsp:include page="_menu_client.jsp"/>
+<jsp:include page="_header.jsp"/>
+<jsp:include page="_menu_staff.jsp"/>
 
 </div>
 <div id="page" class="container">

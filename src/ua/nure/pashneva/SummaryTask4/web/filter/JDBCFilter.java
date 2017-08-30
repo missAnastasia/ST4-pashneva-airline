@@ -102,15 +102,15 @@ public class JDBCFilter implements Filter {
             Connection conn = null;
             try {
                 conn = DBConnection.getInstance().getConnection();
-                //conn.setAutoCommit(false);
+                conn.setAutoCommit(false);
                 SessionManager.storeConnection(request, conn);
                 LOG.debug("Filter finished");
                 chain.doFilter(request, response);
-                //conn.commit();
+                conn.commit();
 
             } catch (Exception e) {
                 LOG.trace("Exception message --> " + e.getMessage());
-                //DBConnection.getInstance().rollback(conn);
+                DBConnection.getInstance().rollback(conn);
                 LOG.debug("Rollback transactions");
                 throw new ServletException();
             } finally {

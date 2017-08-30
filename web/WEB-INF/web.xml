@@ -81,7 +81,7 @@
             <param-name>client</param-name>
             <param-value>
                 listMenu
-                getConditionsPageCommand
+                getStaffFlightsPageCommand
                 getProductsPageCommand
             </param-value>
         </init-param>

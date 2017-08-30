@@ -37,8 +37,8 @@ public class ChangeUserStatusCommand extends Command {
         /*user.setUserStatus(UserStatus.valueOf(newStatus));*/
 
         try {
-            boolean success = DAOFactory.getInstance().getUserDAO().updateStatus(user);
-            LOG.trace("Request parameter: update user --> " + success);
+            //boolean success = DAOFactory.getInstance().getUserDAO().updateStatus(user);
+            //LOG.trace("Request parameter: update user --> " + success);
         } catch (Exception e) {
             LOG.debug("catch section");
             throw new AppException(e.getMessage());

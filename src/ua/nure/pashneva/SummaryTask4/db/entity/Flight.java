@@ -11,6 +11,8 @@ import java.util.Date;
 public class Flight {
     private String id;
     private Date date;
+    private String departurePoint;
+    private String arrivalPoint;
     private Brigade brigade;
     private FlightStatus flightStatus;
     private String aircraftType;
@@ -18,10 +20,13 @@ public class Flight {
     public Flight() {
     }
 
-    public Flight(String id, Date date, Brigade brigade,
+    public Flight(String id, Date date, String departurePoint,
+                  String arrivalPoint, Brigade brigade,
                   FlightStatus flightStatus, String aircraftType) {
         this.id = id;
         this.date = date;
+        this.departurePoint = departurePoint;
+        this.arrivalPoint = arrivalPoint;
         this.brigade = brigade;
         this.flightStatus = flightStatus;
         this.aircraftType = aircraftType;
@@ -41,6 +46,22 @@ public class Flight {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getDeparturePoint() {
+        return departurePoint;
+    }
+
+    public void setDeparturePoint(String departurePoint) {
+        this.departurePoint = departurePoint;
+    }
+
+    public String getArrivalPoint() {
+        return arrivalPoint;
+    }
+
+    public void setArrivalPoint(String arrivalPoint) {
+        this.arrivalPoint = arrivalPoint;
     }
 
     public Brigade getBrigade() {
@@ -72,6 +93,8 @@ public class Flight {
         return "Flight{" +
                 "id='" + id + '\'' +
                 ", date=" + date +
+                ", departurePoint='" + departurePoint + '\'' +
+                ", arrivalPoint='" + arrivalPoint + '\'' +
                 ", brigade=" + brigade +
                 ", flightStatus=" + flightStatus +
                 ", aircraftType='" + aircraftType + '\'' +

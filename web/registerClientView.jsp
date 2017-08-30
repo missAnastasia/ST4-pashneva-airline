@@ -7,8 +7,8 @@
 
 <body>
 
-<jsp:include page="WEB-INF/jsp/_header_client.jsp"/>
-<jsp:include page="WEB-INF/jsp/_menu_client.jsp"/>
+<jsp:include page="WEB-INF/jsp/_header.jsp"/>
+<jsp:include page="WEB-INF/jsp/_menu_staff.jsp"/>
 
 </div>
 <div id="page" class="container">

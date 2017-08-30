@@ -10,7 +10,7 @@ public class Path {
     // pages
     public static final String PAGE_LOGIN = "/loginView.jsp";
     public static final String PAGE_REGISTER_CLIENT = "/registerClientView.jsp";
-    public static final String PAGE_CONDITIONS = "/WEB-INF/jsp/client/conditionsView.jsp";
+    public static final String PAGE_STAFF_FLIGHTS = "/WEB-INF/jsp/staff/staffFlightsView.jsp";
     public static final String PAGE_EDIT_USER = "/WEB-INF/jsp/admin/editUserView.jsp";
     public static final String PAGE_ERROR_PAGE = "/WEB-INF/jsp/errorMessageView.jsp";
     public static final String PAGE_SUCCESS_PAGE = "/WEB-INF/jsp/successMessageView.jsp";
@@ -33,7 +33,7 @@ public class Path {
     public static final String COMMAND_HOME = "/controller?command=getHomePageCommand";
     public static final String COMMAND_LOGIN = "/controller?command=loginCommand";
     public static final String COMMAND_USER_INFO = "/redirect?command=getUserInfoPageCommand";
-    public static final String COMMAND_CONDITIONS = "/redirect?command=getConditionsPageCommand";
+    public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";
     public static final String COMMAND_PRODUCTS = "/controller?command=getProductsPageCommand";
     public static final String COMMAND_ADMIN_USER_ACCOUNTS = "/redirect?command=getUserAccountsPageCommand";
     /*public static final String COMMAND_HOME = "controller?command=getHomePageCommand";*/

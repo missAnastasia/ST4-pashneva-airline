@@ -9,14 +9,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-public class GetConditionsPageCommand extends Command {
+public class GetStaffFlightsPageCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetConditionsPageCommand.class);
+    private static final Logger LOG = Logger.getLogger(GetStaffFlightsPageCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        request.getRequestDispatcher(Path.PAGE_CONDITIONS).forward(request, response);
+        request.getRequestDispatcher(Path.PAGE_STAFF_FLIGHTS).forward(request, response);
         LOG.debug("Command finished");
     }
 }

@@ -32,7 +32,7 @@ public class CommandContainer {
 		commands.put("getRegisterClientPageCommand", new GetRegisterClientPageCommand());
 		commands.put("getContactsPageCommand", new GetContactsPageCommand());
 		commands.put("getErrorMessagePageCommand", new GetErrorMessagePageCommand());
-		commands.put("getConditionsPageCommand", new GetConditionsPageCommand());
+		commands.put("getStaffFlightsPageCommand", new GetStaffFlightsPageCommand());
 		commands.put("getProductsPageCommand", new GetProductsPageCommand());
 		commands.put("updateUserInfoCommand", new UpdateUserInfoCommand());
 		commands.put("getChangeUserDataPageCommand", new GetChangeUserDataPageCommand());

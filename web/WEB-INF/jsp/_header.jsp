@@ -5,8 +5,8 @@
     <div id="header-wrapper">
         <div id="header" class="container">
             <div id="logo">
-                <h1><a href="${pageContext.request.contextPath}/homeView.jsp"><fmt:message key="header_jsp.title"/></a></h1>
-                <p><fmt:message key="header_jsp.car_rental_title"/></p>
+                <h1><fmt:message key="header_jsp.title"/></h1>
+                <p><fmt:message key="header_jsp.sub_title"/></p>
             </div>
             <div id="social">
             <c:choose>
@@ -14,7 +14,6 @@
                 <ul class="menu" >
                     <li><a>${user.firstName} ${user.secondName}</a>
                         <ul class="submenu">
-                            <li><a href=""><fmt:message key="header_jsp.client.orders"/></a></li>
                             <li><a href="redirect?command=getUserInfoPageCommand"><fmt:message key="header_jsp.account"/></a></li>
                             <li><a href="controller?command=logoutCommand"><fmt:message key="header_jsp.logout"/></a></li>
                         </ul>

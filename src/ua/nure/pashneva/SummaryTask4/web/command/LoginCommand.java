@@ -126,7 +126,7 @@ public class LoginCommand extends Command {
         }
         if (userRole == Role.DISPATCHER) {
             //forward = Path.COMMAND_LIST_MENU;
-            //response.sendRedirect(Path.COMMAND_STAFF_FLIGHTS);
+            response.sendRedirect(Path.COMMAND_DISPATCHER_FLIGHTS);
         }
         if (userRole == Role.STAFF) {
             response.sendRedirect(Path.COMMAND_STAFF_FLIGHTS);

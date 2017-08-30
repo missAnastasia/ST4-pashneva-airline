@@ -78,11 +78,17 @@
             </param-value>
         </init-param>
         <init-param>
-            <param-name>client</param-name>
+            <param-name>staff</param-name>
             <param-value>
                 listMenu
                 getStaffFlightsPageCommand
                 getProductsPageCommand
+            </param-value>
+        </init-param>
+        <init-param>
+            <param-name>dispatcher</param-name>
+            <param-value>
+                getDispatcherFlightsPageCommand
             </param-value>
         </init-param>
         <init-param>

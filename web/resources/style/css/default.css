@@ -901,4 +901,72 @@ ul.menu > li:hover > ul.submenu {
     list-style: inherit;
 }
 
+table {
+    /*border: 1px solid rgb(178, 178, 178);*/
+    margin: 0 auto;
+    width: 100%;
+
+}
+
+table tr th {
+    /*border: 1px solid rgb(178, 178, 178);*/
+    color: #fff;
+    background-color: #161616;
+    letter-spacing: 0.05em;
+    text-decoration: none;
+    text-transform: uppercase;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 200;
+    /*width: 12.5%;*/
+}
+
+table tr td {
+    border: 1px solid rgb(178, 178, 178);
+    /*overflow: auto;
+    width: 12.5%;*/
+}
+
+.table-content tr td {
+    /*overflow: auto;
+    width: 12.5%;*/
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

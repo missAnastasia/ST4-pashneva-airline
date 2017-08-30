@@ -32,7 +32,6 @@ public class CommandContainer {
 		commands.put("getRegisterClientPageCommand", new GetRegisterClientPageCommand());
 		commands.put("getContactsPageCommand", new GetContactsPageCommand());
 		commands.put("getErrorMessagePageCommand", new GetErrorMessagePageCommand());
-		commands.put("getStaffFlightsPageCommand", new GetStaffFlightsPageCommand());
 		commands.put("getProductsPageCommand", new GetProductsPageCommand());
 		commands.put("updateUserInfoCommand", new UpdateUserInfoCommand());
 		commands.put("getChangeUserDataPageCommand", new GetChangeUserDataPageCommand());
@@ -40,6 +39,8 @@ public class CommandContainer {
 		commands.put("changePasswordCommand", new ChangePasswordCommand());
 		commands.put("confirmRegistrationCommand", new ConfirmRegistrationCommand());
 		commands.put("getSuccessMessagePageCommand", new GetSuccessMessagePageCommand());
+		commands.put("getStaffFlightsPageCommand", new GetStaffFlightsPageCommand());
+		commands.put("getDispatcherFlightsPageCommand", new GetDispatcherFlightsPageCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

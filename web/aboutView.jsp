@@ -11,7 +11,7 @@
 <jsp:include page="WEB-INF/jsp/_menu_staff.jsp"></jsp:include>
 
 </div>
-<div id="page" class="container">
+<div number="page" class="container">
 <div class="title">
     <h2><fmt:message key="about_jsp.h2"></fmt:message></h2>
 </div>

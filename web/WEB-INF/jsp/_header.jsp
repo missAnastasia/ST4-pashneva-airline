@@ -43,7 +43,7 @@
                     <button onclick="myFunction()" class="dropbtn">
                         <b>${user.firstName}</b> <b>${user.secondName}</b>
                     </button>
-                    <div id="myDropdown" class="dropdown-content">
+                    <div number="myDropdown" class="dropdown-content">
                         <li type="none"><a href="controller?command=userInfoCommand">
                             <fmt:message key="header_jsp.l1.account"/>
                         </a></li>

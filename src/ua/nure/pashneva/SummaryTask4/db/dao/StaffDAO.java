@@ -1,10 +1,10 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
-import ua.nure.pashneva.SummaryTask4.db.entity.Position;
+import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
-import java.util.Date;
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -38,13 +38,13 @@ public interface StaffDAO {
     /**
      * Method of obtaining a staff from the database.
      *
-     * @param position an instance of Position enum,
-     *                  which contains a value of staff position.
+     * @param post an instance of Post enum,
+     *                  which contains a value of staff post.
      * @return collection (List) of objects which contains values of all fields from table staff
-     *         with adjusted position.
+     *         with adjusted post.
      * @throws DBException
      */
-    List<Staff> read(Position position) throws DBException;
+    List<Staff> read(Post post) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -75,9 +75,7 @@ public interface StaffDAO {
     List<Staff> readAll() throws DBException;
 
     /**
-     * Method of updating staff data in database. <br/>
-     * All fields are updated except the password
-     * and position fields.
+     * Method of updating staff data in database.
      *
      * @param staff object that contains staff data.
      *             The identifier must be present.

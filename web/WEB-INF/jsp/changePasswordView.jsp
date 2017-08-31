@@ -20,17 +20,17 @@
         <form  action="controller?command=changePasswordCommand" autocomplete="off" method="post">
             <%--<h3>
                 <label for="first_name" class="first_name"><fmt:message key="register_jsp.label.first_name"/></label><br>
-                <input value="${user.firstName}" id="first_name" name="firstName" minlength="1" maxlength="45" required type="text" placeholder="Xxx" pattern="[a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+"/>
+                <input value="${user.firstName}" number="first_name" name="firstName" minlength="1" maxlength="45" required type="text" placeholder="Xxx" pattern="[a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+"/>
                 <span class="form__error"><fmt:message key="validation.first_name"/></span>
             </h3>
             <h3>
                 <label for="second_name" class="second_name"><fmt:message key="register_jsp.label.second_name"/></label><br>
-                <input value="${user.secondName}" id="second_name" name="secondName" minlength="1" maxlength="45" required type="text" placeholder="Xxx" pattern="[a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+"/>
+                <input value="${user.secondName}" number="second_name" name="secondName" minlength="1" maxlength="45" required type="text" placeholder="Xxx" pattern="[a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+"/>
                 <span class="form__error"><fmt:message key="validation.second_name"/></span>
             </h3>
             <h3>
                 <label for="login" class="login"><fmt:message key="register_jsp.label.login"/></label><br>
-                <input value="${user.login}" id="login" name="login" type="email" placeholder="example@site.com" minlength="8" maxlength="45" required/>
+                <input value="${user.login}" number="login" name="login" type="email" placeholder="example@site.com" minlength="8" maxlength="45" required/>
                 <span class="form__error"><fmt:message key="validation.login"/></span>
             </h3>--%>
             <h3>
@@ -44,7 +44,7 @@
                 <span class="form__error"><fmt:message key="validation.password"/></span>
             </h3>
             <%--<h3 class="keeplogin">
-                <input type="checkbox" name="rememberMe" value="Y" id="loginkeeping"/>
+                <input type="checkbox" name="rememberMe" value="Y" number="loginkeeping"/>
                 <label for="loginkeeping"><fmt:message key="login_jsp.label.remember_me"/></label>
             </h3>--%>
             <input type="submit" value="<fmt:message key="changePassword_jsp.submit"/>"/>

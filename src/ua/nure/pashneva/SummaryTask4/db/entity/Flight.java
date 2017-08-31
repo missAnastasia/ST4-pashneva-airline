@@ -1,6 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Objects of this class are strings from the table flights.
@@ -8,36 +8,36 @@ import java.util.Date;
  * @author Anastasia Pashneva
  *
  */
-public class Flight {
-    private String id;
+public class Flight extends Entity {
+    private String number;
     private Date date;
     private String departurePoint;
     private String arrivalPoint;
     private Brigade brigade;
     private FlightStatus flightStatus;
-    private String aircraftType;
+    private Aircraft aircraft;
 
     public Flight() {
     }
 
-    public Flight(String id, Date date, String departurePoint,
+    public Flight(String number, Date date, String departurePoint,
                   String arrivalPoint, Brigade brigade,
-                  FlightStatus flightStatus, String aircraftType) {
-        this.id = id;
+                  FlightStatus flightStatus, Aircraft aircraft) {
+        this.number = number;
         this.date = date;
         this.departurePoint = departurePoint;
         this.arrivalPoint = arrivalPoint;
         this.brigade = brigade;
         this.flightStatus = flightStatus;
-        this.aircraftType = aircraftType;
+        this.aircraft = aircraft;
     }
 
-    public String getId() {
-        return id;
+    public String getNumber() {
+        return number;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     public Date getDate() {
@@ -80,24 +80,25 @@ public class Flight {
         this.flightStatus = flightStatus;
     }
 
-    public String getAircraftType() {
-        return aircraftType;
+    public Aircraft getAircraft() {
+        return aircraft;
     }
 
-    public void setAircraftType(String aircraftType) {
-        this.aircraftType = aircraftType;
+    public void setAircraft(Aircraft aircraft) {
+        this.aircraft = aircraft;
     }
 
     @Override
     public String toString() {
         return "Flight{" +
-                "id='" + id + '\'' +
+                "number='" + number + '\'' +
                 ", date=" + date +
                 ", departurePoint='" + departurePoint + '\'' +
                 ", arrivalPoint='" + arrivalPoint + '\'' +
                 ", brigade=" + brigade +
                 ", flightStatus=" + flightStatus +
-                ", aircraftType='" + aircraftType + '\'' +
+                ", aircraft=" + aircraft +
+                ", id=" + id +
                 '}';
     }
 }

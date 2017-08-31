@@ -61,6 +61,30 @@ public class DBConnection {
     }
 
     /**
+     * Method for obtaining Connection object without autocommit.
+     *
+     * @return an instance of Connection class, which opens connection to database from datasource.
+     */
+    public Connection getConnectionWithoutAutoCommit() throws DBException {
+        Connection conn = null;
+        try {
+            Context initContext = new InitialContext();
+            LOG.trace("InitialContext has been initialized");
+            dataSource = (DataSource) initContext.lookup("java:comp/env/jdbc/db");
+            LOG.trace("DataSource has been initialized");
+            conn = dataSource.getConnection();
+            LOG.trace("Connection has been gotten --> " + conn);
+            conn.setAutoCommit(false);
+            LOG.trace("Connection autoCommit --> " + conn.getAutoCommit());
+            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            LOG.trace("Connection transactionIsolation --> " + conn.getTransactionIsolation());
+        } catch (Exception e) {
+            throw new DBException(e.getMessage(), e);
+        }
+        return conn;
+    }
+
+    /**
      * Method for closing connection to database, statement and result set.
      *
      * @param connection object with information about connection to database.
@@ -94,7 +118,7 @@ public class DBConnection {
             try {
                 connection.close();
             } catch (SQLException ex) {
-
+                LOG.error("Cannot close connection", ex);
             }
         }
     }
@@ -109,7 +133,7 @@ public class DBConnection {
             try {
                 statement.close();
             } catch (SQLException ex) {
-
+                LOG.error("Cannot close statement", ex);
             }
         }
     }
@@ -124,7 +148,7 @@ public class DBConnection {
             try {
                 resultSet.close();
             } catch (SQLException ex) {
-
+                LOG.error("Cannot close resultSet", ex);
             }
         }
     }
@@ -141,7 +165,7 @@ public class DBConnection {
             try {
                 connection.rollback();
             } catch (SQLException ex) {
-
+                LOG.error("Cannot rollback transaction", ex);
             }
         }
     }

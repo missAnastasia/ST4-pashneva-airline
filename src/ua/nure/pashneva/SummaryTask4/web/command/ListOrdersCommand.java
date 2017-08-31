@@ -32,7 +32,7 @@ public class ListOrdersCommand extends Command {
 		private static final long serialVersionUID = -1573481565177573283L;
 
 		public int compare(UserOrderBean bean1, UserOrderBean bean2) {
-			if (bean1.getId() > bean2.getId()) {
+			if (bean1.getNumber() > bean2.getNumber()) {
 				return 1;
 			} else {
 				return -1;

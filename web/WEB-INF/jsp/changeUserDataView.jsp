@@ -40,11 +40,11 @@
             </h3>
             <%--<h3>
                 <label for="new_password" class="password"><fmt:message key="userInfo_jsp.label.new_password"/></label><br>
-                <input id="new_password" name="new_password" minlength="8" maxlength="45" required type="password" placeholder="Xx1_" pattern="\w+"/>
+                <input number="new_password" name="new_password" minlength="8" maxlength="45" required type="password" placeholder="Xx1_" pattern="\w+"/>
                 <span class="form__error"><fmt:message key="validation.password"/></span>
             </h3>--%>
             <%--<h3 class="keeplogin">
-                <input type="checkbox" name="rememberMe" value="Y" id="loginkeeping"/>
+                <input type="checkbox" name="rememberMe" value="Y" number="loginkeeping"/>
                 <label for="loginkeeping"><fmt:message key="login_jsp.label.remember_me"/></label>
             </h3>--%>
             <input type="submit" value="<fmt:message key="changeData_jsp.submit"/>"/>

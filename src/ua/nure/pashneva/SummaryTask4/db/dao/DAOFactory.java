@@ -53,5 +53,10 @@ public abstract class DAOFactory {
      */
     public abstract UserDAO getUserDAO();
     public abstract LanguageDAO getLanguageDAO();
+    public abstract AircraftDAO getAircraftDAO();
+    public abstract StaffDAO getStaffDAO();
+    public abstract BrigadeDAO getBrigadeDAO();
+    public abstract FlightDAO getFlightDAO();
+    public abstract RequestToAdminDAO getRequestToAdminDAO();
 
 }

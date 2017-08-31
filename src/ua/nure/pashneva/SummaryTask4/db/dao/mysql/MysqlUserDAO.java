@@ -61,11 +61,7 @@ public class MysqlUserDAO  implements UserDAO {
             /*statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));*/
 
             if (statement.executeUpdate() > 0) {
-                generatedKeys = statement.getGeneratedKeys();
-                if (generatedKeys.next()) {
-                    user.setId(generatedKeys.getInt(1));
-                    return true;
-                }
+                return setGeneratedId(user, statement);
             }
             return false;
         } catch (SQLException e) {
@@ -240,7 +236,7 @@ public class MysqlUserDAO  implements UserDAO {
             int k = 1;
 
             *//*statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));*//*
-            statement.setInt(k++, user.getId());
+            statement.setInt(k++, user.getNumber());
 
             statement.executeUpdate();
             return true;
@@ -263,13 +259,26 @@ public class MysqlUserDAO  implements UserDAO {
             int k = 1;
             statement.setInt(k++, user.getId());
 
-            statement.executeUpdate();
-            return true;
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         } finally {
             DBConnection.getInstance().close(connection, statement);
         }
+    }
+
+    private boolean setGeneratedId(User user, PreparedStatement statement) throws SQLException {
+        ResultSet generatedKeys = statement.getGeneratedKeys();
+        if (generatedKeys.next()) {
+            user.setId(generatedKeys.getInt(1));
+            generatedKeys.close();
+            return true;
+        }
+        generatedKeys.close();
+        return false;
     }
 
     private User extractUser(ResultSet resultSet) throws DBException {

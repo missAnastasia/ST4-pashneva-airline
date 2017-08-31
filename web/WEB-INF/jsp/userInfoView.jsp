@@ -17,22 +17,22 @@
     </div>
 
     <div class="login-div" id="user-info-div">
-        <div id="position-info-div">
-            <div class="one-position-info-div">
+        <div id="post-info-div">
+            <div class="one-post-info-div">
                 <label class="label-n">
                     <fmt:message key="userInfo_jsp.label.first_name"/>
                 </label>
                 <label class="label-v">${user.firstName}</label>
             </div>
 
-            <div class="one-position-info-div">
+            <div class="one-post-info-div">
                 <label class="label-n">
                     <fmt:message key="userInfo_jsp.label.second_name"/>
                 </label>
                 <label class="label-v">${user.secondName}</label>
             </div>
 
-            <div class="one-position-info-div">
+            <div class="one-post-info-div">
                 <label class="label-n">
                     <fmt:message key="userInfo_jsp.label.login"/>
                 </label>

@@ -19,7 +19,7 @@
     <div>
         <table>
             <tr>
-                <th><fmt:message key="flights_dispatcher_jsp.table.th.id"/></th>
+                <th><fmt:message key="flights_dispatcher_jsp.table.th.number"/></th>
                 <th><fmt:message key="flights_dispatcher_jsp.table.th.date"/></th>
                 <th><fmt:message key="flights_dispatcher_jsp.table.th.time"/></th>
                 <th><fmt:message key="flights_dispatcher_jsp.table.th.from"/></th>
@@ -42,7 +42,7 @@
             </div>
             <%--<c:forEach items="${flights}" var="flight">
                 <tr>
-                    <td>${flight.id}</td>
+                    <td>${flight.number}</td>
                     <td>${flight.date}</td>
                     <td>${flight.date}</td>
                     <td>${flight.departurePoint}</td>

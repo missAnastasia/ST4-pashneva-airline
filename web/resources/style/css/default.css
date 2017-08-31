@@ -113,13 +113,14 @@ hr {
 #header-wrapper
 {
 	background: url(../images/main5.jpg) no-repeat center center;
-	background-size: cover;
+	background-size: 100%;
 }
 
 #header {
 	position: relative;
 	overflow: hidden;
 	height: 21em;
+
 }
 
 /*#lang-header

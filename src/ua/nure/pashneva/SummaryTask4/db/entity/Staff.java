@@ -1,6 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Objects of this class are strings from the table staff.
@@ -8,8 +8,9 @@ import java.util.Date;
  * @author Anastasia Pashneva
  *
  */
-public class Staff extends User{
-    private Position position;
+public class Staff extends Entity{
+    private User user;
+    private Post post;
     private Date employmentDate;
 
     public Staff() {
@@ -18,27 +19,31 @@ public class Staff extends User{
     /**
      * Constructor of class for creating object without without an identifier.
      *
-     * @param login
-     * @param password
-     * @param firstName
-     * @param secondName
-     * @param role
-     * @param position
+     * @param user
+     * @param post
      * @param employmentDate
      */
-    public Staff(String login, String password, String firstName,
-                 String secondName, Role role, Position position, Date employmentDate) {
-        super(login, password, firstName, secondName, role);
-        this.position = position;
+    public Staff(User user, Post post, Date employmentDate) {
+        this.user = user;
+        this.post = post;
         this.employmentDate = employmentDate;
     }
 
-    public Position getPosition() {
-        return position;
+
+    public User getUser() {
+        return user;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Post getPost() {
+        return post;
+    }
+
+    public void setPost(Post post) {
+        this.post = post;
     }
 
     public Date getEmploymentDate() {
@@ -52,13 +57,9 @@ public class Staff extends User{
     @Override
     public String toString() {
         return "Staff{" +
-                "position=" + position +
+                "user=" + user +
+                ", post=" + post +
                 ", employmentDate=" + employmentDate +
-                ", login='" + login + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", secondName='" + secondName + '\'' +
-                ", role=" + role +
                 ", id=" + id +
                 '}';
     }

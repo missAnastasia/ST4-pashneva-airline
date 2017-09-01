@@ -87,6 +87,32 @@ public class User extends Entity{
     }*/
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        if (!super.equals(o)) return false;
+
+        User user = (User) o;
+
+        if (!getLogin().equals(user.getLogin())) return false;
+        if (!getPassword().equals(user.getPassword())) return false;
+        if (!getFirstName().equals(user.getFirstName())) return false;
+        if (!getSecondName().equals(user.getSecondName())) return false;
+        return getRole() == user.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getLogin().hashCode();
+        result = 31 * result + getPassword().hashCode();
+        result = 31 * result + getFirstName().hashCode();
+        result = 31 * result + getSecondName().hashCode();
+        result = 31 * result + getRole().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +

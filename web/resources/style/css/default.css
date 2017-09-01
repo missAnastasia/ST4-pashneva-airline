@@ -603,7 +603,7 @@ ul.style3 .first {
 		color: #2D2D2D;
 		font-size: 1em;
 		margin-top: 2em;
-		width: 10%;
+		width: auto;
 	}
 
 /*********************************************************************************/
@@ -902,36 +902,68 @@ ul.menu > li:hover > ul.submenu {
     list-style: inherit;
 }
 
-table {
-    /*border: 1px solid rgb(178, 178, 178);*/
-    margin: 0 auto;
-    width: 100%;
-
+#options-div #search-div {
+    width: 30%;
+    position: relative;
+    margin: 0;
+    float: left;
 }
 
+#content-table-div #compare-div {
+    text-align: right;
+}
+
+#content-table-div #items-div {
+    margin-left: 33%;
+    margin-top: 3%;
+}
+
+#content-table-div #items-div .item-div .item-table {
+    border: 1px solid rgb(178, 178, 178);
+    width: 100%;
+}
+
+#content-table-div #items-div .item-div .item-table {
+    border: 1px solid rgb(178, 178, 178);
+    width: 100%;
+}
+
+#content-table-div #items-div .item-div .item-table .destination-td{
+    width: 45%;
+}
+
+#content-table-div #items-div .item-div .item-table .separator-td{
+    width: 10%;
+}
+
+/*table {
+
+	 margin: 0 auto;
+	 width: 100%;
+
+ }
+
 table tr th {
-    /*border: 1px solid rgb(178, 178, 178);*/
-    color: #fff;
-    background-color: #161616;
-    letter-spacing: 0.05em;
-    text-decoration: none;
-    text-transform: uppercase;
-    text-align: center;
-    font-size: 14px;
-    font-weight: 200;
-    /*width: 12.5%;*/
+
+	color: #fff;
+	background-color: #161616;
+	letter-spacing: 0.05em;
+	text-decoration: none;
+	text-transform: uppercase;
+	text-align: center;
+	font-size: 14px;
+	font-weight: 200;
+
 }
 
 table tr td {
-    border: 1px solid rgb(178, 178, 178);
-    /*overflow: auto;
-    width: 12.5%;*/
+	border: 1px solid rgb(178, 178, 178);
+
 }
 
 .table-content tr td {
-    /*overflow: auto;
-    width: 12.5%;*/
-}
+
+}*/
 
 
 

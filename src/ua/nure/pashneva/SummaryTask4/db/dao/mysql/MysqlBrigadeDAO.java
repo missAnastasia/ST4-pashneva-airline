@@ -21,8 +21,8 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     /**
      * String fields which contain sql queries to table brigades of MySQL database.
      */
-    private static final String GET_ALL_BRIGADES = "SELECT * FROM brigades";
-    private static final String GET_BRIGADE_BY_ID = "SELECT * FROM brigades WHERE id=?";
+    private static final String GET_ALL_BRIGADES = "SELECT * FROM brigades b";
+    private static final String GET_BRIGADE_BY_ID = "SELECT * FROM brigades b WHERE b.id=?";
     private static final String GET_BRIGADE_BY_STAFF = "SELECT * FROM (brigades b INNER JOIN brigades_staff b_s ON b.id=b_s.brigade_id) WHERE b_s.staff_id=?";
     private static final String ADD_BRIGADE = "INSERT INTO brigades VALUE(DEFAULT, ?)";
     private static final String ADD_BRIGADES_STAFF = "INSERT INTO brigades_staff VALUE(DEFAULT, ?, ?)";

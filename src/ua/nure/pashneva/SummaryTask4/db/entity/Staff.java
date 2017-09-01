@@ -55,6 +55,28 @@ public class Staff extends Entity{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Staff)) return false;
+        if (!super.equals(o)) return false;
+
+        Staff staff = (Staff) o;
+
+        if (!getUser().equals(staff.getUser())) return false;
+        if (getPost() != staff.getPost()) return false;
+        return getEmploymentDate().equals(staff.getEmploymentDate());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getUser().hashCode();
+        result = 31 * result + getPost().hashCode();
+        result = 31 * result + getEmploymentDate().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Staff{" +
                 "user=" + user +

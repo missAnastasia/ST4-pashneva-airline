@@ -51,4 +51,26 @@ public class RequestToAdmin extends Entity {
     public void setRequestStatus(RequestStatus requestStatus) {
         this.requestStatus = requestStatus;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof RequestToAdmin)) return false;
+        if (!super.equals(o)) return false;
+
+        RequestToAdmin that = (RequestToAdmin) o;
+
+        if (!getUser().equals(that.getUser())) return false;
+        if (getRequestStatus() != that.getRequestStatus()) return false;
+        return getMessage().equals(that.getMessage());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + getUser().hashCode();
+        result = 31 * result + getRequestStatus().hashCode();
+        result = 31 * result + getMessage().hashCode();
+        return result;
+    }
 }

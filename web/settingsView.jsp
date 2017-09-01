@@ -7,8 +7,8 @@
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
-<jsp:include page="WEB-INF/jsp/_header.jsp"></jsp:include>
-<jsp:include page="WEB-INF/jsp/_menu_staff.jsp"></jsp:include>
+<jsp:include page="WEB-INF/jsp/_header.jsp"/>
+<jsp:include page="WEB-INF/jsp/_menu_staff.jsp"/>
 
 </div>
 <div id="page" class="container">
@@ -28,6 +28,6 @@
 
 	</form>
 	</div>
-<jsp:include page="WEB-INF/jsp/_footer.jsp"></jsp:include>
+<jsp:include page="WEB-INF/jsp/_footer.jsp"/>
 </body>
 </html>

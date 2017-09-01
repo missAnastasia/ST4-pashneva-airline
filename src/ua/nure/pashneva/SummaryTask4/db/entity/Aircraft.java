@@ -19,6 +19,21 @@ public class Aircraft extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Aircraft)) return false;
+
+        Aircraft aircraft = (Aircraft) o;
+
+        return getTypeName().equals(aircraft.getTypeName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getTypeName().hashCode();
+    }
+
+    @Override
     public String toString() {
         return "Aircraft{" +
                 "typeName='" + typeName + '\'' +

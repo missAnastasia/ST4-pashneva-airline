@@ -43,6 +43,24 @@ public class Brigade extends Entity{
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Brigade)) return false;
+
+        Brigade brigade = (Brigade) o;
+
+        if (!getStaff().equals(brigade.getStaff())) return false;
+        return getName().equals(brigade.getName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getStaff().hashCode();
+        result = 31 * result + getName().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Brigade{" +
                 "staff=" + staff +

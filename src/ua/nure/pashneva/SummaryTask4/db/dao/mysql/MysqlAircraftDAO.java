@@ -32,7 +32,7 @@ public class MysqlAircraftDAO implements AircraftDAO {
      * String fields which contain column names of table aircraft.
      */
     private static final String ENTITY_ID = "id";
-    private static final String AIRCRAFT_NAME = "name";
+    private static final String AIRCRAFT_NAME = "type";
 
     @Override
     public Aircraft read(Integer id) throws DBException {

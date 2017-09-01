@@ -89,6 +89,35 @@ public class Flight extends Entity {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Flight)) return false;
+
+        Flight flight = (Flight) o;
+
+        if (!getNumber().equals(flight.getNumber())) return false;
+        if (!getDate().equals(flight.getDate())) return false;
+        if (!getDeparturePoint().equals(flight.getDeparturePoint())) return false;
+        if (!getArrivalPoint().equals(flight.getArrivalPoint())) return false;
+        if (getBrigade() != null ? !getBrigade().equals(flight.getBrigade()) : flight.getBrigade() != null)
+            return false;
+        if (getFlightStatus() != flight.getFlightStatus()) return false;
+        return getAircraft().equals(flight.getAircraft());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getNumber().hashCode();
+        result = 31 * result + getDate().hashCode();
+        result = 31 * result + getDeparturePoint().hashCode();
+        result = 31 * result + getArrivalPoint().hashCode();
+        result = 31 * result + (getBrigade() != null ? getBrigade().hashCode() : 0);
+        result = 31 * result + getFlightStatus().hashCode();
+        result = 31 * result + getAircraft().hashCode();
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "Flight{" +
                 "number='" + number + '\'' +

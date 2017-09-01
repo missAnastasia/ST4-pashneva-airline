@@ -33,11 +33,20 @@ public interface LanguageDAO {
     /**
      * Method of obtaining a language from the database.
      *
-     * @param name language name (e.g. ru, en)
+     * @param name language name (e.g. Russian, English)
      * @return object, which contains values of all fields from table languages.
      * @throws DBException
      */
-    Language read(String name) throws DBException;
+    Language readByName(String name) throws DBException;
+
+    /**
+     * Method of obtaining a language from the database.
+     *
+     * @param prefix language prefix (e.g. ru, en)
+     * @return object, which contains values of all fields from table languages.
+     * @throws DBException
+     */
+    Language readByPrefix(String prefix) throws DBException;
 
     /**
      * Method of obtaining all languages from the database.

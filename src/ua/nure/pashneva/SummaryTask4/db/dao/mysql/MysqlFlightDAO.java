@@ -28,6 +28,7 @@ public class MysqlFlightDAO implements FlightDAO {
     private static final String GET_FLIGHT_BY_ID = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.id=? AND f_l.lang_id=?";
     private static final String GET_FLIGHT_BY_NUMBER = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.id=? AND f.number=?";
     private static final String GET_FLIGHT_BY_DEPARTURE_POINT = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f_l.departure_point=? AND f_l.lang_id=?";
+    private static final String GET_FLIGHT_BY_ARRIVAL_POINT = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f_l.arrival_point=? AND f_l.lang_id=?";
     private static final String GET_FLIGHT_BY_BRIGADE = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.brigade_id=? AND f_l.lang_id=?";
     private static final String GET_FLIGHT_BY_DATE = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.departure_date=? AND f_l.lang_id=?";
     private static final String GET_FLIGHT_BY_STATUS = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.flight_status_id=? AND f_l.lang_id=?";
@@ -152,7 +153,7 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> read(String departure, Language language) throws DBException {
+    public List<Flight> readByDeparturePoint(String departure, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -181,7 +182,36 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> read(Date date, Language language) throws DBException {
+    public List<Flight> readByArrivalPoint(String arrival, Language language) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Flight> flights = new ArrayList<>();
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_FLIGHT_BY_ARRIVAL_POINT);
+
+            int k = 1;
+            statement.setString(k++, arrival);
+            statement.setInt(k++, language.getId());
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Flight flight = extractFlight(resultSet);
+                flights.add(flight);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return flights;
+    }
+
+    @Override
+    public List<Flight> readByDate(Date date, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -210,7 +240,7 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> read(Brigade brigade, Language language) throws DBException {
+    public List<Flight> readByBrigade(Brigade brigade, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -239,20 +269,20 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> read(Staff staff, Language language) throws DBException {
+    public List<Flight> readByStaff(Staff staff, Language language) throws DBException {
         List<Flight> flights = new ArrayList<>();
         Brigade brigade = null;
         try {
-            brigade = DAOFactory.getInstance().getBrigadeDAO().read(staff);
+            brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff);
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }
-        flights = read(brigade, language);
+        flights = readByBrigade(brigade, language);
         return flights;
     }
 
     @Override
-    public List<Flight> read(FlightStatus flightStatus, Language language) throws DBException {
+    public List<Flight> readByStatus(FlightStatus flightStatus, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

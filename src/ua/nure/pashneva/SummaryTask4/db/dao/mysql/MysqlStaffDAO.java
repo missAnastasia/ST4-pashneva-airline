@@ -4,7 +4,6 @@ import ua.nure.pashneva.SummaryTask4.db.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.dao.StaffDAO;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
-import ua.nure.pashneva.SummaryTask4.db.entity.Role;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
@@ -100,7 +99,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> read(Post post) throws DBException {
+    public List<Staff> readByPost(Post post) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -128,7 +127,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public Staff read(String login) throws DBException {
+    public Staff readByUserLogin(String login) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -136,7 +135,7 @@ public class MysqlStaffDAO implements StaffDAO {
         User user = null;
 
         try {
-            user = DAOFactory.getInstance().getUserDAO().read(login);
+            user = DAOFactory.getInstance().getUserDAO().readByLogin(login);
 
             connection = DBConnection.getInstance().getConnection();
             statement = connection.prepareStatement(GET_STAFF_BY_USER_ID);
@@ -158,7 +157,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> read(Date date) throws DBException {
+    public List<Staff> readByEmploymentDate(Date date) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

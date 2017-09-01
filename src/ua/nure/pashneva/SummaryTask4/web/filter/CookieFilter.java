@@ -3,7 +3,6 @@ package ua.nure.pashneva.SummaryTask4.web.filter;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.*;
@@ -11,7 +10,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.SQLException;
 
 /**
  * Filter for saving cookie for session.
@@ -63,7 +61,7 @@ public class CookieFilter implements Filter {
         if (checked == null && conn != null) {
             String userName = SessionManager.getUserNameInCookie(req);
             try {
-                User user = DAOFactory.getInstance().getUserDAO().read(userName);
+                User user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
                 LOG.trace("user --> " + user);
                 LOG.trace("user --> " + user.getRole());
                 SessionManager.storeLoginedUser(session, user, user.getRole());

@@ -37,7 +37,7 @@ public interface BrigadeDAO {
      * @return object which contains values of all fields from table brigades.
      * @throws DBException
      */
-    Brigade read(Staff staff) throws DBException;
+    Brigade readByStaff(Staff staff) throws DBException;
 
     /**
      * Method of obtaining all brigades from the database.
@@ -59,6 +59,32 @@ public interface BrigadeDAO {
     boolean update(Brigade brigade) throws DBException;
 
     /**
+     * Method of updating brigades_staff data in database. <br/>
+     * Only brigade_id field is updated.
+     *
+     * @param brigade object that contains brigade data.
+     *             The identifier must be present.
+     * @param staff object that contains staff data.
+     *             The identifier must be present.
+     * @return true - brigades_staff data was successfully updated in database, otherwise - false.
+     * @throws DBException
+     */
+    boolean changeBrigadeForStaff(Brigade brigade, Staff staff) throws DBException;
+
+    /**
+     * Method of updating brigades_staff data in database. <br/>
+     * Only staff_id field is updated.
+     *
+     * @param brigade object that contains brigade data.
+     *             The identifier must be present.
+     * @param staff object that contains staff data.
+     *             The identifier must be present.
+     * @return true - brigades_staff data was successfully updated in database, otherwise - false.
+     * @throws DBException
+     */
+    boolean changeStaffForBrigade(Brigade brigade, Staff staff) throws DBException;
+
+    /**
      * Method of deleting brigade from database.
      *
      * @param brigade object that contains information about a brigade which must be deleted.
@@ -66,4 +92,14 @@ public interface BrigadeDAO {
      * @throws DBException
      */
     boolean delete(Brigade brigade) throws DBException;
+
+    /**
+     * Method of deleting staff from brigade.
+     *
+     * @param brigade object that contains information about a brigade.
+     * @param staff object that contains information about staff who must be deleted from brigade.
+     * @return true - staff was successfully deleted from brigade, otherwise - false.
+     * @throws DBException
+     */
+    boolean deleteStaffFromBrigade(Brigade brigade, Staff staff) throws DBException;
 }

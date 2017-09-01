@@ -23,23 +23,27 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
      */
     private static final String GET_ALL_BRIGADES = "SELECT * FROM brigades";
     private static final String GET_BRIGADE_BY_ID = "SELECT * FROM brigades WHERE id=?";
-    //private static final String GET_BRIGADE_BY_STAFF = "SELECT * FROM brigades  WHERE login=?";
+    private static final String GET_BRIGADE_BY_STAFF = "SELECT * FROM (brigades b INNER JOIN brigades_staff b_s ON b.id=b_s.brigade_id) WHERE b_s.staff_id=?";
     private static final String ADD_BRIGADE = "INSERT INTO brigades VALUE(DEFAULT, ?)";
+    private static final String ADD_BRIGADES_STAFF = "INSERT INTO brigades_staff VALUE(DEFAULT, ?, ?)";
     private static final String UPDATE_BRIGADE_BY_ID = "UPDATE brigades SET name=? WHERE id=?";
+    private static final String UPDATE_STAFF_BY_BRIGADE_ID = "UPDATE brigades_staff SET staff_id=? WHERE brigade_id=?";
+    private static final String UPDATE_BRIGADE_BY_STAFF_ID = "UPDATE brigades_staff SET brigade_id=? WHERE staff_id=?";
     private static final String DELETE_BRIGADE_BY_ID = "DELETE FROM brigades WHERE id=?";
+    private static final String DELETE_STAFF_FROM_BRIGADE_BY_ID = "DELETE FROM brigades_staff WHERE staff_id=?";
 
     /**
      * String fields which contain column names of table brigades.
      */
-    private static final String ENTITY_ID = "id";
-    private static final String BRIGADE_NAME = "name";
+    private static final String ENTITY_ID = "b.id";
+    private static final String BRIGADE_NAME = "b.name";
 
     @Override
     public boolean create(Brigade brigade) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         try {
-            connection = DBConnection.getInstance().getConnection();
+            connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
             statement = connection.prepareStatement(ADD_BRIGADE);
 
             int k = 1;
@@ -47,7 +51,9 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
             statement.setString(k++, brigade.getName());
 
             if (statement.executeUpdate() > 0) {
-                return MysqlDAOFactory.setGeneratedId(brigade, statement);
+                if (MysqlDAOFactory.setGeneratedId(brigade, statement)) {
+                    return addStaffToBrigade(connection, brigade);
+                }
             }
             return false;
         } catch (SQLException e) {
@@ -55,6 +61,23 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         } finally {
             DBConnection.getInstance().close(connection, statement);
         }
+    }
+
+    private boolean addStaffToBrigade(Connection connection, Brigade brigade) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(ADD_BRIGADES_STAFF);
+
+        for (Staff staff : brigade.getStaff()) {
+            int k = 1;
+            statement.setInt(k++, brigade.getId());
+            statement.setInt(k++, staff.getId());
+
+            if (!(statement.executeUpdate() > 0)) {
+                DBConnection.getInstance().rollback(connection);
+                return false;
+            }
+        }
+        connection.commit();
+        return true;
     }
 
     @Override
@@ -85,8 +108,30 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
-    public Brigade read(Staff staff) throws DBException {
-        return null;
+    public Brigade readByStaff(Staff staff) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Brigade brigade = null;
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_BRIGADE_BY_STAFF);
+
+            int k = 1;
+            statement.setInt(k++, staff.getId());
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                brigade = extractBrigade(resultSet);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return brigade;
     }
 
     @Override
@@ -138,6 +183,54 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
+    public boolean changeBrigadeForStaff(Brigade brigade, Staff staff) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(UPDATE_BRIGADE_BY_STAFF_ID);
+
+            int k = 1;
+            statement.setInt(k++, staff.getId());
+            statement.setInt(k++, brigade.getId());
+
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement);
+        }
+    }
+
+    @Override
+    public boolean changeStaffForBrigade(Brigade brigade, Staff staff) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(UPDATE_STAFF_BY_BRIGADE_ID);
+
+            int k = 1;
+            statement.setInt(k++, brigade.getId());
+            statement.setInt(k++, staff.getId());
+
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement);
+        }
+    }
+
+    @Override
     public boolean delete(Brigade brigade) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
@@ -148,6 +241,29 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
 
             int k = 1;
             statement.setInt(k++, brigade.getId());
+
+            if (statement.executeUpdate() > 0) {
+                return true;
+            }
+            return false;
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement);
+        }
+    }
+
+    @Override
+    public boolean deleteStaffFromBrigade(Brigade brigade, Staff staff) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(DELETE_STAFF_FROM_BRIGADE_BY_ID);
+
+            int k = 1;
+            statement.setInt(k++, staff.getId());
 
             if (statement.executeUpdate() > 0) {
                 return true;

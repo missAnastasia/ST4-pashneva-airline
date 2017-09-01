@@ -48,7 +48,7 @@ public class LoginCommand extends Command {
 
 		User user = null;
 		try {
-			user = DAOFactory.getInstance().getUserDAO().read(login);
+			user = DAOFactory.getInstance().getUserDAO().readByLogin(login);
 		} catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", request.getLocale())
                     .getString("message.error.cannot_load_data_source");

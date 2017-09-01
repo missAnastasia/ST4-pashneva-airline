@@ -48,7 +48,7 @@ public class DoLoginServlet extends HttpServlet {
             try {
 
                 //user = DBUtils.findUser(conn, userName, password);
-                user = DAOFactory.getInstance().getUserDAO().read(userName);
+                user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
 
                 if (user == null) {
                     hasError = true;

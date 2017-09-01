@@ -50,7 +50,16 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted point of departure.
      * @throws DBException
      */
-    List<Flight> read(String departure, Language language) throws DBException;
+    List<Flight> readByDeparturePoint(String departure, Language language) throws DBException;
+
+    /**
+     * Method of obtaining a flight from the database.
+     *
+     * @param arrival flight point of arrival (city name).
+     * @return collection (List) of flights with adjusted point of arrival.
+     * @throws DBException
+     */
+    List<Flight> readByArrivalPoint(String arrival, Language language) throws DBException;
 
     /**
      * Method of obtaining a flight from the database.
@@ -60,7 +69,7 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted date and time.
      * @throws DBException
      */
-    List<Flight> read(Date date, Language language) throws DBException;
+    List<Flight> readByDate(Date date, Language language) throws DBException;
 
     /**
      * Method of obtaining a flight from the database.
@@ -70,7 +79,7 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted brigade.
      * @throws DBException
      */
-    List<Flight> read(Brigade brigade, Language language) throws DBException;
+    List<Flight> readByBrigade(Brigade brigade, Language language) throws DBException;
 
     /**
      * Method of obtaining a flight from the database.
@@ -80,7 +89,7 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted brigade and stuff.
      * @throws DBException
      */
-    List<Flight> read(Staff staff, Language language) throws DBException;
+    List<Flight> readByStaff(Staff staff, Language language) throws DBException;
 
     /**
      * Method of obtaining a flight from the database.
@@ -90,7 +99,7 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted flight status.
      * @throws DBException
      */
-    List<Flight> read(FlightStatus flightStatus, Language language) throws DBException;
+    List<Flight> readByStatus(FlightStatus flightStatus, Language language) throws DBException;
 
     /**
      * Method of obtaining all flights from the database.

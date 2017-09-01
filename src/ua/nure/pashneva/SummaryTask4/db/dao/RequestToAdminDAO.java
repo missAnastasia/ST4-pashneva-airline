@@ -1,6 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
+import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
@@ -22,7 +23,7 @@ public interface RequestToAdminDAO {
      * @return true - request was successfully inserted into database, otherwise - false.
      * @throws DBException
      */
-    boolean create(RequestToAdminDAO request) throws DBException;
+    boolean create(RequestToAdmin request) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -31,7 +32,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    RequestToAdminDAO read(Integer id) throws DBException;
+    RequestToAdmin read(Integer id) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -41,7 +42,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    List<RequestToAdminDAO> read(RequestStatus requestStatus) throws DBException;
+    List<RequestToAdmin> readByStatus(RequestStatus requestStatus) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -50,7 +51,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    List<RequestToAdminDAO> read(User user) throws DBException;
+    List<RequestToAdmin> readByUser(User user) throws DBException;
 
     /**
      * Method of obtaining all requests to admin from the database.
@@ -58,7 +59,7 @@ public interface RequestToAdminDAO {
      * @return collection (List) of all users.
      * @throws DBException
      */
-    List<RequestToAdminDAO> readAll() throws DBException;
+    List<RequestToAdmin> readAll() throws DBException;
 
     /**
      * Method of updating request to admin data in database. <br/>
@@ -69,7 +70,7 @@ public interface RequestToAdminDAO {
      * @return true - request data was successfully updated in database, otherwise - false.
      * @throws DBException
      */
-    boolean update(RequestToAdminDAO request) throws DBException;
+    boolean update(RequestToAdmin request) throws DBException;
 
     /**
      * Method of updating request status in database.<br/>
@@ -80,7 +81,7 @@ public interface RequestToAdminDAO {
      * @return true - request status was successfully updated in database, otherwise - false.
      * @throws DBException
      */
-    boolean updateStatus(RequestToAdminDAO request) throws DBException;
+    boolean updateStatus(RequestToAdmin request) throws DBException;
 
     /**
      * Method of deleting request to admin from database.
@@ -89,5 +90,5 @@ public interface RequestToAdminDAO {
      * @return true - request was successfully deleted from database, otherwise - false.
      * @throws DBException
      */
-    boolean delete(RequestToAdminDAO request) throws DBException;
+    boolean delete(RequestToAdmin request) throws DBException;
 }

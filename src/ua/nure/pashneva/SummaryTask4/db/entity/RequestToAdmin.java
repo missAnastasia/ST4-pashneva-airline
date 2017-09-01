@@ -9,20 +9,20 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
 public class RequestToAdmin extends Entity {
 
     private User user;
-    private String description;
     private RequestStatus requestStatus;
+    private String message;
 
     /**
      * Constructor of class for creating object without without an identifier.
      *
      * @param user
-     * @param description
+     * @param message
      * @param requestStatus
      */
-    public RequestToAdmin(User user, String description, RequestStatus requestStatus) {
+    public RequestToAdmin(User user, RequestStatus requestStatus, String message) {
         this.user = user;
-        this.description = description;
         this.requestStatus = requestStatus;
+        this.message = message;
     }
 
     public RequestToAdmin() {
@@ -36,12 +36,12 @@ public class RequestToAdmin extends Entity {
         this.user = user;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public RequestStatus getRequestStatus() {

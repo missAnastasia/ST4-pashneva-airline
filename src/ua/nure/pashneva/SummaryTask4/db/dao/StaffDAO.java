@@ -44,7 +44,7 @@ public interface StaffDAO {
      *         with adjusted post.
      * @throws DBException
      */
-    List<Staff> read(Post post) throws DBException;
+    List<Staff> readByPost(Post post) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -54,7 +54,7 @@ public interface StaffDAO {
      *         with adjusted user login.
      * @throws DBException
      */
-    Staff read(String login) throws DBException;
+    Staff readByUserLogin(String login) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -64,7 +64,7 @@ public interface StaffDAO {
      *         with adjusted date of employment.
      * @throws DBException
      */
-    List<Staff> read(Date date) throws DBException;
+    List<Staff> readByEmploymentDate(Date date) throws DBException;
 
     /**
      * Method of obtaining all staff from the database.

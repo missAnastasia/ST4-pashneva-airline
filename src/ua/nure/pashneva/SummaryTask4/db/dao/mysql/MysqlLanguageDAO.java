@@ -14,6 +14,7 @@ public class MysqlLanguageDAO implements LanguageDAO {
     private static final String GET_ALL_LANGS = "SELECT * FROM languages";
     private static final String GET_LANG_BY_ID = "SELECT * FROM languages WHERE id=?";
     private static final String GET_LANG_BY_NAME = "SELECT * FROM languages WHERE name=?";
+    private static final String GET_LANG_BY_PREFIX = "SELECT * FROM languages WHERE prefix=?";
     private static final String ADD_LANG = "INSERT INTO languages VALUE(DEFAULT, ?, ?)";
     private static final String UPDATE_LANG_BY_ID = "UPDATE languages SET (name=?, prefix=?) WHERE id=?";
     private static final String DELETE_LANG_BY_ID = "DELETE FROM languages WHERE id=?";
@@ -33,7 +34,7 @@ public class MysqlLanguageDAO implements LanguageDAO {
     }
 
     @Override
-    public Language read(String name) throws DBException {
+    public Language readByName(String name) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -45,6 +46,32 @@ public class MysqlLanguageDAO implements LanguageDAO {
 
             int k = 1;
             statement.setString(k++, name);
+
+            resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                language = extractLanguage(resultSet);
+            }
+        } catch (Exception e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return language;
+    }
+
+    @Override
+    public Language readByPrefix(String prefix) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        Language language = new Language();
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_LANG_BY_PREFIX);
+
+            int k = 1;
+            statement.setString(k++, prefix);
 
             resultSet = statement.executeQuery();
             if (resultSet.next()) {

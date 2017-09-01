@@ -99,7 +99,7 @@ public class MysqlUserDAO  implements UserDAO {
     }
 
     @Override
-    public User read(String login) throws DBException {
+    public User readByLogin(String login) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -126,7 +126,7 @@ public class MysqlUserDAO  implements UserDAO {
     }
 
     @Override
-    public List<User> read(UserStatus userStatus) throws DBException {
+    public List<User> readByStatus(UserStatus userStatus) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

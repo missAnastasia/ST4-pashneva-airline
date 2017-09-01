@@ -4,7 +4,6 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Role;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.db.entity.UserStatus;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.mail.MailManager;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
@@ -56,7 +55,7 @@ public class RegisterClientCommand extends Command {
                 Role.DISPATCHER/*, UserStatus.BLOCKED*/);
 
         try {
-            User existingUser = DAOFactory.getInstance().getUserDAO().read(user.getLogin());
+            User existingUser = DAOFactory.getInstance().getUserDAO().readByLogin(user.getLogin());
             LOG.trace("Request parameter: existingUser --> " + existingUser);
             if (existingUser != null) {
                 LOG.debug("existingUser != null --> true");

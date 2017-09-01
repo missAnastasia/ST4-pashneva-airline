@@ -113,7 +113,7 @@ hr {
 #header-wrapper
 {
 	background: url(../images/main5.jpg) no-repeat center center;
-	background-size: 100%;
+	background-size: cover;
 }
 
 #header {
@@ -717,7 +717,7 @@ ul.style3 .first {
 	margin: 0;
 }
 
-#user-info-div .one-position-info-div {
+#user-info-div .one-post-info-div {
     margin-bottom: 2em;
 }
 

@@ -41,7 +41,7 @@ public interface UserDAO {
      * @return object which contains values of all fields from table users.
      * @throws DBException
      */
-    User read(String login) throws DBException;
+    User readByLogin(String login) throws DBException;
 
     /**
      * Method of obtaining a user from the database.
@@ -51,7 +51,7 @@ public interface UserDAO {
      * @return collection (List) of users with adjusted user status.
      * @throws DBException
      */
-    List<User> read(UserStatus userStatus) throws DBException;
+    List<User> readByStatus(UserStatus userStatus) throws DBException;
 
     /**
      * Method of obtaining all users from the database.

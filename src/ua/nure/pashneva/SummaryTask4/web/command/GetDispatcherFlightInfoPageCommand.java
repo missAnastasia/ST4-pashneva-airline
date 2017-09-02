@@ -4,10 +4,8 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
-import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -15,11 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
-import java.util.Locale;
 
-public class GetDispatcherFlightsPageCommand extends Command {
+public class GetDispatcherFlightInfoPageCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetDispatcherFlightsPageCommand.class);
+    private static final Logger LOG = Logger.getLogger(GetDispatcherFlightInfoPageCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
@@ -32,13 +29,10 @@ public class GetDispatcherFlightsPageCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            List<Flight> flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
-            String compare = request.getParameter("compare");
-            if (compare != null && !(compare.isEmpty())) {
-                flights.sort(ComparatorFactory.getInstance().getFlightComparator(compare));
-            }
-            LOG.trace("Flights --> " + flights.toString());
-            request.setAttribute("flights", flights);
+            String flightNumber = request.getParameter("flight_number");
+            Flight flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
+            LOG.trace("Flight --> " + flight);
+            request.setAttribute("flight", flight);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

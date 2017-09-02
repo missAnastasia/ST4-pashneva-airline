@@ -44,6 +44,14 @@ public class RedirectController extends HttpServlet {
         Command command = CommandContainer.get(commandName);
         LOG.trace("Obtained command --> " + command);
 
-        response.sendRedirect(Path.COMMAND + commandName);
+        StringBuilder path = new StringBuilder(Path.COMMAND + commandName);
+
+        String compare = request.getParameter("compare");
+        if (compare != null && !(compare.isEmpty())) {
+            path.append("&compare=").append(compare);
+        }
+
+        LOG.trace("Path --> " + path);
+        response.sendRedirect(path.toString());
     }
 }

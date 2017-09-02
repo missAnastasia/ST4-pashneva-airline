@@ -928,12 +928,32 @@ ul.menu > li:hover > ul.submenu {
     width: 100%;
 }
 
-#content-table-div #items-div .item-div .item-table .destination-td{
+#content-table-div #items-div .item-div .item-table .destination-td {
     width: 45%;
 }
 
-#content-table-div #items-div .item-div .item-table .separator-td{
+#content-table-div #items-div .item-div .item-table .separator-td {
     width: 10%;
+}
+
+#content-table-div #items-div .item-div .item-table .flight-number-link {
+    border: none;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 1em;
+    color: #161616;
+    background-color: #fff;
+}
+
+#content-table-div #items-div .item-div .item-table .flight-number-link:active {
+    border: none;
+    text-decoration: underline;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 1em;
+    color: #161616;
+    background-color: #fff;
 }
 
 /*table {

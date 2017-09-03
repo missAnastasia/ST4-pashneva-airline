@@ -902,31 +902,42 @@ ul.menu > li:hover > ul.submenu {
     list-style: inherit;
 }
 
-#options-div #search-div {
+#options-div {
+	float: right;
     width: 30%;
+}
+
+#options-div #search-div {
+    width: 100%;
     position: relative;
     margin: 0;
-    float: left;
+}
+
+#content-table-div {
+    text-align: left;
+    width: 70%;
 }
 
 #content-table-div #compare-div {
-    text-align: right;
+    text-align: left;
 }
 
 #content-table-div #items-div {
-    margin-left: 33%;
+    margin-right: 13%;
     margin-top: 3%;
+    text-align: left;
 }
 
 #content-table-div #items-div .item-div .item-table {
     border: 1px solid rgb(178, 178, 178);
+    padding: 2%;
     width: 100%;
 }
 
-#content-table-div #items-div .item-div .item-table {
+/*#content-table-div #items-div .item-div .item-table {
     border: 1px solid rgb(178, 178, 178);
     width: 100%;
-}
+}*/
 
 #content-table-div #items-div .item-div .item-table .destination-td {
     width: 45%;

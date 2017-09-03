@@ -1,15 +1,20 @@
 package ua.nure.pashneva.SummaryTask4.web.filter;
 
 import org.apache.log4j.Logger;
+import ua.nure.pashneva.SummaryTask4.db.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
+import ua.nure.pashneva.SummaryTask4.exception.DBException;
+import ua.nure.pashneva.SummaryTask4.web.util.Path;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.ResourceBundle;
 
 /**
  * Filter for saving cookie for session.
@@ -38,14 +43,12 @@ public class CookieFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
             throws IOException, ServletException {
-
         LOG.debug("Filter starts");
 
         HttpServletRequest req = (HttpServletRequest) request;
         LOG.trace("Request uri --> " + req.getRequestURI());
 
         HttpSession session = req.getSession();
-
         User userInSession = SessionManager.getLoginedUser(session);
         LOG.trace("userInSession --> " + userInSession);
         if (userInSession != null) {
@@ -55,20 +58,20 @@ public class CookieFilter implements Filter {
             return;
         }
 
-        Connection conn = SessionManager.getStoredConnection(request);
-
         String checked = (String) session.getAttribute("COOKIE_CHECKED");
-        if (checked == null && conn != null) {
+        if (checked == null) {
             String userName = SessionManager.getUserNameInCookie(req);
-            try {
-                User user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
-                LOG.trace("user --> " + user);
-                LOG.trace("user --> " + user.getRole());
-                SessionManager.storeLoginedUser(session, user, user.getRole());
-            } catch (Exception e) {
-                throw new ServletException(e.getMessage(), e);
+            if (userName!= null && !(userName.isEmpty())) {
+                try {
+                    User user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
+                    LOG.trace("user --> " + user);
+                    LOG.trace("user role --> " + user.getRole());
+                    SessionManager.storeLoginedUser(session, user, user.getRole());
+                } catch (Exception e) {
+                    throw new ServletException(e.getMessage(), e);
+                }
+                session.setAttribute("COOKIE_CHECKED", "CHECKED");
             }
-            session.setAttribute("COOKIE_CHECKED", "CHECKED");
         }
         LOG.debug("Filter finished");
         chain.doFilter(request, response);

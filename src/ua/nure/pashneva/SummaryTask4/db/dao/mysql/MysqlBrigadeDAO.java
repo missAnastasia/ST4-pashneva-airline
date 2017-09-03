@@ -2,6 +2,7 @@ package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
 import ua.nure.pashneva.SummaryTask4.db.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.BrigadeDAO;
+import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.*;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
@@ -281,6 +282,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         try {
             brigade.setId(resultSet.getInt(ENTITY_ID));
             brigade.setName(resultSet.getString(BRIGADE_NAME));
+            brigade.setStaff(DAOFactory.getInstance().getStaffDAO().readByBrigadeId(resultSet.getInt(ENTITY_ID)));
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }

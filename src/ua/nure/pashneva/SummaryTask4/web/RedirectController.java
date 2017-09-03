@@ -9,7 +9,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.sql.Date;
 
 
 public class RedirectController extends HttpServlet {
@@ -49,6 +51,58 @@ public class RedirectController extends HttpServlet {
         String compare = request.getParameter("compare");
         if (compare != null && !(compare.isEmpty())) {
             path.append("&compare=").append(compare);
+        }
+
+        /*String numberAttr = (String) request.getAttribute("number");
+        if (numberAttr != null && !(numberAttr.isEmpty())) {
+            path.append("&number=").append(numberAttr);
+        }
+
+        String fromCityAttr = (String) request.getAttribute("from_city");
+        if (fromCityAttr != null && !(fromCityAttr.isEmpty())) {
+            path.append("&from_city=").append(fromCityAttr);
+        }
+
+        String toCityAttr = (String) request.getAttribute("to_city");
+        if (toCityAttr != null && !(toCityAttr.isEmpty())) {
+            path.append("&to_city=").append(toCityAttr);
+        }
+
+        Date dateAttr = (Date) request.getAttribute("departure_date");
+        if (dateAttr != null) {
+            path.append("&departure_date=").append(dateAttr.toString());
+        }*/
+
+        String fromCity = request.getParameter("from_city");
+        if (fromCity != null && (!fromCity.isEmpty())) {
+            path.append("&from_city=").append(fromCity);
+        }
+
+        String toCity = request.getParameter("to_city");
+        if (toCity != null && (!toCity.isEmpty())) {
+            path.append("&to_city=").append(toCity);
+        }
+
+        String date = request.getParameter("departure_date");
+        if (date != null && (!date.isEmpty())) {
+            path.append("&departure_date=").append(date);
+        }
+
+        String flightNumber = request.getParameter("flight_number");
+        if (flightNumber != null && (!flightNumber.isEmpty())) {
+            path.append("&flight_number=").append(flightNumber);
+        }
+
+
+
+        String flightStatusId = request.getParameter("flight_status_id");
+        if (flightStatusId != null && (!flightStatusId.isEmpty())) {
+            path.append("&flight_status_id=").append(flightStatusId);
+        }
+
+        String brigadeId = request.getParameter("brigade_id");
+        if (brigadeId != null && (!brigadeId.isEmpty())) {
+            path.append("&brigade_id=").append(brigadeId);
         }
 
         LOG.trace("Path --> " + path);

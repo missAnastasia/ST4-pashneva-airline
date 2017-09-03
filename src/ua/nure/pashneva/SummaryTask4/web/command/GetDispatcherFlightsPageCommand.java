@@ -5,6 +5,7 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
+import ua.nure.pashneva.SummaryTask4.db.entity.search.SearchFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
@@ -14,8 +15,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.List;
-import java.util.Locale;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public class GetDispatcherFlightsPageCommand extends Command {
 
@@ -32,10 +33,54 @@ public class GetDispatcherFlightsPageCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            List<Flight> flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
+
+            String number = request.getParameter("flight_number");
+            LOG.trace("Flight number --> " + number);
+            String fromCity = request.getParameter("from_city");
+            LOG.trace("From city --> " + fromCity);
+            String toCity = request.getParameter("to_city");
+            LOG.trace("To city --> " + toCity);
+            String date = request.getParameter("departure_date");
+            LOG.trace("Departure date --> " + date);
+
+            List<Flight> flights = null;
+
+            if ((number == null || number.isEmpty()) && (fromCity == null || fromCity.isEmpty()) &&
+                    (toCity == null || toCity.isEmpty()) && (date == null || date.isEmpty())) {
+                flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
+            } else {
+                Map<String, String> params = new HashMap<>();
+                if (number != null && !(number.isEmpty())) {
+                    params.put("flight_number", number);
+                }
+                if (fromCity != null && !(fromCity.isEmpty())) {
+                    params.put("from_city", fromCity);
+                }
+                if (toCity != null && !(toCity.isEmpty())) {
+                    params.put("to_city", toCity);
+                }
+                if (date != null && !(date.isEmpty())) {
+                    params.put("departure_date", date);
+                }
+                flights = SearchFactory.getInstance().getFlightSearcher().search(language, params);
+                for (Map.Entry<String, String> entry : params.entrySet()) {
+                    request.setAttribute(entry.getKey(), entry.getValue());
+                }
+            }
+            LOG.trace("Flights --> " + flights.toString());
+
             String compare = request.getParameter("compare");
             if (compare != null && !(compare.isEmpty())) {
-                flights.sort(ComparatorFactory.getInstance().getFlightComparator(compare));
+                Comparator<Flight> comparator = ComparatorFactory.getInstance().getFlightComparator(compare);
+                if (comparator != null) {
+                    flights.sort(comparator);
+                    request.setAttribute("compare", compare);
+                }
+            }
+            if (flights.size() == 0) {
+                String message = ResourceBundle.getBundle("resources", request.getLocale())
+                        .getString("message.error.cannot_find_entity");
+                request.setAttribute("message", message);
             }
             LOG.trace("Flights --> " + flights.toString());
             request.setAttribute("flights", flights);

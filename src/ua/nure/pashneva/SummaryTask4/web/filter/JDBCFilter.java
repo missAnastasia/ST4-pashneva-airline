@@ -103,7 +103,7 @@ public class JDBCFilter implements Filter {
             try {
                 conn = DBConnection.getInstance().getConnection();
                 conn.setAutoCommit(false);
-                SessionManager.storeConnection(request, conn);
+                //SessionManager.storeConnection(request, conn);
                 LOG.debug("Filter finished");
                 chain.doFilter(request, response);
                 conn.commit();

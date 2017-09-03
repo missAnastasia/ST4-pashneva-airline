@@ -4,6 +4,7 @@ import ua.nure.pashneva.SummaryTask4.db.entity.*;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -20,6 +21,7 @@ public interface FlightDAO {
      * this information comes from the DBMS side.
      *
      * @param flight object that contains information about a flight without an identifier.
+     * @param language object of Language class which contains data of current locale.
      * @return true - flight was successfully inserted into database, otherwise - false.
      * @throws DBException
      */
@@ -64,12 +66,20 @@ public interface FlightDAO {
     /**
      * Method of obtaining a flight from the database.
      *
-     * @param date an instance of Date class,
-     *                  which contains a value of flight date and time.
-     * @return collection (List) of flights with adjusted date and time.
+     * @param date string which contains a value of flight date in format yyyy-mm-dd.
+     * @return collection (List) of flights with adjusted date.
      * @throws DBException
      */
-    List<Flight> readByDate(Date date, Language language) throws DBException;
+    List<Flight> readByDate(String date, Language language) throws DBException;
+
+    /**
+     * Method of obtaining a flight from the database.
+     *
+     * @param time string which contains a value of flight time in format hh:mm:ss.
+     * @return collection (List) of flights with adjusted and time.
+     * @throws DBException
+     *//*
+    List<Flight> readByTime(String time, Language language) throws DBException;*/
 
     /**
      * Method of obtaining a flight from the database.

@@ -1,5 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
+import sun.tracing.dtrace.DTraceProviderFactory;
+
 import java.sql.Date;
 
 /**
@@ -10,7 +12,8 @@ import java.sql.Date;
  */
 public class Flight extends Entity {
     private String number;
-    private Date date;
+    private String date;
+    private String time;
     private String departurePoint;
     private String arrivalPoint;
     private Brigade brigade;
@@ -20,11 +23,12 @@ public class Flight extends Entity {
     public Flight() {
     }
 
-    public Flight(String number, Date date, String departurePoint,
-                  String arrivalPoint, Brigade brigade,
+    public Flight(String number, String date, String time,
+                  String departurePoint, String arrivalPoint, Brigade brigade,
                   FlightStatus flightStatus, Aircraft aircraft) {
         this.number = number;
         this.date = date;
+        this.time = time;
         this.departurePoint = departurePoint;
         this.arrivalPoint = arrivalPoint;
         this.brigade = brigade;
@@ -40,12 +44,20 @@ public class Flight extends Entity {
         this.number = number;
     }
 
-    public Date getDate() {
+    public String getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(String date) {
         this.date = date;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
     }
 
     public String getDeparturePoint() {

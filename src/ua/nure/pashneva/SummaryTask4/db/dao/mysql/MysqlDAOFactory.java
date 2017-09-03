@@ -2,6 +2,7 @@ package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
 import ua.nure.pashneva.SummaryTask4.db.dao.*;
 import ua.nure.pashneva.SummaryTask4.db.entity.Entity;
+import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -48,6 +49,11 @@ public class MysqlDAOFactory extends DAOFactory {
     @Override
     public RequestToAdminDAO getRequestToAdminDAO() {
         return new MysqlRequestToAdminDAO();
+    }
+
+    @Override
+    public FlightStatusDAO getFlightStatusDAO() {
+        return new MysqlFlightStatusDAO();
     }
 
     public static boolean setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {

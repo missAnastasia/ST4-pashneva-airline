@@ -2,7 +2,6 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
@@ -14,15 +13,14 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.List;
 
-public class GetDispatcherFlightInfoPageCommand extends Command {
+public class ChangeFlightStatusCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetDispatcherFlightInfoPageCommand.class);
+    private static final Logger LOG = Logger.getLogger(ChangeFlightStatusCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.debug("Command starts");
+        LOG.trace("Command starts");
         try {
             String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
             if (locale == null) {
@@ -31,21 +29,26 @@ public class GetDispatcherFlightInfoPageCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            String flightNumber = request.getParameter("flight_number");
-            Flight flight = new Flight();
+            String flightNumber = request.getParameter( "flight_number");
+            LOG.trace("flightNumber --> " + flightNumber);
             if (flightNumber != null && !(flightNumber.isEmpty())) {
-                flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
+                int flightStatusId = Integer.parseInt(request.getParameter("flight_status_id"));
+                LOG.trace("flightStatusId --> " + flightStatusId);
+                FlightStatus flightStatus = DAOFactory.getInstance().getFlightStatusDAO().read(language, flightStatusId);
+                LOG.trace("flightStatus --> " + flightStatus.toString());
+                Flight flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
+                if (flight != null) {
+                    LOG.trace("flight --> " + flight.toString());
+                    flight.setFlightStatus(flightStatus);
+                    LOG.trace("new flightStatus --> " + flightStatus.toString());
+                    DAOFactory.getInstance().getFlightDAO().updateStatus(flight, language);
+                    LOG.trace("updated in db --> " + flight.toString());
+                }
             }
-            LOG.trace("Flight --> " + flight);
-            request.setAttribute("flight", flight);
-            List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
-            request.setAttribute("flight_statuses", statuses);
-            List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll();
-            request.setAttribute("brigades", brigades);
+            LOG.trace("Command finished");
+            request.getRequestDispatcher(Path.COMMAND_GET_DISPATCHER_FLIGHT_INFO).forward(request, response);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        LOG.debug("Command finished");
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_FLIGHT_INFO).forward(request, response);
     }
 }

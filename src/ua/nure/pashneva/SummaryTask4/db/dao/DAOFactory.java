@@ -1,5 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
+import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
+
 /**
  * Abstract factory for obtaining DAOFactory implementations.<br/>
  * This class allows to switch from one database to another.
@@ -58,5 +60,6 @@ public abstract class DAOFactory {
     public abstract BrigadeDAO getBrigadeDAO();
     public abstract FlightDAO getFlightDAO();
     public abstract RequestToAdminDAO getRequestToAdminDAO();
+    public abstract FlightStatusDAO getFlightStatusDAO();
 
 }

@@ -1,5 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
+import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
@@ -65,6 +66,16 @@ public interface StaffDAO {
      * @throws DBException
      */
     List<Staff> readByEmploymentDate(Date date) throws DBException;
+
+    /**
+     * Method of obtaining a staff from the database.
+     *
+     * @param brigadeId id of brigade.
+     * @return collection (List) of objects which contains values of all fields from table staff
+     *         with adjusted brigadeId.
+     * @throws DBException
+     */
+    List<Staff> readByBrigadeId(int brigadeId) throws DBException;
 
     /**
      * Method of obtaining all staff from the database.

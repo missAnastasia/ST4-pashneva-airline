@@ -28,6 +28,7 @@ public class MysqlStaffDAO implements StaffDAO {
      */
     private static final String GET_ALL_STAFF = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)";
     private static final String GET_STAFF_BY_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.id=?";
+    private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM (((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) INNER JOIN brigades_staff b_s ON s.id=b_s.staff_id) WHERE b_s.brigade_id=?";
     private static final String GET_STAFF_BY_USER_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.user_id=?";
     private static final String GET_STAFF_BY_POST = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.post_id=?";
     private static final String GET_STAFF_BY_DATE = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.employment_date=?";
@@ -39,13 +40,10 @@ public class MysqlStaffDAO implements StaffDAO {
      * String fields which contain column names of staff,
      * positions, positions_lang.
      */
-    private static final String ENTITY_ID = "id";
-    private static final String STAFF_POST_ID = "post_id";
-    private static final String STAFF_USER_ID = "user_id";
-    private static final String STAFF_DATE = "employment_date";
-    private static final String POST_ID = "post_id";
-    private static final String POST_LANG_ID = "lang_id";
-    private static final String POST_NAME = "name";
+    private static final String ENTITY_ID = "s.id";
+    private static final String STAFF_POST_ID = "s.post_id";
+    private static final String STAFF_USER_ID = "s.user_id";
+    private static final String STAFF_DATE = "s.employment_date";
 
     @Override
     public boolean create(Staff staff) throws DBException {
@@ -169,6 +167,34 @@ public class MysqlStaffDAO implements StaffDAO {
 
             int k = 1;
             statement.setDate(k++, date);
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                Staff tempStaff = extractStaff(resultSet);
+                staff.add(tempStaff);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return staff;
+    }
+
+    @Override
+    public List<Staff> readByBrigadeId(int brigadeId) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<Staff> staff = new ArrayList<>();
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_STAFF_BY_BRIGADE_ID);
+
+            int k = 1;
+            statement.setInt(k++, brigadeId);
 
             resultSet = statement.executeQuery();
 

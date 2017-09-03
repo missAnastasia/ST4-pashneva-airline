@@ -31,7 +31,7 @@ public class LogoutCommand extends Command {
 		}
 
 		LOG.debug("Command finished");
-        response.sendRedirect(Path.PAGE_HOME);
+        response.sendRedirect(Path.PAGE_LOGIN);
 	}
 
 }

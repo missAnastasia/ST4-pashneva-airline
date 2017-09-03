@@ -92,12 +92,12 @@ public class LoginCommand extends Command {
 
         LOG.info("User " + user + " logged as " + userRole.toString().toLowerCase());
 
-        String rememberMeStr = request.getParameter("rememberMe");
-        boolean remember= "Y".equals(rememberMeStr);
+        String rememberMe = request.getParameter("rememberMe");
+        boolean remember = "Y".equals(rememberMe);
 
         // If user checked "Remember me".
-        if(remember)  {
-            SessionManager.storeUserCookie(response,user);
+        if (remember)  {
+            SessionManager.storeUserCookie(response, user);
         }
 
 		// Else delete cookie.

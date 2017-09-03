@@ -2,6 +2,7 @@ package ua.nure.pashneva.SummaryTask4.web.listener;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.mail.MailManager;
 
 import javax.servlet.ServletContext;
@@ -33,6 +34,7 @@ public class ContextListener implements ServletContextListener {
 		ServletContext servletContext = event.getServletContext();
 		initLog4J(servletContext);
 		initCommandContainer();
+		initDAOFactory(servletContext);
 		initLocalization(servletContext);
         initMailProperties(servletContext);
 	
@@ -69,6 +71,16 @@ public class ContextListener implements ServletContextListener {
 		} catch (ClassNotFoundException ex) {
 			throw new IllegalStateException("Cannot initialize Command Container");
 		}
+	}
+
+    /**
+     * Method for initializing DAOFactory class.
+     *
+     * @param servletContext
+     */
+	private void initDAOFactory(ServletContext servletContext) {
+		String daoFactoryFCN = servletContext.getInitParameter("DaoFactoryFCN");
+        DAOFactory.setDaoFactoryFCN(daoFactoryFCN);
 	}
 
     /**

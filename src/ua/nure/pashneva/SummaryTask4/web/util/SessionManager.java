@@ -21,32 +21,9 @@ public class SessionManager {
     /**
      * String fields with names of session attributes which should be created.
      */
-    private static final String ATT_NAME_CONNECTION = "connection";
     private static final String ATT_NAME_USER_NAME = "user_login";
     private static final int COOKIE_MAX_AGE = 24 * 60 * 60;
     private static final Logger LOG = Logger.getLogger(SessionManager.class);
-
-    /**
-     * Method for storing connection in request attribute.
-     *
-     * @param request object of ServletRequest for storing connection.
-     * @param conn object of Connection class which must be stored.
-     */
-    public static void storeConnection(ServletRequest request, Connection conn) {
-        request.setAttribute(ATT_NAME_CONNECTION, conn);
-        LOG.trace("Connection has been saved --> " + conn);
-    }
-
-    /**
-     * Method for obtaining the Connection object from the ServletRequest object.
-     *
-     * @param request object of ServletRequest for obtaining connection as attribute.
-     * @return object of Connection class which has been obtained from request.
-     */
-    public static Connection getStoredConnection(ServletRequest request) {
-        Connection conn = (Connection) request.getAttribute(ATT_NAME_CONNECTION);
-        return conn;
-    }
 
     /**
      * Method for storing user that is logged in system.

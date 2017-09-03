@@ -40,7 +40,7 @@ public class GetDispatcherFlightInfoPageCommand extends Command {
             request.setAttribute("flight", flight);
             List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
             request.setAttribute("flight_statuses", statuses);
-            List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll();
+            List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
             request.setAttribute("brigades", brigades);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);

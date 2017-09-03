@@ -3,6 +3,7 @@ package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 import ua.nure.pashneva.SummaryTask4.db.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.dao.StaffDAO;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
@@ -28,7 +29,8 @@ public class MysqlStaffDAO implements StaffDAO {
      */
     private static final String GET_ALL_STAFF = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)";
     private static final String GET_STAFF_BY_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.id=?";
-    private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM (((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) INNER JOIN brigades_staff b_s ON s.id=b_s.staff_id) WHERE b_s.brigade_id=?";
+    //private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM (((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) INNER JOIN brigades_staff b_s ON s.id=b_s.staff_id) WHERE b_s.brigade_id=?";
+    private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM brigades_staff WHERE brigade_id=?";
     private static final String GET_STAFF_BY_USER_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.user_id=?";
     private static final String GET_STAFF_BY_POST = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.post_id=?";
     private static final String GET_STAFF_BY_DATE = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.employment_date=?";
@@ -44,6 +46,7 @@ public class MysqlStaffDAO implements StaffDAO {
     private static final String STAFF_POST_ID = "s.post_id";
     private static final String STAFF_USER_ID = "s.user_id";
     private static final String STAFF_DATE = "s.employment_date";
+    private static final String STAFF_ID = "staff_id";
 
     @Override
     public boolean create(Staff staff) throws DBException {
@@ -55,8 +58,7 @@ public class MysqlStaffDAO implements StaffDAO {
 
             int k = 1;
             statement.setInt(k++, staff.getUser().getId());
-            statement.setInt(k++, Post.getPostOrdinal(staff.getPost()));
-            statement.setDate(k++, staff.getEmploymentDate());
+            statement.setInt(k++, staff.getPost().getId());
 
             if (statement.executeUpdate() > 0) {
                 return MysqlDAOFactory.setGeneratedId(staff, statement);
@@ -70,7 +72,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public Staff read(int id) throws DBException {
+    public Staff read(int id, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -86,7 +88,7 @@ public class MysqlStaffDAO implements StaffDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                staff = extractStaff(resultSet);
+                staff = extractStaff(resultSet, language);
             }
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
@@ -97,7 +99,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> readByPost(Post post) throws DBException {
+    public List<Staff> readByPost(Post post, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -108,12 +110,12 @@ public class MysqlStaffDAO implements StaffDAO {
             statement = connection.prepareStatement(GET_STAFF_BY_POST);
 
             int k = 1;
-            statement.setInt(k++, Post.getPostOrdinal(post));
+            statement.setInt(k++, post.getId());
 
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Staff tempStaff = extractStaff(resultSet);
+                Staff tempStaff = extractStaff(resultSet, language);
                 staff.add(tempStaff);
             }
         } catch (SQLException e) {
@@ -125,7 +127,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public Staff readByUserLogin(String login) throws DBException {
+    public Staff readByUserLogin(String login, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -144,7 +146,7 @@ public class MysqlStaffDAO implements StaffDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                staff = extractStaff(resultSet);
+                staff = extractStaff(resultSet, language);
             }
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
@@ -155,35 +157,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> readByEmploymentDate(Date date) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Staff> staff = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_STAFF_BY_DATE);
-
-            int k = 1;
-            statement.setDate(k++, date);
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Staff tempStaff = extractStaff(resultSet);
-                staff.add(tempStaff);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
-        }
-        return staff;
-    }
-
-    @Override
-    public List<Staff> readByBrigadeId(int brigadeId) throws DBException {
+    public List<Staff> readByBrigadeId(int brigadeId, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -199,7 +173,8 @@ public class MysqlStaffDAO implements StaffDAO {
             resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
-                Staff tempStaff = extractStaff(resultSet);
+                int staffId = resultSet.getInt(STAFF_ID);
+                Staff tempStaff = read(staffId, language);
                 staff.add(tempStaff);
             }
         } catch (SQLException e) {
@@ -211,7 +186,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> readAll() throws DBException {
+    public List<Staff> readAll(Language language) throws DBException {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -223,7 +198,7 @@ public class MysqlStaffDAO implements StaffDAO {
             resultSet = statement.executeQuery(GET_ALL_STAFF);
 
             while (resultSet.next()) {
-                Staff tempStaff = extractStaff(resultSet);
+                Staff tempStaff = extractStaff(resultSet, language);
                 staff.add(tempStaff);
             }
         } catch (SQLException e) {
@@ -245,8 +220,7 @@ public class MysqlStaffDAO implements StaffDAO {
 
             int k = 1;
             statement.setInt(k++, staff.getUser().getId());
-            statement.setInt(k++, Post.getPostOrdinal(staff.getPost()));
-            statement.setDate(k++, staff.getEmploymentDate());
+            statement.setInt(k++, staff.getPost().getId());
             statement.setInt(k++, staff.getId());
 
             statement.executeUpdate();
@@ -302,13 +276,12 @@ public class MysqlStaffDAO implements StaffDAO {
         return false;
     }
 
-    private Staff extractStaff(ResultSet resultSet) throws DBException {
+    private Staff extractStaff(ResultSet resultSet, Language language) throws DBException {
         Staff staff = new Staff();
         try {
             staff.setId(resultSet.getInt(ENTITY_ID));
             staff.setUser(DAOFactory.getInstance().getUserDAO().read(resultSet.getInt(STAFF_USER_ID)));
-            staff.setPost(Post.getPost(resultSet.getInt(STAFF_POST_ID)));
-            staff.setEmploymentDate(resultSet.getDate(STAFF_DATE));
+            staff.setPost(DAOFactory.getInstance().getPostDAO().read(language, resultSet.getInt(STAFF_POST_ID)));
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }

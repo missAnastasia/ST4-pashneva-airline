@@ -92,6 +92,7 @@
                 getDispatcherFlightInfoPageCommand
                 changeFlightStatusCommand
                 changeBrigadeCommand
+                getDispatcherBrigadesPageCommand
             </param-value>
         </init-param>
         <init-param>

@@ -44,6 +44,7 @@ public class CommandContainer {
 		commands.put("getDispatcherFlightInfoPageCommand", new GetDispatcherFlightInfoPageCommand());
 		commands.put("changeFlightStatusCommand", new ChangeFlightStatusCommand());
 		commands.put("changeBrigadeCommand", new ChangeBrigadeCommand());
+		commands.put("getDispatcherBrigadesPageCommand", new GetDispatcherBrigadesPageCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

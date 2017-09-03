@@ -56,6 +56,11 @@ public class MysqlDAOFactory extends DAOFactory {
         return new MysqlFlightStatusDAO();
     }
 
+    @Override
+    public PostDAO getPostDAO() {
+        return new MysqlPostDAO();
+    }
+
     public static boolean setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {
         ResultSet generatedKeys = statement.getGeneratedKeys();
         if (generatedKeys.next()) {

@@ -1,6 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
@@ -34,7 +35,7 @@ public interface StaffDAO {
      * @return object which contains values of all fields from table staff.
      * @throws DBException
      */
-    Staff read(int id) throws DBException;
+    Staff read(int id, Language language) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -45,7 +46,7 @@ public interface StaffDAO {
      *         with adjusted post.
      * @throws DBException
      */
-    List<Staff> readByPost(Post post) throws DBException;
+    List<Staff> readByPost(Post post, Language language) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -55,17 +56,7 @@ public interface StaffDAO {
      *         with adjusted user login.
      * @throws DBException
      */
-    Staff readByUserLogin(String login) throws DBException;
-
-    /**
-     * Method of obtaining a staff from the database.
-     *
-     * @param date object which contains the date of employment of the staff.
-     * @return collection (List) of objects which contains values of all fields from table staff
-     *         with adjusted date of employment.
-     * @throws DBException
-     */
-    List<Staff> readByEmploymentDate(Date date) throws DBException;
+    Staff readByUserLogin(String login, Language language) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -75,7 +66,7 @@ public interface StaffDAO {
      *         with adjusted brigadeId.
      * @throws DBException
      */
-    List<Staff> readByBrigadeId(int brigadeId) throws DBException;
+    List<Staff> readByBrigadeId(int brigadeId, Language language) throws DBException;
 
     /**
      * Method of obtaining all staff from the database.
@@ -83,7 +74,7 @@ public interface StaffDAO {
      * @return collection (List) of all staff.
      * @throws DBException
      */
-    List<Staff> readAll() throws DBException;
+    List<Staff> readAll(Language language) throws DBException;
 
     /**
      * Method of updating staff data in database.

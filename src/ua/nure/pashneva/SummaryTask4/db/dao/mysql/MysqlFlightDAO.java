@@ -306,7 +306,7 @@ public class MysqlFlightDAO implements FlightDAO {
         List<Flight> flights = new ArrayList<>();
         Brigade brigade = null;
         try {
-            brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff);
+            brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff, language);
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }
@@ -496,7 +496,7 @@ public class MysqlFlightDAO implements FlightDAO {
             flight.setTime(resultSet.getString(FLIGHT_DEPARTURE_TIME));
             flight.setDeparturePoint(resultSet.getString(FLIGHT_LANG_DEPARTURE_POINT));
             flight.setArrivalPoint(resultSet.getString(FLIGHT_LANG_ARRIVAL_POINT));
-            flight.setBrigade(DAOFactory.getInstance().getBrigadeDAO().read(resultSet.getInt(FLIGHT_BRIGADE_ID)));
+            flight.setBrigade(DAOFactory.getInstance().getBrigadeDAO().read(resultSet.getInt(FLIGHT_BRIGADE_ID), language));
             flight.setFlightStatus(DAOFactory.getInstance().getFlightStatusDAO().read(language, resultSet.getInt(FLIGHT_STATUS_ID)));
             flight.setAircraft(DAOFactory.getInstance().getAircraftDAO().read(resultSet.getInt(FLIGHT_AIRCRAFT_ID)));
         } catch (Exception e) {

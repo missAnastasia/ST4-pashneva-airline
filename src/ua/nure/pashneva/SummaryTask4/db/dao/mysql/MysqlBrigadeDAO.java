@@ -82,7 +82,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
-    public Brigade read(Integer id) throws DBException {
+    public Brigade read(Integer id, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -98,7 +98,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                brigade = extractBrigade(resultSet);
+                brigade = extractBrigade(resultSet, language);
             }
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
@@ -109,7 +109,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
-    public Brigade readByStaff(Staff staff) throws DBException {
+    public Brigade readByStaff(Staff staff, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -125,7 +125,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
             resultSet = statement.executeQuery();
 
             if (resultSet.next()) {
-                brigade = extractBrigade(resultSet);
+                brigade = extractBrigade(resultSet, language);
             }
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
@@ -136,7 +136,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
-    public List<Brigade> readAll() throws DBException {
+    public List<Brigade> readAll(Language language) throws DBException {
         Connection connection = null;
         Statement statement = null;
         ResultSet resultSet = null;
@@ -148,7 +148,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
             resultSet = statement.executeQuery(GET_ALL_BRIGADES);
 
             while (resultSet.next()) {
-                Brigade brigade = extractBrigade(resultSet);
+                Brigade brigade = extractBrigade(resultSet, language);
                 brigades.add(brigade);
             }
         } catch (SQLException e) {
@@ -277,12 +277,12 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         }
     }
 
-    private Brigade extractBrigade(ResultSet resultSet) throws DBException {
+    private Brigade extractBrigade(ResultSet resultSet, Language language) throws DBException {
         Brigade brigade = new Brigade();
         try {
             brigade.setId(resultSet.getInt(ENTITY_ID));
             brigade.setName(resultSet.getString(BRIGADE_NAME));
-            brigade.setStaff(DAOFactory.getInstance().getStaffDAO().readByBrigadeId(resultSet.getInt(ENTITY_ID)));
+            brigade.setStaff(DAOFactory.getInstance().getStaffDAO().readByBrigadeId(resultSet.getInt(ENTITY_ID), language));
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }

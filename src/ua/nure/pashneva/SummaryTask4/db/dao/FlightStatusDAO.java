@@ -25,7 +25,7 @@ public interface FlightStatusDAO {
     FlightStatus read(Language language, Integer id) throws DBException;
 
     /**
-     * Method of obtaining a flight status from the database.
+     * Method of obtaining all flight statuses from the database.
      *
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table flight_statuses.

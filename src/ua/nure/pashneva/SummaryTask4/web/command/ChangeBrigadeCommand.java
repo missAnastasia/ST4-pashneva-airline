@@ -34,7 +34,7 @@ public class ChangeBrigadeCommand extends Command {
             if (flightNumber != null && !(flightNumber.isEmpty())) {
                 int brigadeId = Integer.parseInt(request.getParameter("brigade_id"));
                 LOG.trace("brigadeId --> " + brigadeId);
-                Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(brigadeId);
+                Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(brigadeId, language);
                 LOG.trace("brigade --> " + brigade.toString());
                 Flight flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
                 if (flight != null) {

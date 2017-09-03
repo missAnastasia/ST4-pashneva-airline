@@ -1,9 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
-import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
-import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
-import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.db.entity.UserStatus;
+import ua.nure.pashneva.SummaryTask4.db.entity.*;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.util.List;
@@ -27,7 +24,7 @@ public interface BrigadeDAO {
      * @return object which contains values of all fields from table brigades.
      * @throws DBException
      */
-    Brigade read(Integer id) throws DBException;
+    Brigade read(Integer id, Language language) throws DBException;
 
     /**
      * Method of obtaining a brigade from the database.
@@ -37,7 +34,7 @@ public interface BrigadeDAO {
      * @return object which contains values of all fields from table brigades.
      * @throws DBException
      */
-    Brigade readByStaff(Staff staff) throws DBException;
+    Brigade readByStaff(Staff staff, Language language) throws DBException;
 
     /**
      * Method of obtaining all brigades from the database.
@@ -45,7 +42,7 @@ public interface BrigadeDAO {
      * @return collection (List) of all brigades.
      * @throws DBException
      */
-    List<Brigade> readAll() throws DBException;
+    List<Brigade> readAll(Language language) throws DBException;
 
     /**
      * Method of updating brigade data in database. <br/>

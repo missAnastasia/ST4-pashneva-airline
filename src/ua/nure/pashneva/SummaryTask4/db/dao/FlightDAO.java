@@ -34,7 +34,7 @@ public interface FlightDAO {
      * @return object which contains values of all fields from table flights.
      * @throws DBException
      */
-    Flight read(Integer id, Language language) throws DBException;
+    Flight read(int id, Language language) throws DBException;
 
     /**
      * Method of obtaining a flight from the database.

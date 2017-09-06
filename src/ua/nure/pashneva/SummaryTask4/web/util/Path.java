@@ -15,6 +15,7 @@ public class Path {
     public static final String PAGE_DISPATCHER_REQUESTS = "/WEB-INF/jsp/dispatcher/dispatcherRequestsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHTS = "/WEB-INF/jsp/dispatcher/dispatcherFlightsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHT_INFO = "/WEB-INF/jsp/dispatcher/dispatcherFlightInfoView.jsp";
+    public static final String PAGE_DISPATCHER_REQUEST_INFO = "/WEB-INF/jsp/dispatcher/dispatcherRequestInfoView.jsp";
     public static final String PAGE_STAFF_FLIGHT_INFO = "/WEB-INF/jsp/staff/staffFlightInfoView.jsp";
     public static final String PAGE_EDIT_USER = "/WEB-INF/jsp/admin/editUserView.jsp";
     public static final String PAGE_ERROR_PAGE = "/WEB-INF/jsp/errorMessageView.jsp";
@@ -37,10 +38,12 @@ public class Path {
     public static final String COMMAND_CONFIRM_PASSWORD = "/controller?command=confirmNewPasswordCommand&login=";
     public static final String COMMAND_HOME = "/controller?command=getHomePageCommand";
     public static final String COMMAND_GET_DISPATCHER_FLIGHT_INFO = "/redirect?command=getDispatcherFlightInfoPageCommand";
+    public static final String COMMAND_GET_DISPATCHER_REQUEST_INFO = "/redirect?command=getDispatcherRequestInfoPageCommand";
     public static final String COMMAND_LOGIN = "/controller?command=loginCommand";
     public static final String COMMAND_USER_INFO = "/redirect?command=getUserInfoPageCommand";
     public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";
     public static final String COMMAND_DISPATCHER_FLIGHTS = "/redirect?command=getDispatcherFlightsPageCommand";
+    public static final String COMMAND_DISPATCHER_REQUESTS = "/redirect?command=getDispatcherRequestsPageCommand";
     public static final String COMMAND_DISPATCHER_BRIGADES = "/redirect?command=getDispatcherBrigadesPageCommand";
     public static final String COMMAND_PRODUCTS = "/controller?command=getProductsPageCommand";
     public static final String COMMAND_ADMIN_USER_ACCOUNTS = "/redirect?command=getUserAccountsPageCommand";

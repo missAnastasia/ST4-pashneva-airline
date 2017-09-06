@@ -24,7 +24,7 @@ public interface BrigadeDAO {
      * @return object which contains values of all fields from table brigades.
      * @throws DBException
      */
-    Brigade read(Integer id, Language language) throws DBException;
+    Brigade read(int id, Language language) throws DBException;
 
     /**
      * Method of obtaining a brigade from the database.

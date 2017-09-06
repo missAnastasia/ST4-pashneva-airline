@@ -23,7 +23,7 @@ public interface PostDAO {
      * @return object which contains values of all fields from tables posts and posts_lang.
      * @throws DBException
      */
-    Post read(Language language, Integer id) throws DBException;
+    Post read(Language language, int id) throws DBException;
 
     /**
      * Method of obtaining all posts from the database.

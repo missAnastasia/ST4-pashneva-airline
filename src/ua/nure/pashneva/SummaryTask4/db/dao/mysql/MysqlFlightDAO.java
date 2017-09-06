@@ -101,7 +101,7 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public Flight read(Integer id, Language language) throws DBException {
+    public Flight read(int id, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

@@ -29,7 +29,7 @@ public class MysqlFlightStatusDAO implements FlightStatusDAO {
     private static final String FLIGHT_STATUS_NAME = "f_s_l.name";
 
     @Override
-    public FlightStatus read(Language language, Integer id) throws DBException {
+    public FlightStatus read(Language language, int id) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

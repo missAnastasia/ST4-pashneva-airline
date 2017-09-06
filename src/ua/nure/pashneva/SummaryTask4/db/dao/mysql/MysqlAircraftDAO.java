@@ -35,7 +35,7 @@ public class MysqlAircraftDAO implements AircraftDAO {
     private static final String AIRCRAFT_NAME = "type";
 
     @Override
-    public Aircraft read(Integer id) throws DBException {
+    public Aircraft read(int id) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

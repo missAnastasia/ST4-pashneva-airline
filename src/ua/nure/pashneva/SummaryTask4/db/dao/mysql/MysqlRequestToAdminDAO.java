@@ -25,6 +25,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
      */
     private static final String GET_ALL_REQUESTS = "SELECT * FROM requests_to_admin";
     private static final String GET_REQUEST_BY_ID = "SELECT * FROM requests_to_admin WHERE id=?";
+    private static final String GET_REQUEST_BY_NUMBER = "SELECT * FROM requests_to_admin WHERE number=?";
     private static final String GET_REQUEST_BY_STATUS = "SELECT * FROM requests_to_admin WHERE request_status_id=?";
     private static final String GET_REQUEST_BY_USER_ID = "SELECT * FROM requests_to_admin WHERE user_id=?";
     private static final String ADD_REQUEST = "INSERT INTO requests_to_admin VALUE(DEFAULT, ?, ?, ?, ?)";
@@ -41,6 +42,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     private static final String REQUEST_USER_ID = "user_id";
     private static final String REQUEST_MESSAGE = "message";
     private static final String REQUEST_DATE = "date";
+    private static final String REQUEST_NUMBER = "number";
 
     @Override
     public boolean create(RequestToAdmin request) throws DBException {
@@ -55,6 +57,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
             statement.setInt(k++, request.getRequestStatus().getId());
             statement.setString(k++, request.getMessage());
             statement.setString(k++, request.getDate());
+            statement.setInt(k++, request.getNumber());
 
             if (statement.executeUpdate() > 0) {
                 return MysqlDAOFactory.setGeneratedId(request, statement);
@@ -68,7 +71,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     }
 
     @Override
-    public RequestToAdmin read(Integer id, Language language) throws DBException {
+    public RequestToAdmin read(int id, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -80,6 +83,33 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
 
             int k = 1;
             statement.setInt(k++, id);
+
+            resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                request = extractRequestToAdmin(resultSet, language);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return request;
+    }
+
+    @Override
+    public RequestToAdmin readByNumber(int number, Language language) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        RequestToAdmin request = null;
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_REQUEST_BY_NUMBER);
+
+            int k = 1;
+            statement.setInt(k++, number);
 
             resultSet = statement.executeQuery();
 
@@ -223,7 +253,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     }
 
     @Override
-    public boolean delete(RequestToAdmin request) throws DBException {
+    public boolean delete(int requestId) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -232,7 +262,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
             statement = connection.prepareStatement(DELETE_REQUEST_BY_ID);
 
             int k = 1;
-            statement.setInt(k++, request.getId());
+            statement.setInt(k++, requestId);
 
             if (statement.executeUpdate() > 0) {
                 return true;
@@ -253,6 +283,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
             request.setRequestStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, resultSet.getInt(REQUEST_STATUS_ID)));
             request.setMessage(resultSet.getString(REQUEST_MESSAGE));
             request.setDate(resultSet.getString(REQUEST_DATE));
+            request.setNumber(resultSet.getInt(REQUEST_NUMBER));
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);
         }

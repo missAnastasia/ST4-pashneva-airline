@@ -33,7 +33,16 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    RequestToAdmin read(Integer id, Language language) throws DBException;
+    RequestToAdmin read(int id, Language language) throws DBException;
+
+    /**
+     * Method of obtaining a request to admin from the database.
+     *
+     * @param number request number.
+     * @return object which contains values of all fields from table request_to_admin.
+     * @throws DBException
+     */
+    RequestToAdmin readByNumber(int number, Language language) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -87,9 +96,9 @@ public interface RequestToAdminDAO {
     /**
      * Method of deleting request to admin from database.
      *
-     * @param request object that contains information about a request which must be deleted.
+     * @param requestId request identifier (primary unique key) which must be deleted.
      * @return true - request was successfully deleted from database, otherwise - false.
      * @throws DBException
      */
-    boolean delete(RequestToAdmin request) throws DBException;
+    boolean delete(int requestId) throws DBException;
 }

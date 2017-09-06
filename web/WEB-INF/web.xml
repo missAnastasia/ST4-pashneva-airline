@@ -93,6 +93,8 @@
                 changeBrigadeCommand
                 getDispatcherBrigadesPageCommand
                 getDispatcherRequestsPageCommand
+                getDispatcherRequestInfoPageCommand
+                deleteRequestToAdminCommand
             </param-value>
         </init-param>
         <init-param>

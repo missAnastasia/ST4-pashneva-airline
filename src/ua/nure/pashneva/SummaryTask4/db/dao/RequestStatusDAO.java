@@ -21,7 +21,7 @@ public interface RequestStatusDAO {
      * @return object which contains values of all fields from table request_statuses.
      * @throws DBException
      */
-    RequestStatus read(Language language, Integer id) throws DBException;
+    RequestStatus read(Language language, int id) throws DBException;
 
     /**
      * Method of obtaining all request statuses from the database.

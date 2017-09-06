@@ -8,26 +8,21 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  */
 public class RequestToAdmin extends Entity {
 
+    private int number;
     private User user;
     private RequestStatus requestStatus;
     private String message;
     private String date;
 
-    /**
-     * Constructor of class for creating object without without an identifier.
-     *
-     * @param user
-     * @param message
-     * @param requestStatus
-     */
-    public RequestToAdmin(User user, RequestStatus requestStatus, String message, String date) {
-        this.user = user;
-        this.requestStatus = requestStatus;
-        this.message = message;
-        this.date = date;
+    public RequestToAdmin() {
     }
 
-    public RequestToAdmin() {
+    public int getNumber() {
+        return number;
+    }
+
+    public void setNumber(int number) {
+        this.number = number;
     }
 
     public User getUser() {
@@ -70,6 +65,7 @@ public class RequestToAdmin extends Entity {
 
         RequestToAdmin that = (RequestToAdmin) o;
 
+        if (getNumber() != that.getNumber()) return false;
         if (!getUser().equals(that.getUser())) return false;
         if (!getRequestStatus().equals(that.getRequestStatus())) return false;
         if (!getMessage().equals(that.getMessage())) return false;
@@ -79,10 +75,23 @@ public class RequestToAdmin extends Entity {
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + getNumber();
         result = 31 * result + getUser().hashCode();
         result = 31 * result + getRequestStatus().hashCode();
         result = 31 * result + getMessage().hashCode();
         result = 31 * result + getDate().hashCode();
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "RequestToAdmin{" +
+                "number=" + number +
+                ", user=" + user +
+                ", requestStatus=" + requestStatus +
+                ", message='" + message + '\'' +
+                ", date='" + date + '\'' +
+                ", id=" + id +
+                '}';
     }
 }

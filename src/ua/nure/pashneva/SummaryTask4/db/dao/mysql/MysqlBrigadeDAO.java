@@ -82,7 +82,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
-    public Brigade read(Integer id, Language language) throws DBException {
+    public Brigade read(int id, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

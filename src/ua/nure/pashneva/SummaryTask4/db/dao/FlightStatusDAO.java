@@ -22,7 +22,7 @@ public interface FlightStatusDAO {
      * @return object which contains values of all fields from table flight_statuses.
      * @throws DBException
      */
-    FlightStatus read(Language language, Integer id) throws DBException;
+    FlightStatus read(Language language, int id) throws DBException;
 
     /**
      * Method of obtaining all flight statuses from the database.

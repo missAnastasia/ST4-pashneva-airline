@@ -29,9 +29,14 @@
         <div id="content-table-div">
             <div id="items-div">
                 <c:forEach items="${requests}" var="request_item">
-                    <form action="<%--${pageContext.request.contextPath}/redirect?command=getDispatcherFlightInfoPageCommand--%>" method="post" id="brigade-form">
+                    <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherRequestInfoPageCommand" method="post" id="request-form">
                         <div class="item-div">
                             <table class="item-table">
+                                <tr>
+                                    <td colspan="2">
+                                        <h3><button class="request-number-link" type="submit" name="request_number" value="${request_item.getNumber()}" form="request-form">${request_item.getNumber()}</button></h3>
+                                    </td>
+                                </tr>
                                 <tr>
                                     <td><h3><fmt:message key="requests_dispatcher_jsp.request_status"/></h3></td>
                                     <td>

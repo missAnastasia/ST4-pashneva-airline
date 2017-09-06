@@ -28,7 +28,7 @@ public interface LanguageDAO {
      * @return object, which contains values of all fields from table languages.
      * @throws DBException
      */
-    Language read(Integer id) throws DBException;
+    Language read(int id) throws DBException;
 
     /**
      * Method of obtaining a language from the database.

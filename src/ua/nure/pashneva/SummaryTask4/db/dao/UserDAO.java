@@ -32,7 +32,7 @@ public interface UserDAO {
      * @return object which contains values of all fields from table users.
      * @throws DBException
      */
-    User read(Integer id) throws DBException;
+    User read(int id) throws DBException;
 
     /**
      * Method of obtaining a user from the database.

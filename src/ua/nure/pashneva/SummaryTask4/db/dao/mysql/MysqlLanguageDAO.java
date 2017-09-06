@@ -29,7 +29,7 @@ public class MysqlLanguageDAO implements LanguageDAO {
     }
 
     @Override
-    public Language read(Integer id)  throws DBException {
+    public Language read(int id)  throws DBException {
         return null;
     }
 

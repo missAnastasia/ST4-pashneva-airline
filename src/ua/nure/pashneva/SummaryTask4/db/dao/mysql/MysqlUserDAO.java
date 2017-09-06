@@ -72,7 +72,7 @@ public class MysqlUserDAO  implements UserDAO {
     }
 
     @Override
-    public User read(Integer id) throws DBException {
+    public User read(int id) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

@@ -83,7 +83,7 @@
                             <table class="item-table">
                                 <tr>
                                     <td colspan="2">
-                                        <h3><button class="brigade-name-link" type="submit" name="brigade_name" value="${brigade.getName()}" form="brigade-form">${brigade.getName()}</button></h3>
+                                        <h3><button class="brigade-name-link" type="submit" name="brigade_name" value="${brigade.getNumber()}" form="brigade-form">${brigade.getNumber()}</button></h3>
                                     </td>
                                 </tr>
                                 <c:forEach items="${brigade.getStaff()}" var="staff">

@@ -29,7 +29,7 @@ public class MysqlRequestStatusDAO implements RequestStatusDAO {
     private static final String REQUEST_STATUS_NAME = "r_s_l.name";
 
     @Override
-    public RequestStatus read(Language language, Integer id) throws DBException {
+    public RequestStatus read(Language language, int id) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

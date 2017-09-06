@@ -17,5 +17,5 @@ public interface AircraftDAO {
      * @return object which contains values of all fields from table aircraft.
      * @throws DBException
      */
-    Aircraft read(Integer id) throws DBException;
+    Aircraft read(int id) throws DBException;
 }

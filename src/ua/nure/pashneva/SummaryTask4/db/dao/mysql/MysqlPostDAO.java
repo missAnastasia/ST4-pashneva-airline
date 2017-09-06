@@ -30,7 +30,7 @@ public class MysqlPostDAO implements PostDAO {
     private static final String POST_NAME = "p_l.name";
 
     @Override
-    public Post read(Language language, Integer id) throws DBException {
+    public Post read(Language language, int id) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;

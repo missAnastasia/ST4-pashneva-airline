@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Brigade extends Entity{
     private List<Staff> staff;
-    private String name;
+    private String number;
 
     public Brigade() {
     }
@@ -19,11 +19,11 @@ public class Brigade extends Entity{
      * Constructor of class for creating object without without an identifier.
      *
      * @param staff
-     * @param name
+     * @param number
      */
-    public Brigade(List<Staff> staff, String name) {
+    public Brigade(List<Staff> staff, String number) {
         this.staff = staff;
-        this.name = name;
+        this.number = number;
     }
 
     public List<Staff> getStaff() {
@@ -34,12 +34,12 @@ public class Brigade extends Entity{
         this.staff = staff;
     }
 
-    public String getName() {
-        return name;
+    public String getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(String number) {
+        this.number = number;
     }
 
     @Override
@@ -50,13 +50,13 @@ public class Brigade extends Entity{
         Brigade brigade = (Brigade) o;
 
         if (!getStaff().equals(brigade.getStaff())) return false;
-        return getName().equals(brigade.getName());
+        return getNumber().equals(brigade.getNumber());
     }
 
     @Override
     public int hashCode() {
         int result = getStaff().hashCode();
-        result = 31 * result + getName().hashCode();
+        result = 31 * result + getNumber().hashCode();
         return result;
     }
 
@@ -64,7 +64,7 @@ public class Brigade extends Entity{
     public String toString() {
         return "Brigade{" +
                 "staff=" + staff +
-                ", name='" + name + '\'' +
+                ", name='" + number + '\'' +
                 ", id=" + id +
                 '}';
     }

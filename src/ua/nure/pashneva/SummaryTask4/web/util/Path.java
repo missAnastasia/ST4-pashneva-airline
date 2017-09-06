@@ -12,14 +12,16 @@ public class Path {
     public static final String PAGE_REGISTER_CLIENT = "/registerClientView.jsp";
     public static final String PAGE_STAFF_FLIGHTS = "/WEB-INF/jsp/staff/staffFlightsView.jsp";
     public static final String PAGE_DISPATCHER_BRIGADES = "/WEB-INF/jsp/dispatcher/dispatcherBrigadesView.jsp";
+    public static final String PAGE_DISPATCHER_REQUESTS = "/WEB-INF/jsp/dispatcher/dispatcherRequestsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHTS = "/WEB-INF/jsp/dispatcher/dispatcherFlightsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHT_INFO = "/WEB-INF/jsp/dispatcher/dispatcherFlightInfoView.jsp";
+    public static final String PAGE_STAFF_FLIGHT_INFO = "/WEB-INF/jsp/staff/staffFlightInfoView.jsp";
     public static final String PAGE_EDIT_USER = "/WEB-INF/jsp/admin/editUserView.jsp";
     public static final String PAGE_ERROR_PAGE = "/WEB-INF/jsp/errorMessageView.jsp";
     public static final String PAGE_SUCCESS_PAGE = "/WEB-INF/jsp/successMessageView.jsp";
     public static final String PAGE_LIST_MENU = "/WEB-INF/jsp/client/list_menu.jsp";
     public static final String PAGE_LIST_ORDERS = "/WEB-INF/jsp/admin/list_orders.jsp";
-    public static final String PAGE_ADMIN_USER_ACCOUNTS = "/WEB-INF/jsp/admin/userAccountsView.jsp";
+    public static final String PAGE_ADMIN_USER_ACCOUNTS = "/WEB-INF/jsp/admin/adminStaffView.jsp";
     public static final String PAGE_USER_INFO = "/WEB-INF/jsp/userInfoView.jsp";
     public static final String PAGE_CHANGE_USER_DATA = "/WEB-INF/jsp/changeUserDataView.jsp";
     public static final String PAGE_CHANGE_PASSWORD = "/WEB-INF/jsp/changePasswordView.jsp";
@@ -32,7 +34,7 @@ public class Path {
 
     // commands
     public static final String COMMAND = "/controller?command=";
-    public static final String COMMAND_CONFIRM_REGISTRATION = "/controller?command=confirmRegistrationCommand&login=";
+    public static final String COMMAND_CONFIRM_PASSWORD = "/controller?command=confirmNewPasswordCommand&login=";
     public static final String COMMAND_HOME = "/controller?command=getHomePageCommand";
     public static final String COMMAND_GET_DISPATCHER_FLIGHT_INFO = "/redirect?command=getDispatcherFlightInfoPageCommand";
     public static final String COMMAND_LOGIN = "/controller?command=loginCommand";

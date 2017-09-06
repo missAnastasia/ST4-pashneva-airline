@@ -51,12 +51,12 @@ public class SessionManager {
         return loginedUser;
     }
 
-    public static void storeUserToConfirmRegistration(HttpSession session, User userToConfirm) {
+    public static void storeUserToConfirmNewPassword(HttpSession session, User userToConfirm) {
         session.setAttribute("userToConfirm", userToConfirm);
         LOG.trace("User to confirm has been saved in session --> " + userToConfirm);
     }
 
-    public static User getUserToConfirmRegistration(HttpSession session) {
+    public static User getUserToConfirmPassword(HttpSession session) {
         User userToConfirm = (User) session.getAttribute("userToConfirm");
         return userToConfirm;
     }

@@ -3,54 +3,57 @@
 
 <html>
 
-<c:set var="title" value="My Flights" />
+<c:set var="title" value="Flights" />
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
 <jsp:include page="../_header.jsp"/>
-<jsp:include page="../_menu_staff.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
     <div class="title">
-        <h2><fmt:message key="flights_staff_jsp.h2"/></h2>
+        <h2><fmt:message key="flights_dispatcher_jsp.h2"/></h2>
     </div>
 
-    <div>
-        <table>
-            <tr>
-                <th><fmt:message key="flights_staff_jsp.table.th.number"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.date"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.time"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.from"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.to"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.flight_status"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.brigade"/></th>
-                <th><fmt:message key="flights_staff_jsp.table.th.aircruft"/></th>
-            </tr>
-            <tr>
-                <td>1</td>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-            </tr>
-            <%--<c:forEach items="${flights}" var="flight">
-                <tr>
-                    <td>${flight.number}</td>
-                    <td>${flight.date}</td>
-                    <td>${flight.date}</td>
-                    <td>${flight.departurePoint}</td>
-                    <td>${flight.arrivalPoint}</td>
-                    <td>${flight.brigade.name}</td>
-                    <td>${flight.flightStatus.getName()}</td>
-                    <td>${flight.aircraftType}</td>
-                </tr>
-            </c:forEach>--%>
-        </table>
+    <div id="content-div">
+            <div id="items-div">
+                <c:forEach items="${flights}" var="flight">
+                    <form action="${pageContext.request.contextPath}/redirect?command=getStaffFlightInfoPageCommand" method="post" id="flight-form">
+                        <div class="item-div">
+                            <table class="item-table">
+                                <tr>
+                                    <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.number"/></h3></td>
+                                    <td colspan="3">
+                                        <h3><button class="flight-number-link" type="submit" name="flight_number" value="${flight.getNumber()}" form="flight-form">${flight.getNumber()}</button></h3>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.from"/> - <fmt:message key="flights_staff_jsp.table.th.to"/></h3></td>
+                                    <td class="destination-td">${flight.getDeparturePoint()}</td>
+                                    <td class="separator-td">-</td>
+                                    <td class="destination-td">${flight.getArrivalPoint()}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.date"/></h3></td>
+                                    <td colspan="3">${flight.getDate()}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.time"/></h3></td>
+                                    <td colspan="3">${flight.getTime()}</td>
+                                </tr>
+                                <tr>
+                                    <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.flight_status"/></h3></td>
+                                    <td colspan="3"><h4>${flight.getFlightStatus().getName()}</h4></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </c:forEach>
+                <div>
+                    <h3>${message}</h3>
+                </div>
+            </div>
     </div>
 </div>
 

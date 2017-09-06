@@ -57,6 +57,11 @@ public class MysqlDAOFactory extends DAOFactory {
     }
 
     @Override
+    public RequestStatusDAO getRequestStatusDAO() {
+        return new MysqlRequestStatusDAO();
+    }
+
+    @Override
     public PostDAO getPostDAO() {
         return new MysqlPostDAO();
     }

@@ -2,6 +2,7 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
+import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -28,8 +29,8 @@ public class LogoutCommand extends Command {
 		HttpSession session = request.getSession(false);
 		if (session != null) {
 			session.invalidate();
+            SessionManager.deleteUserCookie(response);
 		}
-
 		LOG.debug("Command finished");
         response.sendRedirect(Path.PAGE_LOGIN);
 	}

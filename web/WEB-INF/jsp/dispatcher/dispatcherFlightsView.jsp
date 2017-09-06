@@ -8,7 +8,8 @@
 
 <body>
 <jsp:include page="../_header.jsp"/>
-<jsp:include page="../_menu_dispatcher.jsp"/>
+<%--<jsp:include page="../_menu_dispatcher.jsp"/>--%>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
@@ -89,21 +90,27 @@
                                 <tr>
                                     <td colspan="3">
                                         <h3><button class="flight-number-link" type="submit" name="flight_number" value="${flight.getNumber()}" form="flight-form">${flight.getNumber()}</button></h3>
+
                                     </td>
+                                    <td class="label-td"></td>
                                 </tr>
                                 <tr>
                                     <td class="destination-td">${flight.getDeparturePoint()}</td>
                                     <td class="separator-td">-</td>
                                     <td class="destination-td">${flight.getArrivalPoint()}</td>
+                                    <td class="label-td"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">${flight.getDate()}</td>
+                                    <td class="label-td"></td>
                                 </tr>
                                 <tr>
                                     <td colspan="3">${flight.getTime()}</td>
+                                    <td class="label-td"></td>
                                 </tr>
                                 <tr>
-                                    <td colspan="3">${flight.getFlightStatus().getName()}</td>
+                                    <td colspan="3"><h4>${flight.getFlightStatus().getName()}</h4></td>
+                                    <td class="label-td"></td>
                                 </tr>
                             </table>
                         </div>

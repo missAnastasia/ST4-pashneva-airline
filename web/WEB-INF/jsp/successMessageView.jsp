@@ -8,12 +8,12 @@
 
 <body>
 <jsp:include page="_header.jsp"/>
-<jsp:include page="_menu_staff.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
     <div class="title">
-        <h2><fmt:message key="error_page_jsp.title"/></h2>
+        <h2><fmt:message key="success_jsp.h2"/></h2>
     </div>
     <div>
         <h3>${requestScope.message}</h3>

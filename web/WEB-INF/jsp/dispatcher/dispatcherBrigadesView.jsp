@@ -8,7 +8,7 @@
 
 <body>
 <jsp:include page="../_header.jsp"/>
-<jsp:include page="../_menu_dispatcher.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
@@ -20,18 +20,13 @@
         <%--<form action="${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand" autocomplete="on" method="post">--%>
         <div id="options-div">
             <div id="search-div" class="login-div">
-                <%--<div class="criterion_search-div">
-                    <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand" autocomplete="on" method="post">
-                        <h3>
-                            <label><fmt:message key="flights_dispatcher_jsp.search.number"/></label><br>
-                            <input class="field-number" id="number" name="flight_number" value="${flight_number}" minlength="4" maxlength="7" type="text" placeholder="XX-0000" pattern="([A-Z]{2})([-]{1})([0-9]{1,4})"/>
-                            <span class="form__error"><fmt:message key="validation.flight_number"/></span>
-                        </h3>
-                        <input type="submit" value="<fmt:message key="flights_dispatcher_jsp.search.submit"/>"/>
+                <div class="criterion_search-div">
+                    <form action="<%--${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand--%>" autocomplete="on" method="post">
+                        <input type="submit" value="<fmt:message key="brigades_dispatcher_jsp.add_brigade"/>"/>
                     </form>
                 </div>
 
-                <div class="criterion_search-div">
+                <%--<div class="criterion_search-div">
                     <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand" autocomplete="on" method="post">
                         <h3>
                             <label><fmt:message key="flights_dispatcher_jsp.search.from"/></label><br>

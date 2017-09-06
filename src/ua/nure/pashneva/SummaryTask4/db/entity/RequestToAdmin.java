@@ -11,6 +11,7 @@ public class RequestToAdmin extends Entity {
     private User user;
     private RequestStatus requestStatus;
     private String message;
+    private String date;
 
     /**
      * Constructor of class for creating object without without an identifier.
@@ -19,10 +20,11 @@ public class RequestToAdmin extends Entity {
      * @param message
      * @param requestStatus
      */
-    public RequestToAdmin(User user, RequestStatus requestStatus, String message) {
+    public RequestToAdmin(User user, RequestStatus requestStatus, String message, String date) {
         this.user = user;
         this.requestStatus = requestStatus;
         this.message = message;
+        this.date = date;
     }
 
     public RequestToAdmin() {
@@ -52,6 +54,14 @@ public class RequestToAdmin extends Entity {
         this.requestStatus = requestStatus;
     }
 
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -61,8 +71,9 @@ public class RequestToAdmin extends Entity {
         RequestToAdmin that = (RequestToAdmin) o;
 
         if (!getUser().equals(that.getUser())) return false;
-        if (getRequestStatus() != that.getRequestStatus()) return false;
-        return getMessage().equals(that.getMessage());
+        if (!getRequestStatus().equals(that.getRequestStatus())) return false;
+        if (!getMessage().equals(that.getMessage())) return false;
+        return getDate().equals(that.getDate());
     }
 
     @Override
@@ -71,6 +82,7 @@ public class RequestToAdmin extends Entity {
         result = 31 * result + getUser().hashCode();
         result = 31 * result + getRequestStatus().hashCode();
         result = 31 * result + getMessage().hashCode();
+        result = 31 * result + getDate().hashCode();
         return result;
     }
 }

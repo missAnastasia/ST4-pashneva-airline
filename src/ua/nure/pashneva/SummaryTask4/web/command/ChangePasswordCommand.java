@@ -1,10 +1,11 @@
 package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
-import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
+import ua.nure.pashneva.SummaryTask4.mail.MailManager;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
+import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -54,16 +55,24 @@ public class ChangePasswordCommand extends Command {
         user.setPassword(newPassword);
 
         try {
-            boolean success = DAOFactory.getInstance().getUserDAO().updatePassword(user);
-            LOG.trace("Request parameter: update user --> " + success);
+            SessionManager.storeUserToConfirmNewPassword(request.getSession(), user);
+            //boolean success = DAOFactory.getInstance().getUserDAO().updatePassword(user);
+            //LOG.trace("Request parameter: update user --> " + success);
         } catch (Exception e) {
-            LOG.debug("catch section");
             throw new AppException(e.getMessage());
         }
 
-        LOG.trace("Update in DB: user --> " + user);
+        //LOG.trace("Update in DB: user --> " + user);
+
+        LOG.trace("Stored into session: user --> " + user);
+
+        LOG.debug("Sending email to --> " + user.getLogin());
+
+        MailManager.sendNewPasswordConfirmationMail(user.getLogin(), request);
 
         LOG.debug("Command finished");
-        response.sendRedirect(Path.COMMAND_USER_INFO);
+        response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +
+                ResourceBundle.getBundle("resources", request.getLocale())
+                        .getString("message.success.confirm_registration"));
     }
 }

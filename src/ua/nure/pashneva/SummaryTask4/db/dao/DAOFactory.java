@@ -61,6 +61,7 @@ public abstract class DAOFactory {
     public abstract FlightDAO getFlightDAO();
     public abstract RequestToAdminDAO getRequestToAdminDAO();
     public abstract FlightStatusDAO getFlightStatusDAO();
+    public abstract RequestStatusDAO getRequestStatusDAO();
     public abstract PostDAO getPostDAO();
 
 }

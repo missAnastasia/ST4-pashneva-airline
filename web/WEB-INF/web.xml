@@ -80,9 +80,8 @@
         <init-param>
             <param-name>staff</param-name>
             <param-value>
-                listMenu
                 getStaffFlightsPageCommand
-                getProductsPageCommand
+                getStaffFlightInfoPageCommand
             </param-value>
         </init-param>
         <init-param>
@@ -93,6 +92,7 @@
                 changeFlightStatusCommand
                 changeBrigadeCommand
                 getDispatcherBrigadesPageCommand
+                getDispatcherRequestsPageCommand
             </param-value>
         </init-param>
         <init-param>
@@ -105,7 +105,8 @@
                 getChangeUserDataPageCommand
                 getChangePasswordPageCommand
                 changePasswordCommand
-
+                confirmNewPasswordCommand
+                getSuccessMessagePageCommand
             </param-value>
         </init-param>
         <init-param>
@@ -116,13 +117,8 @@
                 loginCommand
                 changeLocaleCommand
                 getSettingsPageCommand
-                getRegisterClientPageCommand
-                registerClientCommand
-                getContactsPageCommand
                 getErrorMessagePageCommand
-                getSuccessMessagePageCommand
-                confirmRegistrationCommand
-                getSuccessMessagePageCommand
+
             </param-value>
         </init-param>
     </filter>

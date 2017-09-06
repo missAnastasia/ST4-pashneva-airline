@@ -27,7 +27,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     private static final String GET_BRIGADE_BY_STAFF = "SELECT * FROM (brigades b INNER JOIN brigades_staff b_s ON b.id=b_s.brigade_id) WHERE b_s.staff_id=?";
     private static final String ADD_BRIGADE = "INSERT INTO brigades VALUE(DEFAULT, ?)";
     private static final String ADD_BRIGADES_STAFF = "INSERT INTO brigades_staff VALUE(DEFAULT, ?, ?)";
-    private static final String UPDATE_BRIGADE_BY_ID = "UPDATE brigades SET name=? WHERE id=?";
+    private static final String UPDATE_BRIGADE_BY_ID = "UPDATE brigades SET number=? WHERE id=?";
     private static final String UPDATE_STAFF_BY_BRIGADE_ID = "UPDATE brigades_staff SET staff_id=? WHERE brigade_id=?";
     private static final String UPDATE_BRIGADE_BY_STAFF_ID = "UPDATE brigades_staff SET brigade_id=? WHERE staff_id=?";
     private static final String DELETE_BRIGADE_BY_ID = "DELETE FROM brigades WHERE id=?";
@@ -37,7 +37,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
      * String fields which contain column names of table brigades.
      */
     private static final String ENTITY_ID = "b.id";
-    private static final String BRIGADE_NAME = "b.name";
+    private static final String BRIGADE_NUMBER = "b.number";
 
     @Override
     public boolean create(Brigade brigade) throws DBException {
@@ -49,7 +49,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
 
             int k = 1;
             statement.setInt(k++, brigade.getId());
-            statement.setString(k++, brigade.getName());
+            statement.setString(k++, brigade.getNumber());
 
             if (statement.executeUpdate() > 0) {
                 if (MysqlDAOFactory.setGeneratedId(brigade, statement)) {
@@ -169,7 +169,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
             statement = connection.prepareStatement(UPDATE_BRIGADE_BY_ID);
 
             int k = 1;
-            statement.setString(k++, brigade.getName());
+            statement.setString(k++, brigade.getNumber());
             statement.setInt(k++, brigade.getId());
 
             if (statement.executeUpdate() > 0) {
@@ -281,7 +281,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         Brigade brigade = new Brigade();
         try {
             brigade.setId(resultSet.getInt(ENTITY_ID));
-            brigade.setName(resultSet.getString(BRIGADE_NAME));
+            brigade.setNumber(resultSet.getString(BRIGADE_NUMBER));
             brigade.setStaff(DAOFactory.getInstance().getStaffDAO().readByBrigadeId(resultSet.getInt(ENTITY_ID), language));
         } catch (Exception e) {
             throw new DBException(e.getMessage(), e);

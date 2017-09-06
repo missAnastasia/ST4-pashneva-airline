@@ -1,5 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
@@ -32,7 +33,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    RequestToAdmin read(Integer id) throws DBException;
+    RequestToAdmin read(Integer id, Language language) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -42,7 +43,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    List<RequestToAdmin> readByStatus(RequestStatus requestStatus) throws DBException;
+    List<RequestToAdmin> readByStatus(RequestStatus requestStatus, Language language) throws DBException;
 
     /**
      * Method of obtaining a request to admin from the database.
@@ -51,7 +52,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws DBException
      */
-    List<RequestToAdmin> readByUser(User user) throws DBException;
+    List<RequestToAdmin> readByUser(User user, Language language) throws DBException;
 
     /**
      * Method of obtaining all requests to admin from the database.
@@ -59,7 +60,7 @@ public interface RequestToAdminDAO {
      * @return collection (List) of all users.
      * @throws DBException
      */
-    List<RequestToAdmin> readAll() throws DBException;
+    List<RequestToAdmin> readAll(Language language) throws DBException;
 
     /**
      * Method of updating request to admin data in database. <br/>

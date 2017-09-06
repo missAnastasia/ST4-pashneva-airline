@@ -75,13 +75,13 @@ public class GetDispatcherBrigadesPageCommand extends Command {
                     flights.sort(comparator);
                     request.setAttribute("compare", compare);
                 }
-            }
-            if (flights.size() == 0) {
+            }*/
+            if (brigades.size() == 0) {
                 String message = ResourceBundle.getBundle("resources", request.getLocale())
-                        .getString("message.error.cannot_find_entity");
+                        .getString("brigades_dispatcher_jsp.no_brigades");
                 request.setAttribute("message", message);
             }
-            LOG.trace("Flights --> " + flights.toString());*/
+            /*LOG.trace("Flights --> " + flights.toString());*/
             request.setAttribute("brigades", brigades);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);

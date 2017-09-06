@@ -78,7 +78,7 @@ public class GetDispatcherFlightsPageCommand extends Command {
                 }
             }
             if (flights.size() == 0) {
-                String message = ResourceBundle.getBundle("resources", request.getLocale())
+                String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.error.cannot_find_entity");
                 request.setAttribute("message", message);
             }

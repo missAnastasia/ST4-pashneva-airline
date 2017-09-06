@@ -65,7 +65,7 @@ public class RegisterClientCommand extends Command {
             } else {
                 LOG.debug("existingUser != null --> false");
                 /*DAOFactory.getInstance().getUserDAO().create(user);*/
-                SessionManager.storeUserToConfirmRegistration(request.getSession(), user);
+                SessionManager.storeUserToConfirmNewPassword(request.getSession(), user);
             }
         } catch (Exception e) {
             LOG.debug("catch section");
@@ -77,7 +77,7 @@ public class RegisterClientCommand extends Command {
 
         LOG.debug("Sending email to --> " + login);
 
-        MailManager.sendRegistrationConfirmationMail(login, request);
+        MailManager.sendNewPasswordConfirmationMail(login, request);
 
         LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +

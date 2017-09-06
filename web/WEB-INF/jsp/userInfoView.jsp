@@ -8,7 +8,7 @@
 
 <body>
 <jsp:include page="_header.jsp"/>
-<jsp:include page="_menu_staff.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
@@ -41,15 +41,15 @@
         </div>
 
         <div id="change-div">
-            <div class="change-a">
+           <%-- <div class="change-a">
                 <a href="${pageContext.request.contextPath}/redirect?command=getChangeUserDataPageCommand">
                     <fmt:message key="userInfo_jsp.link.change_data"/>
                 </a>
-            </div>
+            </div>--%>
             <div class="change-a">
-                <a href="${pageContext.request.contextPath}/redirect?command=getChangePasswordPageCommand">
-                    <fmt:message key="userInfo_jsp.link.change_password"/>
-                </a>
+                <form action="${pageContext.request.contextPath}/redirect?command=getChangePasswordPageCommand" method="post">
+                    <input type="submit" value="<fmt:message key="userInfo_jsp.link.change_password"/>" id="user-password-change-button">
+                </form>
             </div>
         </div>
 

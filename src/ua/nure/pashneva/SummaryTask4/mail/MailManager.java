@@ -48,17 +48,17 @@ public class MailManager {
      * @return true - e-mail message sent to recipient, otherwise - throws AppException instance.
      * @throws AppException with exception message if MessagingException object was caught in try section.
      */
-    public static boolean sendRegistrationConfirmationMail(String recipient, HttpServletRequest request) throws AppException {
-        String senderMail = sendersProperties.getProperty("registration_confirmation_username");
-        String senderPassword = sendersProperties.getProperty("registration_confirmation_password");
+    public static boolean sendNewPasswordConfirmationMail(String recipient, HttpServletRequest request) throws AppException {
+        String senderMail = sendersProperties.getProperty("sender_username");
+        String senderPassword = sendersProperties.getProperty("sender_password");
 
         Sender sender = new Sender(senderMail, senderPassword, serverProperties);
 
         String messageSubject = ResourceBundle.getBundle("resources", request.getLocale())
-                .getString("mail.registration.confirmation.subject");
+                .getString("mail.new_password.confirmation.subject");
         String messageText = ResourceBundle.getBundle("resources", request.getLocale())
-                .getString("mail.registration.confirmation.text") + System.lineSeparator() +
-                Path.HOST + Path.COMMAND_CONFIRM_REGISTRATION + recipient;
+                .getString("mail.new_password.confirmation.text") + System.lineSeparator() +
+                Path.HOST + Path.COMMAND_CONFIRM_PASSWORD + recipient;
 
         try {
             sender.send(messageSubject, messageText, recipient);

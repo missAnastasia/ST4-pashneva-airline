@@ -21,11 +21,6 @@ public class FlightStatus extends Entity {
     public FlightStatus() {
     }
 
-    public FlightStatus(String name) {
-        this.name = name;
-    }
-
-
     public String getName() {
         return name;
     }

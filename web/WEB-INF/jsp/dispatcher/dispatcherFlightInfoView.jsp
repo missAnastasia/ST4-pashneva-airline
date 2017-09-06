@@ -8,7 +8,7 @@
 
 <body>
 <jsp:include page="../_header.jsp"/>
-<jsp:include page="../_menu_dispatcher.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">
@@ -65,14 +65,14 @@
                     <label class="label-n">
                         <fmt:message key="flight_info_dispatcher_jsp.label.brigade"/>
                     </label>
-                    <select name="brigade_id">
+                    <select name="brigade_id" class="flight-select">
                         <c:forEach items="${brigades}" var="brigade_var">
                             <c:set var="selected" value="${brigade_var.getId() == flight.getBrigade().getId() ? 'selected' : '' }"/>
                             <option value="${brigade_var.getId()}" ${selected}>${brigade_var.getName()}</option>
                         </c:forEach>
-                    </select>
+                    </select><br>
                     <input type="hidden" name="flight_number" value="${flight.getNumber()}">
-                    <input type="submit" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
+                    <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
                 </form>
 
 
@@ -82,14 +82,14 @@
                 <label class="label-n">
                     <fmt:message key="flight_info_dispatcher_jsp.label.flight_status"/>
                 </label>
-                <select name="flight_status_id">
+                <select name="flight_status_id" class="flight-select">
                     <c:forEach items="${flight_statuses}" var="status">
                         <c:set var="selected" value="${status.getId() == flight.getFlightStatus().getId() ? 'selected' : '' }"/>
                         <option value="${status.getId()}" ${selected}>${status.getName()}</option>
                     </c:forEach>
-                </select>
+                </select><br>
                     <input type="hidden" name="flight_number" value="${flight.getNumber()}">
-                    <input type="submit" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
+                    <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
                 </form>
             </div>
         </div>

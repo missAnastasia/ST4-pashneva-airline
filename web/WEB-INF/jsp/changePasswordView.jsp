@@ -8,7 +8,7 @@
 
 <body>
 <jsp:include page="_header.jsp"/>
-<jsp:include page="_menu_staff.jsp"/>
+<cstm:menu_user_role/>
 
 </div>
 <div id="page" class="container">

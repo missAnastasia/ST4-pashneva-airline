@@ -41,6 +41,9 @@ public class ComparatorFactory {
             case "compare_by_arrival_point" : {
                 return new FlightArrivalPointComparator();
             }
+            case "compare_by_departure_date" : {
+                return new FlightDateComparator();
+            }
             default : {
                 return null;
             }

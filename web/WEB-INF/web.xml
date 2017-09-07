@@ -75,6 +75,9 @@
                 getEditUserPageCommand
                 changeUserStatusCommand
                 getUserAccountsPageCommand
+                getAdminNewRequestsPageCommand
+                getAdminRequestInfoPageCommand
+                changeRequestStatusCommand
             </param-value>
         </init-param>
         <init-param>

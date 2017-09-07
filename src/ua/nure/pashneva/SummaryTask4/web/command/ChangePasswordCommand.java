@@ -10,7 +10,9 @@ import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ChangePasswordCommand extends Command {
@@ -23,6 +25,11 @@ public class ChangePasswordCommand extends Command {
 
         // obtain login and password from a request
 
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
 
         String newPassword = request.getParameter("new_password");
         LOG.trace("Request parameter: newPassword --> " + newPassword);
@@ -33,7 +40,7 @@ public class ChangePasswordCommand extends Command {
 
         if (oldPassword == null || oldPassword.isEmpty() ||
                 newPassword == null || newPassword.isEmpty()) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
             throw new AppException(message);
         }
@@ -41,13 +48,13 @@ public class ChangePasswordCommand extends Command {
         User user = (User) request.getSession().getAttribute("user");
 
         if (!user.getPassword().equals(oldPassword)) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.wrong_password");
             throw new AppException(message);
         }
 
         if (newPassword.equals(oldPassword)) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.same_password");
             throw new AppException(message);
         }
@@ -72,7 +79,7 @@ public class ChangePasswordCommand extends Command {
 
         LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +
-                ResourceBundle.getBundle("resources", request.getLocale())
+                ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.success.confirm_registration"));
     }
 }

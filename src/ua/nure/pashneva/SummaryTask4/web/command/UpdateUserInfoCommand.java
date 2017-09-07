@@ -9,7 +9,9 @@ import ua.nure.pashneva.SummaryTask4.web.util.Path;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class UpdateUserInfoCommand extends Command {
@@ -21,6 +23,11 @@ public class UpdateUserInfoCommand extends Command {
         LOG.debug("Command starts");
 
         // obtain login and password from a request
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
 
         String login = request.getParameter("login");
         LOG.trace("Request parameter: login --> " + login);
@@ -39,7 +46,7 @@ public class UpdateUserInfoCommand extends Command {
 
         if (login == null || oldPassword == null || login.isEmpty() || oldPassword.isEmpty() ||
                 firstName == null || secondName == null || firstName.isEmpty() || secondName.isEmpty()) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
             throw new AppException(message);
         }
@@ -47,7 +54,7 @@ public class UpdateUserInfoCommand extends Command {
         User user = (User) request.getSession().getAttribute("user");
 
         if (!user.getPassword().equals(oldPassword)) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.wrong_password");
             throw new AppException(message);
         }
@@ -60,7 +67,6 @@ public class UpdateUserInfoCommand extends Command {
             boolean success = DAOFactory.getInstance().getUserDAO().update(user);
             LOG.trace("Request parameter: update user --> " + success);
         } catch (Exception e) {
-            LOG.debug("catch section");
             throw new AppException(e.getMessage());
         }
 

@@ -53,6 +53,9 @@ public class CommandContainer {
 		commands.put("getDispatcherEditRequestPageCommand", new GetDispatcherEditRequestPageCommand());
 		commands.put("changeDispatcherRequestMessageCommand", new ChangeDispatcherRequestMessageCommand());
 		commands.put("getDispatcherAddRequestPageCommand", new GetDispatcherAddRequestPageCommand());
+		commands.put("getAdminNewRequestsPageCommand", new GetAdminNewRequestsPageCommand());
+		commands.put("getAdminRequestInfoPageCommand", new GetAdminRequestInfoPageCommand());
+		commands.put("changeRequestStatusCommand", new ChangeRequestStatusCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

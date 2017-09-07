@@ -77,7 +77,7 @@ public class GetDispatcherBrigadesPageCommand extends Command {
                 }
             }*/
             if (brigades.size() == 0) {
-                String message = ResourceBundle.getBundle("resources", request.getLocale())
+                String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("brigades_dispatcher_jsp.no_brigades");
                 request.setAttribute("message", message);
             }

@@ -12,7 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
@@ -34,6 +36,11 @@ public class LoginCommand extends Command {
 
 		HttpSession session = request.getSession();
 
+        String locale = (String) Config.get(session, Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
 		// obtain login and password from a request
 
 		String login = request.getParameter("login");
@@ -41,7 +48,7 @@ public class LoginCommand extends Command {
 
 		String password = request.getParameter("password");
 		if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
-		    String message = ResourceBundle.getBundle("resources", request.getLocale())
+		    String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
 			throw new AppException(message);
 		}
@@ -50,20 +57,20 @@ public class LoginCommand extends Command {
 		try {
 			user = DAOFactory.getInstance().getUserDAO().readByLogin(login);
 		} catch (Exception e) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.cannot_load_data_source");
             throw new AppException(message);
 		}
 		LOG.trace("Found in DB: user --> " + user);
 
 		if (user == null) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.cannot_find_user_with_login");
 			throw new AppException(message);
 		}
 
         if (!password.equals(user.getPassword())) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.wrong_password");
             throw new AppException(message);
         }

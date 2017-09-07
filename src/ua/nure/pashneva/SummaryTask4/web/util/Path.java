@@ -13,9 +13,11 @@ public class Path {
     public static final String PAGE_STAFF_FLIGHTS = "/WEB-INF/jsp/staff/staffFlightsView.jsp";
     public static final String PAGE_DISPATCHER_BRIGADES = "/WEB-INF/jsp/dispatcher/dispatcherBrigadesView.jsp";
     public static final String PAGE_DISPATCHER_REQUESTS = "/WEB-INF/jsp/dispatcher/dispatcherRequestsView.jsp";
+    public static final String PAGE_ADMIN_REQUESTS = "/WEB-INF/jsp/admin/adminNewRequestsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHTS = "/WEB-INF/jsp/dispatcher/dispatcherFlightsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHT_INFO = "/WEB-INF/jsp/dispatcher/dispatcherFlightInfoView.jsp";
     public static final String PAGE_DISPATCHER_REQUEST_INFO = "/WEB-INF/jsp/dispatcher/dispatcherRequestInfoView.jsp";
+    public static final String PAGE_ADMIN_REQUEST_INFO = "/WEB-INF/jsp/admin/adminRequestInfoView.jsp";
     public static final String PAGE_DISPATCHER_EDIT_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherEditRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherAddRequestView.jsp";
     public static final String PAGE_STAFF_FLIGHT_INFO = "/WEB-INF/jsp/staff/staffFlightInfoView.jsp";
@@ -41,6 +43,7 @@ public class Path {
     public static final String COMMAND_HOME = "/controller?command=getHomePageCommand";
     public static final String COMMAND_GET_DISPATCHER_FLIGHT_INFO = "/redirect?command=getDispatcherFlightInfoPageCommand";
     public static final String COMMAND_GET_DISPATCHER_REQUEST_INFO = "/controller?command=getDispatcherRequestInfoPageCommand&request_id=";
+    public static final String COMMAND_GET_ADMIN_REQUEST_INFO = "/controller?command=getAdminRequestInfoPageCommand&request_id=";
     public static final String COMMAND_LOGIN = "/controller?command=loginCommand";
     public static final String COMMAND_USER_INFO = "/redirect?command=getUserInfoPageCommand";
     public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";

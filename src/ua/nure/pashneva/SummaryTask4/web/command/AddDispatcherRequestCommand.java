@@ -16,6 +16,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class AddDispatcherRequestCommand extends Command {
@@ -25,12 +26,12 @@ public class AddDispatcherRequestCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.trace("Command starts");
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
 
@@ -72,7 +73,7 @@ public class AddDispatcherRequestCommand extends Command {
             }
 
         } catch (Exception e) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_add_request");
             throw new AppException(message);
         }

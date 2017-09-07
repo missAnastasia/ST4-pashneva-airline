@@ -12,7 +12,9 @@ import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class RegisterClientCommand extends Command {
@@ -23,6 +25,11 @@ public class RegisterClientCommand extends Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
 
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
         // obtain login and password from a request
 
         String login = request.getParameter("login");
@@ -46,7 +53,7 @@ public class RegisterClientCommand extends Command {
         if (login == null || password == null || login.isEmpty() || password.isEmpty() ||
                 firstName == null || secondName == null || firstName.isEmpty() || secondName.isEmpty()
                 /*role == null || status == null || role.isEmpty() || status.isEmpty()*/) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
             throw new AppException(message);
         }
@@ -59,7 +66,7 @@ public class RegisterClientCommand extends Command {
             LOG.trace("Request parameter: existingUser --> " + existingUser);
             if (existingUser != null) {
                 LOG.debug("existingUser != null --> true");
-                String message = ResourceBundle.getBundle("resources", request.getLocale())
+                String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.error.user_already_exists");
                 throw new AppException(message);
             } else {
@@ -81,7 +88,7 @@ public class RegisterClientCommand extends Command {
 
         LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +
-                ResourceBundle.getBundle("resources", request.getLocale())
+                ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.success.confirm_registration"));
     }
 }

@@ -38,20 +38,20 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><h3><fmt:message key="requests_dispatcher_jsp.request_status"/></h3></td>
-                                    <td>
+                                    <td class="staff-name-td"><h3><fmt:message key="requests_dispatcher_jsp.request_status"/></h3></td>
+                                    <td class="staff-post-td">
                                         ${request_item.getRequestStatus().getName()}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><h3><fmt:message key="requests_dispatcher_jsp.message"/></h3></td>
-                                    <td>
+                                    <td class="staff-name-td"><h3><fmt:message key="requests_dispatcher_jsp.message"/></h3></td>
+                                    <td class="staff-post-td">
                                         ${request_item.getMessage()}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td><h3><fmt:message key="requests_dispatcher_jsp.date"/></h3></td>
-                                    <td>
+                                    <td class="staff-name-td"><h3><fmt:message key="requests_dispatcher_jsp.date"/></h3></td>
+                                    <td class="staff-post-td">
                                         ${request_item.getDate()}
                                     </td>
                                 </tr>

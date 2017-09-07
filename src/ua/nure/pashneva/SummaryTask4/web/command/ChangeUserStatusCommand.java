@@ -9,7 +9,9 @@ import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class ChangeUserStatusCommand extends Command {
@@ -21,13 +23,17 @@ public class ChangeUserStatusCommand extends Command {
         LOG.debug("Command starts");
 
         // obtain login and password from a request
-
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
 
         String newStatus = request.getParameter("new_status");
         LOG.trace("Request parameter: newStatus --> " + newStatus);
 
         if (newStatus == null || newStatus.isEmpty()) {
-            String message = ResourceBundle.getBundle("resources", request.getLocale())
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
             throw new AppException(message);
         }

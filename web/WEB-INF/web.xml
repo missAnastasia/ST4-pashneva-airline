@@ -94,7 +94,11 @@
                 getDispatcherBrigadesPageCommand
                 getDispatcherRequestsPageCommand
                 getDispatcherRequestInfoPageCommand
-                deleteRequestToAdminCommand
+                deleteDispatcherRequestCommand
+                getDispatcherEditRequestPageCommand
+                changeDispatcherRequestMessageCommand
+                getDispatcherAddRequestPageCommand
+                addDispatcherRequestCommand
             </param-value>
         </init-param>
         <init-param>

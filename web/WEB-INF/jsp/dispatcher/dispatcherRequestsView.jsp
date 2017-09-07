@@ -20,7 +20,7 @@
         <div id="options-div">
             <div id="search-div" class="login-div">
                 <div class="criterion_search-div">
-                    <form action="<%--${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand--%>" autocomplete="on" method="post">
+                    <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherAddRequestPageCommand" autocomplete="on" method="post">
                         <input type="submit" value="<fmt:message key="requests_dispatcher_jsp.add_request"/>"/>
                     </form>
                 </div>
@@ -34,7 +34,7 @@
                             <table class="item-table">
                                 <tr>
                                     <td colspan="2">
-                                        <h3><button class="request-number-link" type="submit" name="request_number" value="${request_item.getNumber()}" form="request-form">${request_item.getNumber()}</button></h3>
+                                        <h3><button class="request-number-link" type="submit" name="request_id" value="${request_item.getId()}" form="request-form">${request_item.getNumber()}</button></h3>
                                     </td>
                                 </tr>
                                 <tr>

@@ -11,8 +11,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.List;
+import java.util.ResourceBundle;
 
-public class GetDispatcherRequestInfoPageCommand extends Command {
+public class GetDispatcherEditRequestPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherRequestInfoPageCommand.class);
 
@@ -38,7 +40,7 @@ public class GetDispatcherRequestInfoPageCommand extends Command {
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        LOG.debug("Command finished");
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_REQUEST_INFO).forward(request, response);
+        LOG.trace("Command finished");
+        request.getRequestDispatcher(Path.PAGE_DISPATCHER_EDIT_REQUEST).forward(request, response);
     }
 }

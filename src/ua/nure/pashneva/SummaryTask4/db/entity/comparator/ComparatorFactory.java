@@ -1,6 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.entity.comparator;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
+import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 
 import java.util.Comparator;
 
@@ -43,6 +44,17 @@ public class ComparatorFactory {
             }
             case "compare_by_departure_date" : {
                 return new FlightDateComparator();
+            }
+            default : {
+                return null;
+            }
+        }
+    }
+
+    public Comparator<RequestToAdmin> getRequestToAdminComparator(String parameter) {
+        switch (parameter) {
+            case "compare_by_creation_date" : {
+                return new RequestToAdminDateComparator();
             }
             default : {
                 return null;

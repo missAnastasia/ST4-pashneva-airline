@@ -27,8 +27,9 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     private static final String GET_REQUEST_BY_ID = "SELECT * FROM requests_to_admin WHERE id=?";
     private static final String GET_REQUEST_BY_NUMBER = "SELECT * FROM requests_to_admin WHERE number=?";
     private static final String GET_REQUEST_BY_STATUS = "SELECT * FROM requests_to_admin WHERE request_status_id=?";
+    private static final String GET_REQUEST_BY_DATE = "SELECT * FROM requests_to_admin WHERE date=?";
     private static final String GET_REQUEST_BY_USER_ID = "SELECT * FROM requests_to_admin WHERE user_id=?";
-    private static final String ADD_REQUEST = "INSERT INTO requests_to_admin VALUE(DEFAULT, ?, ?, ?, ?)";
+    private static final String ADD_REQUEST = "INSERT INTO requests_to_admin VALUE(DEFAULT, ?, ?, ?, ?, ?)";
     private static final String UPDATE_REQUEST_STATUS_BY_ID = "UPDATE requests_to_admin SET request_status_id=? WHERE id=?";
     private static final String UPDATE_REQUEST_MESSAGE_BY_ID = "UPDATE requests_to_admin SET message=? WHERE id=?";
     private static final String DELETE_REQUEST_BY_ID = "DELETE FROM requests_to_admin WHERE id=?";
@@ -48,25 +49,27 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     public boolean create(RequestToAdmin request) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
+        ResultSet generatedKeys = null;
         try {
             connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(ADD_REQUEST);
+            statement = connection.prepareStatement(ADD_REQUEST,
+                    Statement.RETURN_GENERATED_KEYS);
 
             int k = 1;
+            statement.setInt(k++, request.getNumber());
             statement.setInt(k++, request.getUser().getId());
             statement.setInt(k++, request.getRequestStatus().getId());
             statement.setString(k++, request.getMessage());
             statement.setString(k++, request.getDate());
-            statement.setInt(k++, request.getNumber());
 
             if (statement.executeUpdate() > 0) {
-                return MysqlDAOFactory.setGeneratedId(request, statement);
+               MysqlDAOFactory.setGeneratedId(request, statement);
             }
-            return false;
+            return true;
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
         } finally {
-            DBConnection.getInstance().close(connection, statement);
+            DBConnection.getInstance().close(connection, statement, generatedKeys);
         }
     }
 
@@ -137,6 +140,34 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
 
             int k = 1;
             statement.setInt(k++, requestStatus.getId());
+
+            resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                RequestToAdmin request = extractRequestToAdmin(resultSet, language);
+                requests.add(request);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return requests;
+    }
+
+    @Override
+    public List<RequestToAdmin> readByDate(String date, Language language) throws DBException {
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+        List<RequestToAdmin> requests = new ArrayList<>();
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.prepareStatement(GET_REQUEST_BY_DATE);
+
+            int k = 1;
+            statement.setString(k++, date);
 
             resultSet = statement.executeQuery();
 

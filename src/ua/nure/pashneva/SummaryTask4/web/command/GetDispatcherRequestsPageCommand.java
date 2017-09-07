@@ -5,6 +5,7 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
+import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -13,6 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.Comparator;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -42,6 +44,10 @@ public class GetDispatcherRequestsPageCommand extends Command {
                 request.setAttribute("message", message);
             }
             /*LOG.trace("Flights --> " + flights.toString());*/
+            Comparator<RequestToAdmin> comparator = ComparatorFactory.getInstance().getRequestToAdminComparator("compare_by_creation_date");
+            if (comparator != null) {
+                requests.sort(comparator);
+            }
             request.setAttribute("requests", requests);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);

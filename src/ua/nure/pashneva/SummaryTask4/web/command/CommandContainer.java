@@ -48,7 +48,11 @@ public class CommandContainer {
 		commands.put("getDispatcherBrigadesPageCommand", new GetDispatcherBrigadesPageCommand());
 		commands.put("getDispatcherRequestsPageCommand", new GetDispatcherRequestsPageCommand());
 		commands.put("getStaffFlightInfoPageCommand", new GetStaffFlightInfoPageCommand());
-		commands.put("deleteRequestToAdminCommand", new DeleteRequestToAdminCommand());
+		commands.put("deleteDispatcherRequestCommand", new DeleteDispatcherRequestCommand());
+		commands.put("addDispatcherRequestCommand", new AddDispatcherRequestCommand());
+		commands.put("getDispatcherEditRequestPageCommand", new GetDispatcherEditRequestPageCommand());
+		commands.put("changeDispatcherRequestMessageCommand", new ChangeDispatcherRequestMessageCommand());
+		commands.put("getDispatcherAddRequestPageCommand", new GetDispatcherAddRequestPageCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

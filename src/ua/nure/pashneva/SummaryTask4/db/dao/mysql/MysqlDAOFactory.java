@@ -1,5 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
+import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.*;
 import ua.nure.pashneva.SummaryTask4.db.entity.Entity;
 import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
@@ -15,6 +16,8 @@ import java.sql.SQLException;
  *
  */
 public class MysqlDAOFactory extends DAOFactory {
+
+    private static final Logger LOG = Logger.getLogger(MysqlDAOFactory.class);
 
     @Override
     public UserDAO getUserDAO() {
@@ -66,15 +69,18 @@ public class MysqlDAOFactory extends DAOFactory {
         return new MysqlPostDAO();
     }
 
-    public static boolean setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {
+    public static void setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {
+        LOG.debug("setGeneratedId starts");
         ResultSet generatedKeys = statement.getGeneratedKeys();
-        if (generatedKeys.next()) {
-            entity.setId(generatedKeys.getInt(1));
+        try {
+            if (generatedKeys.next()) {
+                LOG.debug("generatedKeys.next() = true");
+                entity.setId(generatedKeys.getInt(1));
+                LOG.trace("entity.getId() --> " + entity.getId());
+            }
+            LOG.debug("setGeneratedId finished");
+        } finally {
             generatedKeys.close();
-            return true;
         }
-        generatedKeys.close();
-        return false;
     }
-
 }

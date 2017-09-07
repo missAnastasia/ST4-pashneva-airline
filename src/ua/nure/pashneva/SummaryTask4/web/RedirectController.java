@@ -110,6 +110,11 @@ public class RedirectController extends HttpServlet {
             path.append("&request_number=").append(requestNumber);
         }
 
+        String requestId = request.getParameter("request_id");
+        if (requestId != null && (!requestId.isEmpty())) {
+            path.append("&request_id=").append(requestId);
+        }
+
         LOG.trace("Path --> " + path);
         response.sendRedirect(path.toString());
     }

@@ -49,12 +49,13 @@
 
         <div id="change-div">
             <div class="change-a">
-                <form action="<%--${pageContext.request.contextPath}/redirect?command=getChangePasswordPageCommand--%>" method="post">
+                <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherEditRequestPageCommand" method="post">
+                    <input type="hidden" name="request_id" value="${request_item.getId()}">
                     <input type="submit" value="<fmt:message key="request_info_dispatcher_jsp.link.change_data"/>" id="request-change-button">
                 </form>
             </div>
             <div class="change-a">
-                <form action="${pageContext.request.contextPath}/controller?command=deleteRequestToAdminCommand" method="post">
+                <form action="${pageContext.request.contextPath}/controller?command=deleteDispatcherRequestCommand" method="post">
                     <input type="hidden" name="request_id" value="${request_item.getId()}">
                     <input type="submit" value="<fmt:message key="request_info_dispatcher_jsp.link.delete"/>" id="request-delete-button">
                 </form>

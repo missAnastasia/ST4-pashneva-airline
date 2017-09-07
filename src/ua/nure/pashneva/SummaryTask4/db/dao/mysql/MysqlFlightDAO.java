@@ -62,7 +62,8 @@ public class MysqlFlightDAO implements FlightDAO {
         PreparedStatement statement = null;
         try {
             connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
-            statement = connection.prepareStatement(ADD_FLIGHT);
+            statement = connection.prepareStatement(ADD_FLIGHT,
+                    Statement.RETURN_GENERATED_KEYS);
 
             int k = 1;
             statement.setString(k++, flight.getNumber());
@@ -72,9 +73,8 @@ public class MysqlFlightDAO implements FlightDAO {
             statement.setInt(k++, flight.getAircraft().getId());
 
             if (statement.executeUpdate() > 0) {
-                if (MysqlDAOFactory.setGeneratedId(flight, statement)){
-                    return create(connection, flight, language);
-                }
+                MysqlDAOFactory.setGeneratedId(flight, statement);
+                return create(connection, flight, language);
             }
             return false;
         } catch (Exception e) {

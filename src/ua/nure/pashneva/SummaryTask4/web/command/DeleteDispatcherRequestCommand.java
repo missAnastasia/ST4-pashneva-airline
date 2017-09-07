@@ -2,7 +2,6 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -12,9 +11,9 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-public class DeleteRequestToAdminCommand extends Command {
+public class DeleteDispatcherRequestCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(DeleteRequestToAdminCommand.class);
+    private static final Logger LOG = Logger.getLogger(DeleteDispatcherRequestCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {

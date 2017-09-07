@@ -45,16 +45,16 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         PreparedStatement statement = null;
         try {
             connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
-            statement = connection.prepareStatement(ADD_BRIGADE);
+            statement = connection.prepareStatement(ADD_BRIGADE,
+                    Statement.RETURN_GENERATED_KEYS);
 
             int k = 1;
             statement.setInt(k++, brigade.getId());
             statement.setString(k++, brigade.getNumber());
 
             if (statement.executeUpdate() > 0) {
-                if (MysqlDAOFactory.setGeneratedId(brigade, statement)) {
-                    return addStaffToBrigade(connection, brigade);
-                }
+                MysqlDAOFactory.setGeneratedId(brigade, statement);
+                return addStaffToBrigade(connection, brigade);
             }
             return false;
         } catch (SQLException e) {

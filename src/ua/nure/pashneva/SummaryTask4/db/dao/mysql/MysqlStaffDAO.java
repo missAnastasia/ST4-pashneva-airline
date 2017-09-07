@@ -54,16 +54,17 @@ public class MysqlStaffDAO implements StaffDAO {
         PreparedStatement statement = null;
         try {
             connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(ADD_STAFF);
+            statement = connection.prepareStatement(ADD_STAFF,
+                    Statement.RETURN_GENERATED_KEYS);
 
             int k = 1;
             statement.setInt(k++, staff.getUser().getId());
             statement.setInt(k++, staff.getPost().getId());
 
             if (statement.executeUpdate() > 0) {
-                return MysqlDAOFactory.setGeneratedId(staff, statement);
+                MysqlDAOFactory.setGeneratedId(staff, statement);
             }
-            return false;
+            return true;
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
         } finally {

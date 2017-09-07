@@ -64,6 +64,15 @@ public interface RequestToAdminDAO {
     List<RequestToAdmin> readByUser(User user, Language language) throws DBException;
 
     /**
+     * Method of obtaining a request to admin from the database.
+     *
+     * @param date date of request creation
+     * @return object which contains values of all fields from table request_to_admin.
+     * @throws DBException
+     */
+    List<RequestToAdmin> readByDate(String date, Language language) throws DBException;
+
+    /**
      * Method of obtaining all requests to admin from the database.
      *
      * @return collection (List) of all users.

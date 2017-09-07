@@ -45,10 +45,10 @@ public class ChangeFlightStatusCommand extends Command {
                     LOG.trace("updated in db --> " + flight.toString());
                 }
             }
-            LOG.trace("Command finished");
-            request.getRequestDispatcher(Path.COMMAND_GET_DISPATCHER_FLIGHT_INFO).forward(request, response);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
+        LOG.trace("Command finished");
+        request.getRequestDispatcher(Path.COMMAND_GET_DISPATCHER_FLIGHT_INFO).forward(request, response);
     }
 }

@@ -971,7 +971,8 @@ ul.menu > li:hover > ul.submenu {
 
 #items-div .item-div .item-table .flight-number-link,
 #items-div .item-div .item-table .brigade-name-link,
-#items-div .item-div .item-table .request-number-link {
+#items-div .item-div .item-table .request-number-link,
+#items-div .item-div .item-table .staff-name-link {
     border: none;
     text-decoration: underline;
     text-transform: uppercase;
@@ -983,7 +984,8 @@ ul.menu > li:hover > ul.submenu {
 
 #items-div .item-div .item-table .flight-number-link:active,
 #items-div .item-div .item-table .brigade-name-link:active,
-#items-div .item-div .item-table .request-number-link:active {
+#items-div .item-div .item-table .request-number-link:active,
+#items-div .item-div .item-table .staff-name-link:active {
     border: none;
     text-decoration: underline;
     text-transform: uppercase;
@@ -995,18 +997,21 @@ ul.menu > li:hover > ul.submenu {
 
 #post-info-div .one-post-info-div .flight-change-button,
 .login-div #change-div .change-a #user-password-change-button,
-.login-div #change-div .change-a #request-change-button {
+.login-div #change-div .change-a #request-change-button,
+.login-div #change-div .change-a #staff-change-button {
     width: auto;
     padding-left: 5%;
     padding-right: 5%;
     margin-top: 5%;
 }
 
-#post-info-div .one-post-info-div .flight-select {
+#post-info-div .one-post-info-div .flight-select,
+#post-info-div .one-post-info-div .post-select {
     margin-left: 1em;
 }
 
-.login-div #change-div .change-a #request-delete-button {
+.login-div #change-div .change-a #request-delete-button,
+.login-div #change-div .change-a #staff-delete-button {
     width: auto;
     background-color: #ffffff;
     border: 0;
@@ -1018,6 +1023,22 @@ ul.menu > li:hover > ul.submenu {
 	height: auto;
     resize: vertical;
     font-family: 'Source Sans Pro', sans-serif;
+}
+
+#user-info-div .entity-select {
+    margin-top: 0;
+}
+
+#user-info-div .label-select,
+.criterion_search-div .label-select {
+    text-transform: uppercase;
+    font-weight: 300;
+    color: #2D2D2D;
+}
+
+#user-info-div #staff-save-button,
+#staff-by-post-search .search-button {
+    margin-top: 2em;
 }
 
 /*table {

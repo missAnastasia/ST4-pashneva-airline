@@ -11,7 +11,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FlightSearcher {
+public class FlightSearcher implements Searcher<Flight> {
 
     private static final Logger LOG = Logger.getLogger(FlightSearcher.class);
 

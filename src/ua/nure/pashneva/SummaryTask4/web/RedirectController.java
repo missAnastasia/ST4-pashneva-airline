@@ -115,6 +115,16 @@ public class RedirectController extends HttpServlet {
             path.append("&request_id=").append(requestId);
         }
 
+        String staffId = request.getParameter("staff_id");
+        if (staffId != null && (!staffId.isEmpty())) {
+            path.append("&staff_id=").append(staffId);
+        }
+
+        String postId = request.getParameter("post_id");
+        if (postId != null && (!postId.isEmpty())) {
+            path.append("&post_id=").append(postId);
+        }
+
         LOG.trace("Path --> " + path);
         response.sendRedirect(path.toString());
     }

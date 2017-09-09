@@ -28,14 +28,20 @@ public class User extends Entity{
      * @param role
      */
     public User(String login, String password,
-                String firstName, String secondName,
-                Role role/*, UserStatus userStatus*/) {
+                 String firstName, String secondName,
+                 Role role/*, UserStatus userStatus*/) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.secondName = secondName;
         this.role = role;
         //this.userStatus = userStatus;
+    }
+
+    public User(String login, String firstName, String secondName) {
+        this.login = login;
+        this.firstName = firstName;
+        this.secondName = secondName;
     }
 
     public String getLogin() {

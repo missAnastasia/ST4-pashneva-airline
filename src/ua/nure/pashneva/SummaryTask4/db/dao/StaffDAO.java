@@ -40,13 +40,12 @@ public interface StaffDAO {
     /**
      * Method of obtaining a staff from the database.
      *
-     * @param post an instance of Post enum,
-     *                  which contains a value of staff post.
+     * @param postId id of staff post object.
      * @return collection (List) of objects which contains values of all fields from table staff
      *         with adjusted post.
      * @throws DBException
      */
-    List<Staff> readByPost(Post post, Language language) throws DBException;
+    List<Staff> readByPost(int postId, Language language) throws DBException;
 
     /**
      * Method of obtaining a staff from the database.
@@ -111,9 +110,9 @@ public interface StaffDAO {
     /**
      * Method of deleting user from database.
      *
-     * @param staff object that contains information about a staff who must be deleted.
+     * @param staffId staff identifier (primary unique key) who must be deleted.
      * @return true - staff was successfully deleted from database, otherwise - false.
      * @throws DBException
      */
-    boolean delete(Staff staff) throws DBException;
+    boolean delete(int staffId) throws DBException;
 }

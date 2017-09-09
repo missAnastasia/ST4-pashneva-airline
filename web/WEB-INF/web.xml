@@ -78,6 +78,13 @@
                 getAdminNewRequestsPageCommand
                 getAdminRequestInfoPageCommand
                 changeRequestStatusCommand
+                getAdminStaffPageCommand
+                getAdminStaffInfoPageCommand
+                deleteAdminStaffCommand
+                getAdminEditStaffPageCommand
+                getAdminAddStaffPageCommand
+                addAdminStaffCommand
+                editAdminStaffCommand
             </param-value>
         </init-param>
         <init-param>

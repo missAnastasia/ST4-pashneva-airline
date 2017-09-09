@@ -30,4 +30,7 @@ public class SearchFactory {
     public FlightSearcher getFlightSearcher() {
         return new FlightSearcher();
     }
+    public StaffSearcher getStaffSearcher() {
+        return new StaffSearcher();
+    }
 }

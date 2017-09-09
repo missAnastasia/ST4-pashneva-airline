@@ -51,7 +51,7 @@
                     <label class="label-n">
                         <fmt:message key="request_info_admin_jsp.label.request_status"/>
                     </label>
-                    <select name="status_id" class="flight-select">
+                    <select name="status_id" class="post-select">
                         <c:forEach items="${statuses}" var="status_var">
                             <c:set var="selected" value="${status_var.getId() == request_item.getRequestStatus().getId() ? 'selected' : '' }"/>
                             <option value="${status_var.getId()}" ${selected}>${status_var.getName()}</option>

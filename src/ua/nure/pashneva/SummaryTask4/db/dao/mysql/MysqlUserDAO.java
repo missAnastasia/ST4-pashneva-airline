@@ -26,7 +26,7 @@ public class MysqlUserDAO  implements UserDAO {
     private static final String GET_USER_BY_ID = "SELECT * FROM users WHERE id=?";
     private static final String GET_USER_BY_LOGIN = "SELECT * FROM users  WHERE login=?";
     private static final String GET_USER_BY_STATUS = "SELECT * FROM users  WHERE user_status_id=?";
-    private static final String ADD_USER = "INSERT INTO users VALUE(DEFAULT, ?, ?, ?, ?, ?, ?)";
+    private static final String ADD_USER = "INSERT INTO users VALUE(DEFAULT, ?, ?, ?, ?, ?)";
     private static final String UPDATE_USER_BY_ID = "UPDATE users SET login=?, first_name=?, second_name=? WHERE id=?";
     private static final String UPDATE_USER_PASSWORD_BY_ID = "UPDATE users SET password=? WHERE id=?";
     private static final String UPDATE_USER_STATUS_BY_ID = "UPDATE users SET user_status_id=? WHERE id=?";
@@ -54,10 +54,10 @@ public class MysqlUserDAO  implements UserDAO {
                     Statement.RETURN_GENERATED_KEYS);
 
             int k = 1;
-            statement.setString(k++, user.getLogin());
-            statement.setString(k++, user.getPassword());
             statement.setString(k++, user.getFirstName());
             statement.setString(k++, user.getSecondName());
+            statement.setString(k++, user.getLogin());
+            statement.setString(k++, user.getPassword());
             statement.setInt(k++, Role.getRoleOrdinal(user.getRole()));
             /*statement.setInt(k++, UserStatus.getUserStatusOrdinal(user.getUserStatus()));*/
 

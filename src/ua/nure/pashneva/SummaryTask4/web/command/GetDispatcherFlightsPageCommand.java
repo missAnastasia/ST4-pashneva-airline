@@ -48,6 +48,11 @@ public class GetDispatcherFlightsPageCommand extends Command {
             if ((number == null || number.isEmpty()) && (fromCity == null || fromCity.isEmpty()) &&
                     (toCity == null || toCity.isEmpty()) && (date == null || date.isEmpty())) {
                 flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
+                if (flights.size() == 0) {
+                    String message = ResourceBundle.getBundle("resources", new Locale(locale))
+                            .getString("flights_dispatcher_jsp.no_flights");
+                    request.setAttribute("message", message);
+                }
             } else {
                 Map<String, String> params = new HashMap<>();
                 if (number != null && !(number.isEmpty())) {
@@ -63,6 +68,11 @@ public class GetDispatcherFlightsPageCommand extends Command {
                     params.put("departure_date", date);
                 }
                 flights = SearchFactory.getInstance().getFlightSearcher().search(language, params);
+                if (flights.size() == 0) {
+                    String message = ResourceBundle.getBundle("resources", new Locale(locale))
+                            .getString("message.error.cannot_find_entity");
+                    request.setAttribute("message", message);
+                }
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
@@ -76,11 +86,6 @@ public class GetDispatcherFlightsPageCommand extends Command {
                     flights.sort(comparator);
                     request.setAttribute("compare", compare);
                 }
-            }
-            if (flights.size() == 0) {
-                String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                        .getString("message.error.cannot_find_entity");
-                request.setAttribute("message", message);
             }
             LOG.trace("Flights --> " + flights.toString());
             request.setAttribute("flights", flights);

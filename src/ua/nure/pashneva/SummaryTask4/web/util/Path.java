@@ -17,7 +17,11 @@ public class Path {
     public static final String PAGE_DISPATCHER_FLIGHTS = "/WEB-INF/jsp/dispatcher/dispatcherFlightsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHT_INFO = "/WEB-INF/jsp/dispatcher/dispatcherFlightInfoView.jsp";
     public static final String PAGE_DISPATCHER_REQUEST_INFO = "/WEB-INF/jsp/dispatcher/dispatcherRequestInfoView.jsp";
+    public static final String PAGE_ADMIN_STAFF_INFO = "/WEB-INF/jsp/admin/adminStaffInfoView.jsp";
     public static final String PAGE_ADMIN_REQUEST_INFO = "/WEB-INF/jsp/admin/adminRequestInfoView.jsp";
+    public static final String PAGE_ADMIN_STAFF = "/WEB-INF/jsp/admin/adminStaffView.jsp";
+    public static final String PAGE_ADMIN_EDIT_STAFF = "/WEB-INF/jsp/admin/adminEditStaffView.jsp";
+    public static final String PAGE_ADMIN_ADD_STAFF = "/WEB-INF/jsp/admin/adminAddStaffView.jsp";
     public static final String PAGE_DISPATCHER_EDIT_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherEditRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherAddRequestView.jsp";
     public static final String PAGE_STAFF_FLIGHT_INFO = "/WEB-INF/jsp/staff/staffFlightInfoView.jsp";
@@ -49,6 +53,8 @@ public class Path {
     public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";
     public static final String COMMAND_DISPATCHER_FLIGHTS = "/redirect?command=getDispatcherFlightsPageCommand";
     public static final String COMMAND_DISPATCHER_REQUESTS = "/controller?command=getDispatcherRequestsPageCommand";
+    public static final String COMMAND_ADMIN_STAFF = "/controller?command=getAdminStaffPageCommand";
+    public static final String COMMAND_ADMIN_STAFF_INFO = "/controller?command=getAdminStaffInfoPageCommand&staff_id=";
     public static final String COMMAND_DISPATCHER_ADD_REQUEST = "/controller?command=getDispatcherAddRequestPageCommand";
     public static final String COMMAND_DISPATCHER_BRIGADES = "/redirect?command=getDispatcherBrigadesPageCommand";
     public static final String COMMAND_PRODUCTS = "/controller?command=getProductsPageCommand";

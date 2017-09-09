@@ -56,6 +56,13 @@ public class CommandContainer {
 		commands.put("getAdminNewRequestsPageCommand", new GetAdminNewRequestsPageCommand());
 		commands.put("getAdminRequestInfoPageCommand", new GetAdminRequestInfoPageCommand());
 		commands.put("changeRequestStatusCommand", new ChangeRequestStatusCommand());
+		commands.put("getAdminStaffPageCommand", new GetAdminStaffPageCommand());
+		commands.put("getAdminStaffInfoPageCommand", new GetAdminStaffInfoPageCommand());
+		commands.put("deleteAdminStaffCommand", new DeleteAdminStaffCommand());
+		commands.put("getAdminEditStaffPageCommand", new GetAdminEditStaffPageCommand());
+		commands.put("getAdminAddStaffPageCommand", new GetAdminAddStaffPageCommand());
+		commands.put("addAdminStaffCommand", new AddAdminStaffCommand());
+		commands.put("editAdminStaffCommand", new EditAdminStaffCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

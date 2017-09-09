@@ -27,15 +27,15 @@ public class MysqlStaffDAO implements StaffDAO {
      * String fields which contain sql queries to tables staff,
      * positions, positions_lang of MySQL database.
      */
-    private static final String GET_ALL_STAFF = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)";
-    private static final String GET_STAFF_BY_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.id=?";
+    private static final String GET_ALL_STAFF = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE p_l.lang_id=?";
+    private static final String GET_STAFF_BY_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.id=? AND p_l.lang_id=?";
     //private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM (((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) INNER JOIN brigades_staff b_s ON s.id=b_s.staff_id) WHERE b_s.brigade_id=?";
     private static final String GET_STAFF_BY_BRIGADE_ID = "SELECT * FROM brigades_staff WHERE brigade_id=?";
-    private static final String GET_STAFF_BY_USER_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.user_id=?";
-    private static final String GET_STAFF_BY_POST = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.post_id=?";
+    private static final String GET_STAFF_BY_USER_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.user_id=? AND p_l.lang_id=?";
+    private static final String GET_STAFF_BY_POST = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.post_id=? AND p_l.lang_id=?";
     private static final String GET_STAFF_BY_DATE = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.employment_date=?";
-    private static final String ADD_STAFF = "INSERT INTO staff VALUE(DEFAULT, ?, ?, ?)";
-    private static final String UPDATE_STAFF_BY_ID = "UPDATE staff SET user_id=?, post_id=?, employment_date=? WHERE id=?";
+    private static final String ADD_STAFF = "INSERT INTO staff VALUE(DEFAULT, ?, ?)";
+    private static final String UPDATE_STAFF_BY_ID = "UPDATE staff SET user_id=?, post_id=? WHERE id=?";
     private static final String DELETE_STAFF_BY_ID = "DELETE FROM staff WHERE id=?";
 
     /**
@@ -85,6 +85,7 @@ public class MysqlStaffDAO implements StaffDAO {
 
             int k = 1;
             statement.setInt(k++, id);
+            statement.setInt(k++, language.getId());
 
             resultSet = statement.executeQuery();
 
@@ -100,7 +101,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public List<Staff> readByPost(Post post, Language language) throws DBException {
+    public List<Staff> readByPost(int postId, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -111,7 +112,8 @@ public class MysqlStaffDAO implements StaffDAO {
             statement = connection.prepareStatement(GET_STAFF_BY_POST);
 
             int k = 1;
-            statement.setInt(k++, post.getId());
+            statement.setInt(k++, postId);
+            statement.setInt(k++, language.getId());
 
             resultSet = statement.executeQuery();
 
@@ -143,6 +145,7 @@ public class MysqlStaffDAO implements StaffDAO {
 
             int k = 1;
             statement.setInt(k++, user.getId());
+            statement.setInt(k++, language.getId());
 
             resultSet = statement.executeQuery();
 
@@ -189,14 +192,18 @@ public class MysqlStaffDAO implements StaffDAO {
     @Override
     public List<Staff> readAll(Language language) throws DBException {
         Connection connection = null;
-        Statement statement = null;
+        PreparedStatement statement = null;
         ResultSet resultSet = null;
         List<Staff> staff = new ArrayList<>();
 
         try {
             connection = DBConnection.getInstance().getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(GET_ALL_STAFF);
+            statement = connection.prepareStatement(GET_ALL_STAFF);
+
+            int k = 1;
+            statement.setInt(k++, language.getId());
+
+            resultSet = statement.executeQuery();
 
             while (resultSet.next()) {
                 Staff tempStaff = extractStaff(resultSet, language);
@@ -244,7 +251,7 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public boolean delete(Staff staff) throws DBException {
+    public boolean delete(int staffId) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
 
@@ -253,7 +260,7 @@ public class MysqlStaffDAO implements StaffDAO {
             statement = connection.prepareStatement(DELETE_STAFF_BY_ID);
 
             int k = 1;
-            statement.setInt(k++, staff.getId());
+            statement.setInt(k++, staffId);
 
             if (statement.executeUpdate() > 0) {
                 return true;

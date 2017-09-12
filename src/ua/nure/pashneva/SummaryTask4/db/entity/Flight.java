@@ -145,11 +145,15 @@ public class Flight extends Entity {
                 '}';
     }
 
-    public static String getDateFromString(String input) throws Exception {
+    public static String getDateFromString(String input) {
         return input.split("T")[0];
     }
 
-    public static String getTimeFromString(String input) throws Exception {
+    public static String getTimeFromString(String input) {
         return input.split("T")[1];
+    }
+
+    public static String getDateAndTimeFromStrings(String inputDate, String inputTime) {
+        return inputDate + "T" + inputTime;
     }
 }

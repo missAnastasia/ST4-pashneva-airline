@@ -46,14 +46,14 @@
                     <label class="label-lang-name">${language.getName()}:</label><br>
                     <div class="item-div">
                         <h3>
-                            <label class="label-n"><fmt:message key="add_flight_admin_jsp.label.date_time"/></label><br>
+                            <label class="label-n"><fmt:message key="add_flight_admin_jsp.label.from"/></label><br>
                             <input name="${language.getPrefix()}_from" type="text" required  minlength="1" maxlength="100" type="text" placeholder="Xxx" pattern="([a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+)((\u0020?)([a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+))*"/>
                             <span class="form__error"><fmt:message key="validation.departure_point"/></span>
                         </h3>
 
 
                         <h3>
-                            <label class="label-n"><fmt:message key="add_flight_admin_jsp.label.date_time"/></label><br>
+                            <label class="label-n"><fmt:message key="add_flight_admin_jsp.label.to"/></label><br>
                             <input name="${language.getPrefix()}_to" type="text" required  minlength="1" maxlength="100" type="text" placeholder="Xxx" pattern="([a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+)((\u0020?)([a-zA-Z\u0430-\u044f\u0410-\u042f\u0401\u0451]+))*"/>
                             <span class="form__error"><fmt:message key="validation.arrival_point"/></span>
                         </h3>

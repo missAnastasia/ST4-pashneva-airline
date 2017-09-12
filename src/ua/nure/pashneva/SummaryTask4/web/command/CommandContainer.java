@@ -68,8 +68,8 @@ public class CommandContainer {
 		commands.put("getAdminFlightsPageCommand", new GetAdminFlightsPageCommand());
 		commands.put("getAdminFlightInfoPageCommand", new GetAdminFlightInfoPageCommand());
 		commands.put("getAdminAddFlightPageCommand", new GetAdminAddFlightPageCommand());
-		commands.put("getAdminEditFlightPageCommand", new GetAdminFlightsPageCommand());
-		commands.put("editAdminFlightCommand", new GetAdminFlightsPageCommand());
+		commands.put("getAdminEditFlightPageCommand", new GetAdminEditFlightPageCommand());
+		commands.put("editAdminFlightCommand", new EditAdminFlightCommand());
 		commands.put("addAdminFlightCommand", new AddAdminFlightCommand());
 		commands.put("deleteAdminFlightCommand", new DeleteAdminFlightCommand());
 

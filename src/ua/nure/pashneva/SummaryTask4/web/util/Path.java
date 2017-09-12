@@ -26,6 +26,7 @@ public class Path {
     public static final String PAGE_ADMIN_EDIT_STAFF = "/WEB-INF/jsp/admin/adminEditStaffView.jsp";
     public static final String PAGE_ADMIN_ADD_STAFF = "/WEB-INF/jsp/admin/adminAddStaffView.jsp";
     public static final String PAGE_ADMIN_ADD_FLIGHT = "/WEB-INF/jsp/admin/adminAddFlightView.jsp";
+    public static final String PAGE_ADMIN_EDIT_FLIGHT = "/WEB-INF/jsp/admin/adminEditFlightView.jsp";
     public static final String PAGE_DISPATCHER_EDIT_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherEditRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherAddRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_BRIGADE = "/WEB-INF/jsp/dispatcher/dispatcherAddBrigadeView.jsp";
@@ -54,6 +55,7 @@ public class Path {
     public static final String COMMAND_DISPATCHER_REQUEST_INFO = "/controller?command=getDispatcherRequestInfoPageCommand&request_id=";
     public static final String COMMAND_ADMIN_REQUEST_INFO = "/controller?command=getAdminRequestInfoPageCommand&request_id=";
     public static final String COMMAND_ADMIN_FLIGHTS = "/controller?command=getAdminFlightsPageCommand";
+    public static final String COMMAND_ADMIN_FLIGHT_INFO = "/controller?command=getAdminFlightInfoPageCommand&flight_id=";
     public static final String COMMAND_LOGIN = "/controller?command=loginCommand";
     public static final String COMMAND_USER_INFO = "/redirect?command=getUserInfoPageCommand";
     public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";

@@ -36,7 +36,7 @@ public class MysqlFlightDAO implements FlightDAO {
     private static final String GET_FLIGHT_BY_STATUS = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.flight_status_id=? AND f_l.lang_id=?";
     private static final String ADD_FLIGHT = "INSERT INTO flights VALUE(DEFAULT, ?, ?, ?, ?, ?, ?)";
     private static final String ADD_FLIGHT_LANG = "INSERT INTO flights_lang VALUE(DEFAULT, ?, ?, ?, ?)";
-    private static final String UPDATE_FLIGHT_BY_ID = "UPDATE flights SET number=?, departure_date=?, departure_time=?, flight_status_id=?, aircraft_id=?, brigade_id=? WHERE id=?";
+    private static final String UPDATE_FLIGHT_BY_ID = "UPDATE flights SET number=?, departure_date=?, departure_time=?, aircraft_id=? WHERE id=?";
     private static final String UPDATE_FLIGHT_LANG_BY_ID = "UPDATE flights_lang SET departure_point=?, arrival_point=? WHERE flight_id=? AND lang_id=?";
     private static final String UPDATE_FLIGHT_STATUS_BY_ID = "UPDATE flights SET flight_status_id=? WHERE id=?";
     private static final String UPDATE_FLIGHT_BRIGADE_BY_ID = "UPDATE flights SET brigade_id=? WHERE id=?";
@@ -396,9 +396,7 @@ public class MysqlFlightDAO implements FlightDAO {
             statement.setString(k++, flight.getNumber());
             statement.setString(k++, flight.getDate());
             statement.setString(k++, flight.getTime());
-            statement.setInt(k++, flight.getFlightStatus().getId());
             statement.setInt(k++, flight.getAircraft().getId());
-            statement.setInt(k++, flight.getBrigade().getId());
             statement.setInt(k++, flight.getId());
 
             if (statement.executeUpdate() > 0) {

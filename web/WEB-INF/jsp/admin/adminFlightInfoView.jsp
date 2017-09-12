@@ -73,7 +73,7 @@
                             <fmt:message key="flight_info_admin_jsp.null_brigade"/>
                         </c:otherwise>
                     </c:choose>
-                    </label>
+                </label>
             </div>
 
             <div class="one-post-info-div">
@@ -96,8 +96,8 @@
                     </form>
                 </div>
             </div>
+        </div>
     </div>
-
 </div>
 
 <jsp:include page="../_footer.jsp"/>

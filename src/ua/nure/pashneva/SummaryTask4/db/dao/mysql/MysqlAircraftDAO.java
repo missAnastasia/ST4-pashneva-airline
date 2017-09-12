@@ -6,12 +6,12 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Aircraft;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
+import ua.nure.pashneva.SummaryTask4.db.entity.User;
 import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Class that implements AircraftDAO interface and all its methods.
@@ -27,6 +27,7 @@ public class MysqlAircraftDAO implements AircraftDAO {
      * aircraft of MySQL database.
      */
     private static final String GET_AIRCRAFT_BY_ID = "SELECT * FROM aircraft WHERE id=?";
+    private static final String GET_ALL_AIRCRAFT = "SELECT * FROM aircraft";
 
     /**
      * String fields which contain column names of table aircraft.
@@ -59,6 +60,30 @@ public class MysqlAircraftDAO implements AircraftDAO {
             DBConnection.getInstance().close(connection, statement, resultSet);
         }
         return aircraft;
+    }
+
+    @Override
+    public List<Aircraft> readAll() throws DBException {
+        Connection connection = null;
+        Statement statement = null;
+        ResultSet resultSet = null;
+        List<Aircraft> aircraftList = new ArrayList<>();
+
+        try {
+            connection = DBConnection.getInstance().getConnection();
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(GET_ALL_AIRCRAFT);
+
+            while (resultSet.next()) {
+                Aircraft aircraft = extractAircraft(resultSet);
+                aircraftList.add(aircraft);
+            }
+        } catch (SQLException e) {
+            throw new DBException(e.getMessage(), e);
+        } finally {
+            DBConnection.getInstance().close(connection, statement, resultSet);
+        }
+        return aircraftList;
     }
 
     private Aircraft extractAircraft(ResultSet resultSet) throws DBException {

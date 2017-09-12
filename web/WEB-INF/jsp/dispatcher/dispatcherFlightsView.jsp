@@ -89,7 +89,7 @@
                             <table class="item-table">
                                 <tr>
                                     <td colspan="3">
-                                        <h3><button class="flight-number-link" type="submit" name="flight_number" value="${flight.getNumber()}" form="flight-form">${flight.getNumber()}</button></h3>
+                                        <h3><button class="flight-number-link" type="submit" name="flight_id" value="${flight.getId()}" form="flight-form">${flight.getNumber()}</button></h3>
 
                                     </td>
                                     <td class="label-td"></td>

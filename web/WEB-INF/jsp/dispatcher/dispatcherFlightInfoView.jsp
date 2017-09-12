@@ -61,7 +61,24 @@
             </div>
 
             <div class="one-post-info-div">
+                <label class="label-n">
+                    <fmt:message key="flight_info_dispatcher_jsp.label.brigade"/>
+                </label>
+                <label class="label-v">
+                    <c:choose>
+                        <c:when test="${flight.getBrigade() != null}">
+                            ${flight.getBrigade().getNumber()}
+                        </c:when>
+                        <c:otherwise>
+                            <fmt:message key="flight_info_dispatcher_jsp.null_brigade"/>
+                        </c:otherwise>
+                    </c:choose>
+                </label>
                 <form action="${pageContext.request.contextPath}/controller?command=changeBrigadeCommand" method="post">
+                <input type="hidden" name="flight_id" value="${flight.getId()}">
+                <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
+                </form>
+                    <%--<form action="${pageContext.request.contextPath}/controller?command=changeBrigadeCommand" method="post">
                     <label class="label-n">
                         <fmt:message key="flight_info_dispatcher_jsp.label.brigade"/>
                     </label>
@@ -70,15 +87,26 @@
                             <c:set var="selected" value="${brigade_var.getId() == flight.getBrigade().getId() ? 'selected' : '' }"/>
                             <option value="${brigade_var.getId()}" ${selected}>${brigade_var.getName()}</option>
                         </c:forEach>
+                        <c:if test="${flight.getBrigade() == null}">
+                        </c:if>
                     </select><br>
                     <input type="hidden" name="flight_number" value="${flight.getNumber()}">
                     <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
-                </form>
+                </form>--%>
 
 
             </div>
             <div class="one-post-info-div">
+                <label class="label-n">
+                    <fmt:message key="flight_info_dispatcher_jsp.label.flight_status"/>
+                </label>
+                <label class="label-v">${flight.getFlightStatus().getName()}</label>
                 <form action="${pageContext.request.contextPath}/controller?command=changeFlightStatusCommand" method="post">
+                <input type="hidden" name="flight_id" value="${flight.getId()}">
+                <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
+                </form>
+
+                <%--<form action="${pageContext.request.contextPath}/controller?command=changeFlightStatusCommand" method="post">
                 <label class="label-n">
                     <fmt:message key="flight_info_dispatcher_jsp.label.flight_status"/>
                 </label>
@@ -90,20 +118,16 @@
                 </select><br>
                     <input type="hidden" name="flight_number" value="${flight.getNumber()}">
                     <input type="submit" class="flight-change-button" value="<fmt:message key="flight_info_dispatcher_jsp.submit"/>">
-                </form>
+                </form>--%>
             </div>
         </div>
 
         <%--<div id="change-div">
             <div class="change-a">
-                <a href="${pageContext.request.contextPath}/redirect?command=getChangeUserDataPageCommand">
-                    <fmt:message key="userInfo_jsp.link.change_data"/>
-                </a>
-            </div>
-            <div class="change-a">
-                <a href="${pageContext.request.contextPath}/redirect?command=getChangePasswordPageCommand">
-                    <fmt:message key="userInfo_jsp.link.change_password"/>
-                </a>
+                <form action="${pageContext.request.contextPath}/redirect?command=getAdminEditFlightPageCommand" method="post">
+                    <input type="hidden" name="flight_id" value="${flight.getId()}">
+                    <input type="submit" value="<fmt:message key="flight_info_admin_jsp.link.change_data"/>" id="flight-change-button">
+                </form>
             </div>
         </div>--%>
 

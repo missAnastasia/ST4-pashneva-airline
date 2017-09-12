@@ -151,9 +151,9 @@ public interface FlightDAO {
     /**
      * Method of deleting flight from database.
      *
-     * @param flight object that contains information about a flight which must be deleted.
+     * @param flightId flight identifier (primary unique key) which must be deleted.
      * @return true - flight was successfully deleted from database, otherwise - false.
      * @throws DBException
      */
-    boolean delete(Flight flight) throws DBException;
+    boolean delete(int flightId) throws DBException;
 }

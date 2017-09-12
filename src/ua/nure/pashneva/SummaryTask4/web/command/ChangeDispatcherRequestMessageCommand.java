@@ -12,7 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -48,7 +47,7 @@ public class ChangeDispatcherRequestMessageCommand extends Command {
             throw new AppException(message);
         }
         LOG.trace("Command finished");
-        //request.getRequestDispatcher(Path.COMMAND_GET_DISPATCHER_REQUEST_INFO).forward(request, response);
-        response.sendRedirect(Path.COMMAND_GET_DISPATCHER_REQUEST_INFO + requestId);
+        //request.getRequestDispatcher(Path.COMMAND_DISPATCHER_REQUEST_INFO).forward(request, response);
+        response.sendRedirect(Path.COMMAND_DISPATCHER_REQUEST_INFO + requestId);
     }
 }

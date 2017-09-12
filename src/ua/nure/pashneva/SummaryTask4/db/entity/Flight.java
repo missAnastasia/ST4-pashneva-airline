@@ -3,6 +3,7 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
 import sun.tracing.dtrace.DTraceProviderFactory;
 
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 
 /**
  * Objects of this class are strings from the table flights.
@@ -134,6 +135,7 @@ public class Flight extends Entity {
         return "Flight{" +
                 "number='" + number + '\'' +
                 ", date=" + date +
+                ", time=" + time +
                 ", departurePoint='" + departurePoint + '\'' +
                 ", arrivalPoint='" + arrivalPoint + '\'' +
                 ", brigade=" + brigade +
@@ -141,5 +143,13 @@ public class Flight extends Entity {
                 ", aircraft=" + aircraft +
                 ", id=" + id +
                 '}';
+    }
+
+    public static String getDateFromString(String input) throws Exception {
+        return input.split("T")[0];
+    }
+
+    public static String getTimeFromString(String input) throws Exception {
+        return input.split("T")[1];
     }
 }

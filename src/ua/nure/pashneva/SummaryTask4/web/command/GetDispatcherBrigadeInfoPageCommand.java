@@ -2,10 +2,7 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
-import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
-import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
-import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.*;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -14,11 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class GetDispatcherFlightInfoPageCommand extends Command {
+public class GetDispatcherBrigadeInfoPageCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetDispatcherFlightInfoPageCommand.class);
+    private static final Logger LOG = Logger.getLogger(GetDispatcherBrigadeInfoPageCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
@@ -31,21 +29,29 @@ public class GetDispatcherFlightInfoPageCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            String flightId = request.getParameter("flight_id");
-            Flight flight = new Flight();
-            if (flightId != null && !(flightId.isEmpty())) {
-                flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
+            String brigadeId = request.getParameter("brigade_id");
+            Brigade brigade = new Brigade();
+            if (brigadeId != null && !(brigadeId.isEmpty())) {
+                brigade = DAOFactory.getInstance().getBrigadeDAO().read(Integer.parseInt(brigadeId), language);
             }
-            LOG.trace("Flight --> " + flight);
-            request.setAttribute("flight", flight);
-            List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
-            request.setAttribute("flight_statuses", statuses);
-            List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
-            request.setAttribute("brigades", brigades);
+            LOG.trace("Brigade --> " + brigade);
+            request.setAttribute("brigade", brigade);
+            request.setAttribute("staff", brigade.getStaff());
+            List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
+            List<Post> postItems = new ArrayList<>();
+            for (Staff staff : brigade.getStaff()) {
+                for (Post post : posts) {
+                    if (staff.getPost().equals(post)) {
+                        postItems.add(post);
+                    }
+                }
+
+            }
+            request.setAttribute("posts", postItems);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
         LOG.debug("Command finished");
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_FLIGHT_INFO).forward(request, response);
+        request.getRequestDispatcher(Path.PAGE_DISPATCHER_BRIGADE_INFO).forward(request, response);
     }
 }

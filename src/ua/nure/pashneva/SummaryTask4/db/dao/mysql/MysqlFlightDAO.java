@@ -35,12 +35,13 @@ public class MysqlFlightDAO implements FlightDAO {
     private static final String GET_FLIGHT_BY_DATE = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.departure_date=? AND f_l.lang_id=?";
     private static final String GET_FLIGHT_BY_STATUS = "SELECT * FROM ((flights f INNER JOIN flights_lang f_l ON f.id=f_l.flight_id) INNER JOIN aircraft a ON f.aircraft_id=a.id) WHERE f.flight_status_id=? AND f_l.lang_id=?";
     private static final String ADD_FLIGHT = "INSERT INTO flights VALUE(DEFAULT, ?, ?, ?, ?, ?, ?)";
-    private static final String ADD_FLIGHT_LANG = "INSERT INTO flights_land VALUE(DEFAULT, ?, ?, ?, ?)";
+    private static final String ADD_FLIGHT_LANG = "INSERT INTO flights_lang VALUE(DEFAULT, ?, ?, ?, ?)";
     private static final String UPDATE_FLIGHT_BY_ID = "UPDATE flights SET number=?, departure_date=?, departure_time=?, flight_status_id=?, aircraft_id=?, brigade_id=? WHERE id=?";
-    private static final String UPDATE_FLIGHT_LANG_BY_ID = "UPDATE flights_land SET departure_point=?, arrival_point=? WHERE flight_id=? AND lang_id=?";
+    private static final String UPDATE_FLIGHT_LANG_BY_ID = "UPDATE flights_lang SET departure_point=?, arrival_point=? WHERE flight_id=? AND lang_id=?";
     private static final String UPDATE_FLIGHT_STATUS_BY_ID = "UPDATE flights SET flight_status_id=? WHERE id=?";
     private static final String UPDATE_FLIGHT_BRIGADE_BY_ID = "UPDATE flights SET brigade_id=? WHERE id=?";
     private static final String DELETE_FLIGHT_BY_ID = "DELETE FROM flights WHERE id=?";
+    private static final String DELETE_FLIGHT_LANG_BY_ID = "DELETE FROM flights_lang WHERE flight_id=?";
 
     /**
      * String fields which contain column names of table flights,
@@ -62,8 +63,16 @@ public class MysqlFlightDAO implements FlightDAO {
         PreparedStatement statement = null;
         try {
             connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+            LOG.debug("statement.executeUpdate() > 0");
+
+            if (flight.getId() != 0) {
+                LOG.debug("statement.executeUpdate() > 0");
+                return create(connection, flight, language);
+            }
+
             statement = connection.prepareStatement(ADD_FLIGHT,
                     Statement.RETURN_GENERATED_KEYS);
+            LOG.debug("statement.executeUpdate() > 0");
 
             int k = 1;
             statement.setString(k++, flight.getNumber());
@@ -71,8 +80,11 @@ public class MysqlFlightDAO implements FlightDAO {
             statement.setString(k++, flight.getTime());
             statement.setInt(k++, flight.getFlightStatus().getId());
             statement.setInt(k++, flight.getAircraft().getId());
+            statement.setNull(k++, java.sql.Types.INTEGER);
+            LOG.debug("statement.executeUpdate() > 0");
 
             if (statement.executeUpdate() > 0) {
+                LOG.debug("statement.executeUpdate() > 0");
                 MysqlDAOFactory.setGeneratedId(flight, statement);
                 return create(connection, flight, language);
             }
@@ -465,26 +477,39 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public boolean delete(Flight flight) throws DBException {
+    public boolean delete(int flightId) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
 
         try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(DELETE_FLIGHT_BY_ID);
+            connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+            statement = connection.prepareStatement(DELETE_FLIGHT_LANG_BY_ID);
 
             int k = 1;
-            statement.setInt(k++, flight.getId());
+            statement.setInt(k++, flightId);
 
             if (statement.executeUpdate() > 0) {
-                return true;
+                return deleteFlight(connection, flightId);
             }
-            return true;
+            return false;
         } catch (SQLException e) {
             throw new DBException(e.getMessage(), e);
         } finally {
             DBConnection.getInstance().close(connection, statement);
         }
+    }
+
+    private boolean deleteFlight(Connection connection, int flightId) throws SQLException {
+        PreparedStatement statement = connection.prepareStatement(DELETE_FLIGHT_BY_ID);
+        int k = 1;
+        statement.setInt(k++, flightId);
+
+        if (statement.executeUpdate() > 0) {
+            connection.commit();
+            return true;
+        }
+        DBConnection.getInstance().rollback(connection);
+        return false;
     }
 
     private Flight extractFlight(ResultSet resultSet, Language language) throws DBException {

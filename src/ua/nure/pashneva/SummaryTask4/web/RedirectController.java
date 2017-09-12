@@ -88,9 +88,9 @@ public class RedirectController extends HttpServlet {
             path.append("&departure_date=").append(date);
         }
 
-        String flightNumber = request.getParameter("flight_number");
-        if (flightNumber != null && (!flightNumber.isEmpty())) {
-            path.append("&flight_number=").append(flightNumber);
+        String flightId = request.getParameter("flight_id");
+        if (flightId != null && (!flightId.isEmpty())) {
+            path.append("&flight_id=").append(flightId);
         }
 
 

@@ -998,6 +998,7 @@ ul.menu > li:hover > ul.submenu {
 #post-info-div .one-post-info-div .flight-change-button,
 .login-div #change-div .change-a #user-password-change-button,
 .login-div #change-div .change-a #request-change-button,
+.login-div #change-div .change-a #flight-change-button,
 .login-div #change-div .change-a #staff-change-button {
     width: auto;
     padding-left: 5%;
@@ -1011,6 +1012,7 @@ ul.menu > li:hover > ul.submenu {
 }
 
 .login-div #change-div .change-a #request-delete-button,
+.login-div #change-div .change-a #flight-delete-button,
 .login-div #change-div .change-a #staff-delete-button {
     width: auto;
     background-color: #ffffff;
@@ -1037,10 +1039,67 @@ ul.menu > li:hover > ul.submenu {
 }
 
 #user-info-div #staff-save-button,
+#user-info-div #flight-save-button,
 #staff-by-post-search .search-button {
     margin-top: 2em;
 }
 
+#staff-info-div .staff-number-info-div,
+#staff-info-div .one-staff-info-div {
+    margin-bottom: 2em;
+}
+
+#staff-info-div .one-staff-info-div {
+    margin-left: 2em;
+}
+
+#staff-info-div .one-staff-info-div .staff-list {
+    margin-top: 1em;
+    list-style-type: circle;
+    margin-left: 1em;
+}
+
+#staff-info-div .one-staff-info-div .staff-list .staff-list-item {
+    margin-left: 1em;
+}
+
+#staff-info-div .one-staff-info-div .staff-list .staff-list-item .label-v {
+    margin-left: 0;
+}
+
+#staff-info-div #staff-list-h3 {
+    margin-bottom: 1.5em;
+    font-weight: 400;
+}
+
+#user-info-div .aircraft-select {
+    margin-top: 0.3em;
+}
+
+#user-info-div .lang-item-div {
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+#user-info-div .lang-item-div #label-langs {
+    margin-top: 3em;
+    margin-bottom: 1em;
+    text-transform: uppercase;
+    font-weight: 400;
+    font-size: 1.3em;
+    color: #161616;
+}
+
+#user-info-div .lang-item-div .item-div {
+    margin-left: 1em;
+    margin-top: 1em;
+}
+
+#user-info-div .lang-item-div .label-lang-name {
+    font-weight: 300;
+    font-size: 1.3em;
+    color: #161616;
+}
 /*table {
 
 	 margin: 0 auto;

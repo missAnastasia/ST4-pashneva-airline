@@ -63,6 +63,15 @@ public class CommandContainer {
 		commands.put("getAdminAddStaffPageCommand", new GetAdminAddStaffPageCommand());
 		commands.put("addAdminStaffCommand", new AddAdminStaffCommand());
 		commands.put("editAdminStaffCommand", new EditAdminStaffCommand());
+		commands.put("getDispatcherBrigadeInfoPageCommand", new GetDispatcherBrigadeInfoPageCommand());
+		commands.put("getDispatcherAddBrigadePageCommand", new GetDispatcherAddBrigadePageCommand());
+		commands.put("getAdminFlightsPageCommand", new GetAdminFlightsPageCommand());
+		commands.put("getAdminFlightInfoPageCommand", new GetAdminFlightInfoPageCommand());
+		commands.put("getAdminAddFlightPageCommand", new GetAdminAddFlightPageCommand());
+		commands.put("getAdminEditFlightPageCommand", new GetAdminFlightsPageCommand());
+		commands.put("editAdminFlightCommand", new GetAdminFlightsPageCommand());
+		commands.put("addAdminFlightCommand", new AddAdminFlightCommand());
+		commands.put("deleteAdminFlightCommand", new DeleteAdminFlightCommand());
 
 		// client commands
 		commands.put("listMenu", new ListMenuCommand());

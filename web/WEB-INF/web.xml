@@ -85,6 +85,13 @@
                 getAdminAddStaffPageCommand
                 addAdminStaffCommand
                 editAdminStaffCommand
+                getAdminFlightsPageCommand
+                getAdminAddFlightPageCommand
+                getAdminEditFlightPageCommand
+                editAdminFlightCommand
+                addAdminFlightCommand
+                deleteAdminFlightCommand
+                getAdminFlightInfoPageCommand
             </param-value>
         </init-param>
         <init-param>
@@ -109,6 +116,8 @@
                 changeDispatcherRequestMessageCommand
                 getDispatcherAddRequestPageCommand
                 addDispatcherRequestCommand
+                getDispatcherBrigadeInfoPageCommand
+                getDispatcherAddBrigadePageCommand
             </param-value>
         </init-param>
         <init-param>

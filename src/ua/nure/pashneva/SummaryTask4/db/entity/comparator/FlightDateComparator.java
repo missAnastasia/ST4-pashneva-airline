@@ -23,6 +23,6 @@ public class FlightDateComparator implements Comparator<Flight> {
         } catch (ParseException e) {
             LOG.trace(e.getMessage());
         }
-        return parsed1.compareTo(parsed2);
+        return parsed2.compareTo(parsed1);
     }
 }

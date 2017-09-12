@@ -129,7 +129,7 @@ public class LoginCommand extends Command {
 
         if (userRole == Role.ADMIN) {
             /*response.sendRedirect(Path.COMMAND_ADMIN_USER_ACCOUNTS);*/
-            response.sendRedirect(Path.COMMAND_USER_INFO);
+            response.sendRedirect(Path.COMMAND_ADMIN_FLIGHTS);
         }
         if (userRole == Role.DISPATCHER) {
             //forward = Path.COMMAND_LIST_MENU;

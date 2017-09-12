@@ -16,9 +16,9 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
-public class GetDispatcherFlightInfoPageCommand extends Command {
+public class GetAdminFlightInfoPageCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetDispatcherFlightInfoPageCommand.class);
+    private static final Logger LOG = Logger.getLogger(GetAdminFlightInfoPageCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
@@ -38,14 +38,10 @@ public class GetDispatcherFlightInfoPageCommand extends Command {
             }
             LOG.trace("Flight --> " + flight);
             request.setAttribute("flight", flight);
-            List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
-            request.setAttribute("flight_statuses", statuses);
-            List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
-            request.setAttribute("brigades", brigades);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
         LOG.debug("Command finished");
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_FLIGHT_INFO).forward(request, response);
+        request.getRequestDispatcher(Path.PAGE_ADMIN_FLIGHT_INFO).forward(request, response);
     }
 }

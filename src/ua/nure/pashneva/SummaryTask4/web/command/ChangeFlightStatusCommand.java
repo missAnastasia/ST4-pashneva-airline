@@ -49,6 +49,6 @@ public class ChangeFlightStatusCommand extends Command {
             throw new AppException(e.getMessage(), e);
         }
         LOG.trace("Command finished");
-        request.getRequestDispatcher(Path.COMMAND_GET_DISPATCHER_FLIGHT_INFO).forward(request, response);
+        request.getRequestDispatcher(Path.COMMAND_DISPATCHER_FLIGHT_INFO).forward(request, response);
     }
 }

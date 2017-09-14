@@ -2,20 +2,17 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
 <html>
-
 <c:set var="title" value="Flights" />
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
 <jsp:include page="../_header.jsp"/>
 <cstm:menu_user_role/>
-
 </div>
 <div id="page" class="container">
     <div class="title">
         <h2><fmt:message key="flights_dispatcher_jsp.h2"/></h2>
     </div>
-
     <div id="content-div">
             <div id="items-div">
                 <c:forEach items="${flights}" var="flight">
@@ -25,7 +22,7 @@
                                 <tr>
                                     <td class="label-td"><h3><fmt:message key="flights_staff_jsp.table.th.number"/></h3></td>
                                     <td colspan="3">
-                                        <h3><button class="flight-number-link" type="submit" name="flight_number" value="${flight.getNumber()}" form="flight-form">${flight.getNumber()}</button></h3>
+                                        <h3><button class="entity_info-link" type="submit" name="flight_id" value="${flight.getId()}" form="flight-form">${flight.getNumber()}</button></h3>
                                     </td>
                                 </tr>
                                 <tr>
@@ -56,8 +53,6 @@
             </div>
     </div>
 </div>
-
 <jsp:include page="../_footer.jsp"/>
-
 </body>
 </html>

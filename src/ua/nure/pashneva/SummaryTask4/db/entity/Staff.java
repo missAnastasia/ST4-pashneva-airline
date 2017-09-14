@@ -1,6 +1,11 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
+import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
+import ua.nure.pashneva.SummaryTask4.exception.DBException;
+
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Objects of this class are strings from the table staff.
@@ -71,5 +76,16 @@ public class Staff extends Entity{
                 ", post=" + post +
                 ", id=" + id +
                 '}';
+    }
+
+    public static List<Staff> readFreeStaff(Language language) throws Exception {
+        List<Staff> freeStaff = new ArrayList<>();
+        List<Staff> allStaff = DAOFactory.getInstance().getStaffDAO().readAll(language);
+        for (Staff s : allStaff) {
+            if (DAOFactory.getInstance().getBrigadeDAO().readByStaff(s, language) == null) {
+                freeStaff.add(s);
+            }
+        }
+        return freeStaff;
     }
 }

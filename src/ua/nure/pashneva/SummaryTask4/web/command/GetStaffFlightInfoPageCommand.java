@@ -31,10 +31,10 @@ public class GetStaffFlightInfoPageCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            String flightNumber = request.getParameter("flight_number");
+            String flightId = request.getParameter("flight_id");
             Flight flight = new Flight();
-            if (flightNumber != null && !(flightNumber.isEmpty())) {
-                flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
+            if (flightId != null && !(flightId.isEmpty())) {
+                flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
             }
             LOG.trace("Flight --> " + flight);
             request.setAttribute("flight", flight);

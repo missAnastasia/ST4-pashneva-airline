@@ -1,28 +1,26 @@
 package ua.nure.pashneva.SummaryTask4.db.entity.search;
 
-import java.util.List;
-
-public class SearchFactory {
+public class SearcherFactory {
     /**
-     * A private class field that stores the SearchFactory object.
+     * A private class field that stores the SearcherFactory object.
      */
-    private static SearchFactory instance;
+    private static SearcherFactory instance;
 
     /**
      * Constructor for the ability to extend this class.
      */
-    protected SearchFactory() {
+    protected SearcherFactory() {
     }
 
     /**
-     * Method for obtaining the SearchFactory object.
+     * Method for obtaining the SearcherFactory object.
      *
-     * @return an instance of the SearchFactory.
+     * @return an instance of the SearcherFactory.
      * @throws Exception
      */
-    public static synchronized SearchFactory getInstance() throws Exception {
+    public static synchronized SearcherFactory getInstance() throws Exception {
         if (instance == null) {
-            instance = new SearchFactory();
+            instance = new SearcherFactory();
         }
         return instance;
     }

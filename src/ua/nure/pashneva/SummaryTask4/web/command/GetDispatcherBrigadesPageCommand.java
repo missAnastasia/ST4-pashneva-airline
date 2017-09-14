@@ -3,10 +3,7 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
-import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.search.SearchFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -61,7 +58,7 @@ public class GetDispatcherBrigadesPageCommand extends Command {
                 if (date != null && !(date.isEmpty())) {
                     params.put("departure_date", date);
                 }
-                flights = SearchFactory.getInstance().getFlightSearcher().search(language, params);
+                flights = SearcherFactory.getInstance().getFlightSearcher().search(language, params);
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

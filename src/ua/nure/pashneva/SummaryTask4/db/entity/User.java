@@ -18,8 +18,20 @@ public class User extends Entity{
     public User() {
     }
 
+    public User(int id, String login, String password,
+                String firstName, String secondName,
+                Role role/*, UserStatus userStatus*/) {
+        super(id);
+        this.login = login;
+        this.password = password;
+        this.firstName = firstName;
+        this.secondName = secondName;
+        this.role = role;
+        //this.userStatus = userStatus;
+    }
+
     /**
-     * Constructor of class for creating object without without an identifier.
+     * Constructor of class for creating object without an identifier.
      *
      * @param login
      * @param password

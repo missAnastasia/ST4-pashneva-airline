@@ -48,6 +48,13 @@ public class FlightSearcher implements Searcher<Flight> {
                         flights.add(temp);
                     }
                     break;
+
+                }
+
+                case "flight_status_id" : {
+                    LOG.trace("entry.getValue() --> " + entry.getValue());
+                    flights.addAll(searchByFlightStatus(language, entry.getValue()));
+                    break;
                 }
             }
         }
@@ -82,6 +89,10 @@ public class FlightSearcher implements Searcher<Flight> {
 
     private Flight searchByNumber(Language language, String number) throws Exception {
         return DAOFactory.getInstance().getFlightDAO().readByNumber(number, language);
+    }
+
+    private List<Flight> searchByFlightStatus(Language language, String statusId) throws Exception {
+        return DAOFactory.getInstance().getFlightDAO().readByStatus(Integer.parseInt(statusId), language);
     }
 
     private List<Flight> searchByDeparturePoint(Language language, String departurePoint) throws Exception {

@@ -12,7 +12,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class GetDispatcherBrigadeInfoPageCommand extends Command {
 
@@ -36,18 +38,19 @@ public class GetDispatcherBrigadeInfoPageCommand extends Command {
             }
             LOG.trace("Brigade --> " + brigade);
             request.setAttribute("brigade", brigade);
-            request.setAttribute("staff", brigade.getStaff());
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
-            List<Post> postItems = new ArrayList<>();
-            for (Staff staff : brigade.getStaff()) {
-                for (Post post : posts) {
-                    if (staff.getPost().equals(post)) {
-                        postItems.add(post);
+            request.setAttribute("posts", posts);
+            Map<Post, List<Staff>> staff = new HashMap<>();
+            for (Post p : posts) {
+                List<Staff> temp = new ArrayList<>();
+                for (Staff s : brigade.getStaff()) {
+                    if (s.getPost().equals(p)) {
+                        temp.add(s);
                     }
                 }
-
+                staff.put(p, temp);
             }
-            request.setAttribute("posts", postItems);
+            request.setAttribute("staff", staff);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

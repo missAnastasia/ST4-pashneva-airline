@@ -9,6 +9,13 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
 public class Entity {
     protected int id;
 
+    public Entity() {
+    }
+
+    public Entity(int id) {
+        this.id = id;
+    }
+
     public int getId() {
         return id;
     }

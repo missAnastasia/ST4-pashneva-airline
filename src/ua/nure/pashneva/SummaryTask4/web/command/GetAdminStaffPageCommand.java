@@ -4,10 +4,8 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
-import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
-import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.search.SearchFactory;
+import ua.nure.pashneva.SummaryTask4.db.entity.search.SearcherFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -49,7 +47,7 @@ public class GetAdminStaffPageCommand extends Command {
             } else {
                 Map<String, String> params = new HashMap<>();
                 params.put("post_id", postToSearchId);
-                staffList = SearchFactory.getInstance().getStaffSearcher().search(language, params);
+                staffList = SearcherFactory.getInstance().getStaffSearcher().search(language, params);
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }

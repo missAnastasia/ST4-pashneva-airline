@@ -18,6 +18,8 @@ public class Path {
     public static final String PAGE_DISPATCHER_FLIGHTS = "/WEB-INF/jsp/dispatcher/dispatcherFlightsView.jsp";
     public static final String PAGE_ADMIN_FLIGHTS = "/WEB-INF/jsp/admin/adminFlightsView.jsp";
     public static final String PAGE_DISPATCHER_FLIGHT_INFO = "/WEB-INF/jsp/dispatcher/dispatcherFlightInfoView.jsp";
+    public static final String PAGE_DISPATCHER_CHANGE_FLIGHT_BRIGADE = "/WEB-INF/jsp/dispatcher/dispatcherChangeFlightBrigadeView.jsp";
+    public static final String PAGE_DISPATCHER_CHANGE_FLIGHT_STATUS = "/WEB-INF/jsp/dispatcher/dispatcherChangeFlightStatusView.jsp";
     public static final String PAGE_ADMIN_FLIGHT_INFO = "/WEB-INF/jsp/admin/adminFlightInfoView.jsp";
     public static final String PAGE_DISPATCHER_REQUEST_INFO = "/WEB-INF/jsp/dispatcher/dispatcherRequestInfoView.jsp";
     public static final String PAGE_ADMIN_STAFF_INFO = "/WEB-INF/jsp/admin/adminStaffInfoView.jsp";
@@ -30,6 +32,7 @@ public class Path {
     public static final String PAGE_DISPATCHER_EDIT_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherEditRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_REQUEST = "/WEB-INF/jsp/dispatcher/dispatcherAddRequestView.jsp";
     public static final String PAGE_DISPATCHER_ADD_BRIGADE = "/WEB-INF/jsp/dispatcher/dispatcherAddBrigadeView.jsp";
+    public static final String PAGE_DISPATCHER_EDIT_BRIGADE = "/WEB-INF/jsp/dispatcher/dispatcherEditBrigadeView.jsp";
     public static final String PAGE_STAFF_FLIGHT_INFO = "/WEB-INF/jsp/staff/staffFlightInfoView.jsp";
     public static final String PAGE_EDIT_USER = "/WEB-INF/jsp/admin/editUserView.jsp";
     public static final String PAGE_ERROR_PAGE = "/WEB-INF/jsp/errorMessageView.jsp";
@@ -65,6 +68,7 @@ public class Path {
     public static final String COMMAND_ADMIN_STAFF_INFO = "/controller?command=getAdminStaffInfoPageCommand&staff_id=";
     public static final String COMMAND_DISPATCHER_ADD_REQUEST = "/controller?command=getDispatcherAddRequestPageCommand";
     public static final String COMMAND_DISPATCHER_BRIGADES = "/redirect?command=getDispatcherBrigadesPageCommand";
+    public static final String COMMAND_DISPATCHER_BRIGADE_INFO = "/redirect?command=getDispatcherBrigadeInfoPageCommand";
     public static final String COMMAND_PRODUCTS = "/controller?command=getProductsPageCommand";
     public static final String COMMAND_ADMIN_USER_ACCOUNTS = "/redirect?command=getUserAccountsPageCommand";
     /*public static final String COMMAND_HOME = "controller?command=getHomePageCommand";*/

@@ -104,12 +104,11 @@ public interface FlightDAO {
     /**
      * Method of obtaining a flight from the database.
      *
-     * @param flightStatus an instance of FlightStatus enum,
-     *                  which contains data of flight status.
+     * @param flightStatusId flight status identifier (primary unique key).
      * @return collection (List) of flights with adjusted flight status.
      * @throws DBException
      */
-    List<Flight> readByStatus(FlightStatus flightStatus, Language language) throws DBException;
+    List<Flight> readByStatus(int flightStatusId, Language language) throws DBException;
 
     /**
      * Method of obtaining all flights from the database.

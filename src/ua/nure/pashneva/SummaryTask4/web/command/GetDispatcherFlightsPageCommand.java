@@ -3,19 +3,19 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
+import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.search.SearchFactory;
+import ua.nure.pashneva.SummaryTask4.db.entity.search.SearcherFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
-import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class GetDispatcherFlightsPageCommand extends Command {
@@ -42,11 +42,14 @@ public class GetDispatcherFlightsPageCommand extends Command {
             LOG.trace("To city --> " + toCity);
             String date = request.getParameter("departure_date");
             LOG.trace("Departure date --> " + date);
+            String statusId = request.getParameter("flight_status_id");
+            LOG.trace("Flight status id --> " + statusId);
 
             List<Flight> flights = null;
 
             if ((number == null || number.isEmpty()) && (fromCity == null || fromCity.isEmpty()) &&
-                    (toCity == null || toCity.isEmpty()) && (date == null || date.isEmpty())) {
+                    (toCity == null || toCity.isEmpty()) && (date == null || date.isEmpty()) &&
+                    (statusId == null || statusId.isEmpty())) {
                 flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
                 if (flights.size() == 0) {
                     String message = ResourceBundle.getBundle("resources", new Locale(locale))
@@ -67,7 +70,10 @@ public class GetDispatcherFlightsPageCommand extends Command {
                 if (date != null && !(date.isEmpty())) {
                     params.put("departure_date", date);
                 }
-                flights = SearchFactory.getInstance().getFlightSearcher().search(language, params);
+                if (statusId != null && !(statusId.isEmpty())) {
+                    params.put("flight_status_id", statusId);
+                }
+                flights = SearcherFactory.getInstance().getFlightSearcher().search(language, params);
                 if (flights.size() == 0) {
                     String message = ResourceBundle.getBundle("resources", new Locale(locale))
                             .getString("message.error.cannot_find_entity");
@@ -89,9 +95,12 @@ public class GetDispatcherFlightsPageCommand extends Command {
             }
             LOG.trace("Flights --> " + flights.toString());
             request.setAttribute("flights", flights);
+            List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
+            request.setAttribute("statuses", statuses);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
+
         request.getRequestDispatcher(Path.PAGE_DISPATCHER_FLIGHTS).forward(request, response);
         LOG.debug("Command finished");
     }

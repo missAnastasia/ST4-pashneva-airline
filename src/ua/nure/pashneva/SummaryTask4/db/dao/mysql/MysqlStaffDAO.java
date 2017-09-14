@@ -34,6 +34,7 @@ public class MysqlStaffDAO implements StaffDAO {
     private static final String GET_STAFF_BY_USER_ID = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id) WHERE s.user_id=? AND p_l.lang_id=?";
     private static final String GET_STAFF_BY_POST = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.post_id=? AND p_l.lang_id=?";
     private static final String GET_STAFF_BY_DATE = "SELECT * FROM ((staff s INNER JOIN posts p ON s.post_id=p.id) INNER JOIN posts_lang p_l ON p.id=p_l.post_id)  WHERE s.employment_date=?";
+    private static final String GET_STAFF_WITH_BRIGADE_BY_STAFF_ID = "SELECT * FROM brigades_staff WHERE staff_id=?";
     private static final String ADD_STAFF = "INSERT INTO staff VALUE(DEFAULT, ?, ?)";
     private static final String UPDATE_STAFF_BY_ID = "UPDATE staff SET user_id=?, post_id=? WHERE id=?";
     private static final String DELETE_STAFF_BY_ID = "DELETE FROM staff WHERE id=?";

@@ -11,11 +11,11 @@
                     <p><fmt:message key="footer_jsp.column1.address"/></p>
                     <p>+38(012)-345-6789</p>
                     <ul class="contact">
-                        <li><a href="#" class="icon icon-twitter"><span>Twitter</span></a></li>
-                        <li><a href="#" class="icon icon-facebook"><span>Facebook</span></a></li>
-                        <li><a href="#" class="icon icon-dribbble"><span>Pinterest</span></a></li>
-                        <li><a href="#" class="icon icon-tumblr"><span>Google+</span></a></li>
-                        <li><a href="#" class="icon icon-rss"><span>Pinterest</span></a></li>
+                        <li><a href="" class="icon icon-twitter"><span>Twitter</span></a></li>
+                        <li><a href="" class="icon icon-facebook"><span>Facebook</span></a></li>
+                        <li><a href="" class="icon icon-dribbble"><span>Pinterest</span></a></li>
+                        <li><a href="" class="icon icon-tumblr"><span>Google+</span></a></li>
+                        <li><a href="" class="icon icon-rss"><span>Pinterest</span></a></li>
                     </ul>
                 </div>
             </div>

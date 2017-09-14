@@ -1,9 +1,13 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
+import org.apache.log4j.Logger;
 import sun.tracing.dtrace.DTraceProviderFactory;
+import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Objects of this class are strings from the table flights.
@@ -20,6 +24,8 @@ public class Flight extends Entity {
     private Brigade brigade;
     private FlightStatus flightStatus;
     private Aircraft aircraft;
+
+    private static final Logger LOG = Logger.getLogger(Flight.class);
 
     public Flight() {
     }
@@ -155,5 +161,24 @@ public class Flight extends Entity {
 
     public static String getDateAndTimeFromStrings(String inputDate, String inputTime) {
         return inputDate + "T" + inputTime;
+    }
+
+    public List<Brigade> getAvailableBrigades(Language language) throws Exception {
+        List<Brigade> unavailableBrigades = new ArrayList<>();
+        List<Brigade> availableBrigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
+        LOG.trace("availableBrigades before checking --> " + availableBrigades);
+        List<Flight> sameDateFlights = DAOFactory.getInstance().getFlightDAO().readByDate(date, language);
+        LOG.trace("sameDateFlights (date: " + date + ") --> " + sameDateFlights);
+        for (Brigade brigade : availableBrigades) {
+            for (Flight flight : sameDateFlights) {
+                if (!(flight.equals(this)) && brigade.equals(flight.getBrigade())) {
+                    unavailableBrigades.add(brigade);
+                }
+            }
+        }
+        LOG.trace("unavailableBrigades --> " + unavailableBrigades);
+        availableBrigades.removeAll(unavailableBrigades);
+        LOG.trace("availableBrigades after checking --> " + availableBrigades);
+        return availableBrigades;
     }
 }

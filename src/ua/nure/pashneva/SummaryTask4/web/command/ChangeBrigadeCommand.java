@@ -29,14 +29,14 @@ public class ChangeBrigadeCommand extends Command {
             }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
-            String flightNumber = request.getParameter( "flight_number");
-            LOG.trace("flightNumber --> " + flightNumber);
-            if (flightNumber != null && !(flightNumber.isEmpty())) {
-                int brigadeId = Integer.parseInt(request.getParameter("brigade_id"));
+            String flightId = request.getParameter( "flight_id");
+            LOG.trace("flightId --> " + flightId);
+            if (flightId != null && !(flightId.isEmpty())) {
+                int brigadeId = Integer.parseInt(request.getParameter("new_brigade_id"));
                 LOG.trace("brigadeId --> " + brigadeId);
                 Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(brigadeId, language);
                 LOG.trace("brigade --> " + brigade.toString());
-                Flight flight = DAOFactory.getInstance().getFlightDAO().readByNumber(flightNumber, language);
+                Flight flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
                 if (flight != null) {
                     LOG.trace("flight --> " + flight.toString());
                     flight.setBrigade(brigade);

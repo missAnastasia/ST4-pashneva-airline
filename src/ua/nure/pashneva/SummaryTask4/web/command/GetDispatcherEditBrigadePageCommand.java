@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.web.command;
 
-import com.sun.javafx.collections.MappingChange;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
@@ -20,9 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class GetDispatcherAddBrigadePageCommand extends Command {
+public class GetDispatcherEditBrigadePageCommand extends Command {
 
-    private static final Logger LOG = Logger.getLogger(GetDispatcherAddBrigadePageCommand.class);
+    private static final Logger LOG = Logger.getLogger(GetDispatcherEditBrigadePageCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
@@ -36,24 +35,37 @@ public class GetDispatcherAddBrigadePageCommand extends Command {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
             LOG.trace("Language --> " + language);
 
-            List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
-            request.setAttribute("posts", posts);
-            List<Staff> freeStaff = Staff.readFreeStaff(language);
-            Map<Post, List<Staff>> staff = new HashMap<>();
-            for (Post p : posts) {
-                List<Staff> temp = new ArrayList<>();
-                for (Staff s : freeStaff) {
-                    if (s.getPost().equals(p)) {
-                        temp.add(s);
+            String brigadeId = request.getParameter("brigade_id");
+            LOG.trace("brigadeId --> " + brigadeId);
+
+            if (brigadeId != null && !(brigadeId.isEmpty())) {
+                Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(Integer.parseInt(brigadeId), language);
+                LOG.trace("brigade --> " + brigade);
+                List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
+                request.setAttribute("posts", posts);
+                List<Staff> freeStaff = Staff.readFreeStaff(language);
+                Map<Post, List<Staff>> staff = new HashMap<>();
+                for (Post p : posts) {
+                    List<Staff> temp = new ArrayList<>();
+                    for (Staff s : brigade.getStaff()) {
+                        if (s.getPost().equals(p)) {
+                            temp.add(s);
+                        }
                     }
+                    for (Staff s : freeStaff) {
+                        if (s.getPost().equals(p)) {
+                            temp.add(s);
+                        }
+                    }
+                    staff.put(p, temp);
                 }
-                staff.put(p, temp);
+                request.setAttribute("staff", staff);
+                request.setAttribute("brigade", brigade);
             }
-            request.setAttribute("staff", staff);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
         LOG.trace("Command finished");
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_ADD_BRIGADE).forward(request, response);
+        request.getRequestDispatcher(Path.PAGE_DISPATCHER_EDIT_BRIGADE).forward(request, response);
     }
 }

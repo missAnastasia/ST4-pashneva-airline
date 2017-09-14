@@ -327,7 +327,7 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> readByStatus(FlightStatus flightStatus, Language language) throws DBException {
+    public List<Flight> readByStatus(int flightStatusId, Language language) throws DBException {
         Connection connection = null;
         PreparedStatement statement = null;
         ResultSet resultSet = null;
@@ -338,7 +338,7 @@ public class MysqlFlightDAO implements FlightDAO {
             statement = connection.prepareStatement(GET_FLIGHT_BY_STATUS);
 
             int k = 1;
-            statement.setInt(k++, flightStatus.getId());
+            statement.setInt(k++, flightStatusId);
             statement.setInt(k++, language.getId());
 
             resultSet = statement.executeQuery();

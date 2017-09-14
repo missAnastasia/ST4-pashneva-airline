@@ -118,6 +118,12 @@
                 addDispatcherRequestCommand
                 getDispatcherBrigadeInfoPageCommand
                 getDispatcherAddBrigadePageCommand
+                getDispatcherChangeFlightBrigadePageCommand
+                getDispatcherChangeFlightStatusPageCommand
+                addDispatcherBrigadeCommand
+                deleteDispatcherBrigadeCommand
+                getDispatcherEditBrigadePageCommand
+                editDispatcherBrigadeCommand
             </param-value>
         </init-param>
         <init-param>

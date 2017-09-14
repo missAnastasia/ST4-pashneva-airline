@@ -20,7 +20,7 @@ public interface BrigadeDAO {
     /**
      * Method of obtaining a brigade from the database.
      *
-     * @param id brigade identifier (primary unique key)
+     * @param id brigade identifier (primary unique key).
      * @return object which contains values of all fields from table brigades.
      * @throws DBException
      */
@@ -84,11 +84,11 @@ public interface BrigadeDAO {
     /**
      * Method of deleting brigade from database.
      *
-     * @param brigade object that contains information about a brigade which must be deleted.
+     * @param id brigade identifier (primary unique key).
      * @return true - brigade was successfully deleted from database, otherwise - false.
      * @throws DBException
      */
-    boolean delete(Brigade brigade) throws DBException;
+    boolean delete(int id) throws DBException;
 
     /**
      * Method of deleting staff from brigade.

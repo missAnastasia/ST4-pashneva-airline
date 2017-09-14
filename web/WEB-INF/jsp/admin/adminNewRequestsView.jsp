@@ -2,20 +2,17 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
 <html>
-
-<c:set var="title" value="Requests" />
+<c:set var="title" value="New Requests"/>
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
 <jsp:include page="../_header.jsp"/>
 <cstm:menu_user_role/>
-
 </div>
 <div id="page" class="container">
     <div class="title">
         <h2><fmt:message key="requests_admin_jsp.h2"/></h2>
     </div>
-
     <div id="content-div">
         <div id="content-table-div">
             <div id="items-div">
@@ -25,7 +22,7 @@
                             <table class="item-table">
                                 <tr>
                                     <td colspan="2">
-                                        <h3><button class="request-number-link" type="submit" name="request_id" value="${request_item.getId()}" form="request-form">${request_item.getNumber()}</button></h3>
+                                        <h3><button class="entity_info-link" type="submit" name="request_id" value="${request_item.getId()}" form="request-form">${request_item.getNumber()}</button></h3>
                                     </td>
                                 </tr>
                                 <tr>
@@ -63,8 +60,6 @@
         </div>
     </div>
 </div>
-
 <jsp:include page="../_footer.jsp"/>
-
 </body>
 </html>

@@ -2,14 +2,12 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
 <html>
-
-<c:set var="title" value="Success Message" scope="page" />
+<c:set var="title" value="Success" scope="page" />
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
 <jsp:include page="_header.jsp"/>
 <cstm:menu_user_role/>
-
 </div>
 <div id="page" class="container">
     <div class="title">

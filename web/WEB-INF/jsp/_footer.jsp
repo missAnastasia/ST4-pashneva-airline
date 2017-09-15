@@ -28,7 +28,7 @@
         </div>
     </div>
     <div id="footer">
-        <cstm:copyright/>
+        <cstmtf:copyright/>
     </div>
 </div>
 </div>

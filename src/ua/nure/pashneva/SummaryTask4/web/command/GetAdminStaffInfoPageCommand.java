@@ -3,9 +3,7 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
-import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -14,9 +12,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.ResourceBundle;
 
 public class GetAdminStaffInfoPageCommand extends Command {
 

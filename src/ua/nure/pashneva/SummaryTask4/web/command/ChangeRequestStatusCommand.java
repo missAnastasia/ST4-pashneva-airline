@@ -56,7 +56,6 @@ public class ChangeRequestStatusCommand extends Command {
             throw new AppException(message);
         }
         LOG.trace("Command finished");
-        //request.getRequestDispatcher(Path.COMMAND_DISPATCHER_REQUEST_INFO).forward(request, response);
         response.sendRedirect(Path.COMMAND_ADMIN_REQUEST_INFO + requestId);
     }
 }

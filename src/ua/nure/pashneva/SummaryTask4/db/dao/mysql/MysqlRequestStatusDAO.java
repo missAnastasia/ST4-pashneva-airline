@@ -1,15 +1,13 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.RequestStatusDAO;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,69 +27,47 @@ public class MysqlRequestStatusDAO implements RequestStatusDAO {
     private static final String REQUEST_STATUS_NAME = "r_s_l.name";
 
     @Override
-    public RequestStatus read(Language language, int id) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public RequestStatus read(Language language, int id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_REQUEST_STATUS_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         RequestStatus requestStatus = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_STATUS_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                requestStatus = extractRequestStatus(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            requestStatus = extractRequestStatus(resultSet);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return requestStatus;
     }
 
     @Override
-    public List<RequestStatus> readAll(Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<RequestStatus> readAll(Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_ALL_STATUSES);
+
+        int k = 1;
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<RequestStatus> statuses = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_ALL_STATUSES);
-
-            int k = 1;
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                RequestStatus requestStatus = extractRequestStatus(resultSet);
-                statuses.add(requestStatus);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            RequestStatus requestStatus = extractRequestStatus(resultSet);
+            statuses.add(requestStatus);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return statuses;
     }
 
-    private static RequestStatus extractRequestStatus(ResultSet resultSet) throws DBException {
+    private static RequestStatus extractRequestStatus(ResultSet resultSet) throws Exception {
         RequestStatus requestStatus = new RequestStatus();
-        try {
-            requestStatus.setId(resultSet.getInt(ENTITY_ID));
-            requestStatus.setName(resultSet.getString(REQUEST_STATUS_NAME));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
+        requestStatus.setId(resultSet.getInt(ENTITY_ID));
+        requestStatus.setName(resultSet.getString(REQUEST_STATUS_NAME));
         return requestStatus;
     }
 }

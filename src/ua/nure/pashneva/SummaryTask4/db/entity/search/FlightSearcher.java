@@ -5,8 +5,6 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 
-import java.sql.Time;
-import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -64,6 +62,7 @@ public class FlightSearcher implements Searcher<Flight> {
             Set<Flight> flightSet = new HashSet<>();
             LOG.debug("flightSet --> " + flightSet.toString());
             LOG.debug("flights size --> " + flights.size());
+
             for (int i = 0; i < flights.size(); i++) {
                 int count = 0;
                 LOG.debug("for i = " + i + ", count --> " + count);
@@ -74,15 +73,18 @@ public class FlightSearcher implements Searcher<Flight> {
                         LOG.debug("count --> " + count);
                     }
                 }
+
                 if (count == params.size()) {
                     LOG.debug("if count < " + params.size());
                     flightSet.add(flights.get(i));
                     LOG.debug("flightSet.add " + flights.get(i).toString());
                 }
             }
+
             LOG.trace("Flight Set --> " + flightSet.toString());
             flights = new ArrayList<>(flightSet);
         }
+
         LOG.trace("Flights --> " + flights.toString());
         return flights;
     }
@@ -104,9 +106,6 @@ public class FlightSearcher implements Searcher<Flight> {
     }
 
     private List<Flight> searchByDepartureDate(Language language, String departureDate) throws Exception {
-        /*SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
-        Date parsed = format.parse(departureDate);
-        java.sql.Date date = new java.sql.Date(parsed.getTime());*/
         Pattern pattern = Pattern.compile("^[0-9]{4}[-][0-9]{2}[-][0-9]{2}$");
         Matcher matcher = pattern.matcher(departureDate);
         if (matcher.find()) {
@@ -116,11 +115,4 @@ public class FlightSearcher implements Searcher<Flight> {
             return new ArrayList<>();
         }
     }
-
-    /*private List<Flight> searchByDepartureTime(Language language, String departureTime) throws Exception {
-        SimpleDateFormat format = new SimpleDateFormat("hh-mm-ss");
-        Date parsed = format.parse(departureTime);
-        java.sql.Time time = new java.sql.Time(parsed.getTime());
-        return DAOFactory.getInstance().getFlightDAO().readByDate(time, language);
-    }*/
 }

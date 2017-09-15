@@ -1,15 +1,13 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.PostDAO;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,69 +28,47 @@ public class MysqlPostDAO implements PostDAO {
     private static final String POST_NAME = "p_l.name";
 
     @Override
-    public Post read(Language language, int id) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public Post read(Language language, int id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_POST_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         Post post = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_POST_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                post = extractPost(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            post = extractPost(resultSet);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return post;
     }
 
     @Override
-    public List<Post> readAll(Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Post> readAll(Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_ALL_POSTS);
+
+        int k = 1;
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Post> posts = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_ALL_POSTS);
-
-            int k = 1;
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Post post = extractPost(resultSet);
-                posts.add(post);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Post post = extractPost(resultSet);
+            posts.add(post);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return posts;
     }
 
-    private static Post extractPost(ResultSet resultSet) throws DBException {
+    private static Post extractPost(ResultSet resultSet) throws Exception {
         Post post = new Post();
-        try {
-            post.setId(resultSet.getInt(ENTITY_ID));
-            post.setName(resultSet.getString(POST_NAME));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
+        post.setId(resultSet.getInt(ENTITY_ID));
+        post.setName(resultSet.getString(POST_NAME));
         return post;
     }
 }

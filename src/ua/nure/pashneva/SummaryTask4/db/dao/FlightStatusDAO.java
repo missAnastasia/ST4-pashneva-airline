@@ -2,7 +2,6 @@ package ua.nure.pashneva.SummaryTask4.db.dao;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.util.List;
 
@@ -20,16 +19,16 @@ public interface FlightStatusDAO {
      * @param id flight status identifier (primary unique key)
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table flight_statuses.
-     * @throws DBException
+     * @throws Exception
      */
-    FlightStatus read(Language language, int id) throws DBException;
+    FlightStatus read(Language language, int id) throws Exception;
 
     /**
      * Method of obtaining all flight statuses from the database.
      *
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table flight_statuses.
-     * @throws DBException
+     * @throws Exception
      */
-    List<FlightStatus> readAll(Language language) throws DBException;
+    List<FlightStatus> readAll(Language language) throws Exception;
 }

@@ -2,7 +2,6 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;

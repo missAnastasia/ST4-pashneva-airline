@@ -77,19 +77,17 @@
         <div id="compare-div">
             <form action="${pageContext.request.contextPath}/redirect?command=getDispatcherFlightsPageCommand"
                   method="post">
-                <select name="compare" id="no-top-margin-select"  class="search-select auto-width-select">
-                    <option value="no_compare">-</option>
-                    <option value="compare_by_number"><fmt:message
-                            key="flights_dispatcher_jsp.compare.by_number"/></option>
-                    <option value="compare_by_departure_point"><fmt:message
-                            key="flights_dispatcher_jsp.compare.by_departure_point"/></option>
-                    <option value="compare_by_arrival_point"><fmt:message
-                            key="flights_dispatcher_jsp.compare.by_arrival_point"/></option>
+                <select name="compare" id="no-top-margin-select" class="search-select auto-width-select">
+                    <c:forEach items="${compare_values.entrySet()}" var="compare_value">
+                        <c:set var="selected" value="${compare_value.getKey() eq compare ? 'selected' : '' }"/>
+                        <option value="${compare_value.getKey()}" ${selected}>${compare_value.getValue()}</option>
+                    </c:forEach>
                 </select>
                 <input type="hidden" name="flight_number" value="${flight_number}">
                 <input type="hidden" name="from_city" value="${from_city}">
                 <input type="hidden" name="to_city" value="${to_city}">
                 <input type="hidden" name="departure_date" value="${departure_date}">
+                <input type="hidden" name="flight_status_id" value="${flight_status_id}">
                 <input type="submit" id="compare-button" class="auto-width-button" value="<fmt:message key="flights_dispatcher_jsp.compare.submit"/>"/>
             </form>
         </div>

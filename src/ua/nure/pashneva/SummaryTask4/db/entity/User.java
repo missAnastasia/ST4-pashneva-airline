@@ -7,27 +7,13 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  *
  */
 public class User extends Entity{
-
     protected String login;
     protected String password;
     protected String firstName;
     protected String secondName;
     protected Role role;
-    //private UserStatus userStatus;
 
     public User() {
-    }
-
-    public User(int id, String login, String password,
-                String firstName, String secondName,
-                Role role/*, UserStatus userStatus*/) {
-        super(id);
-        this.login = login;
-        this.password = password;
-        this.firstName = firstName;
-        this.secondName = secondName;
-        this.role = role;
-        //this.userStatus = userStatus;
     }
 
     /**
@@ -41,19 +27,12 @@ public class User extends Entity{
      */
     public User(String login, String password,
                  String firstName, String secondName,
-                 Role role/*, UserStatus userStatus*/) {
+                 Role role) {
         this.login = login;
         this.password = password;
         this.firstName = firstName;
         this.secondName = secondName;
         this.role = role;
-        //this.userStatus = userStatus;
-    }
-
-    public User(String login, String firstName, String secondName) {
-        this.login = login;
-        this.firstName = firstName;
-        this.secondName = secondName;
     }
 
     public String getLogin() {
@@ -95,14 +74,6 @@ public class User extends Entity{
     public void setRole(Role role) {
         this.role = role;
     }
-
-    /*public UserStatus getUserStatus() {
-        return userStatus;
-    }
-
-    public void setUserStatus(UserStatus userStatus) {
-        this.userStatus = userStatus;
-    }*/
 
     @Override
     public boolean equals(Object o) {

@@ -2,6 +2,7 @@ package ua.nure.pashneva.SummaryTask4.web.listener;
 
 import org.apache.log4j.Logger;
 import org.apache.log4j.PropertyConfigurator;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.mail.MailManager;
 
@@ -35,6 +36,7 @@ public class ContextListener implements ServletContextListener {
 		initLog4J(servletContext);
 		initCommandContainer();
 		initDAOFactory(servletContext);
+		initDBConnection(servletContext);
 		initLocalization(servletContext);
         initMailProperties(servletContext);
 	
@@ -63,9 +65,6 @@ public class ContextListener implements ServletContextListener {
 	 * Method for initializing CommandContainer class.
 	 */
 	private void initCommandContainer() {
-		
-		// initialize commands container
-		// just load class to JVM
 		try {
 			Class.forName("ua.nure.pashneva.SummaryTask4.web.command.CommandContainer");
 		} catch (ClassNotFoundException ex) {
@@ -83,6 +82,16 @@ public class ContextListener implements ServletContextListener {
         DAOFactory.setDaoFactoryFCN(daoFactoryFCN);
 	}
 
+	/**
+	 * Method for initializing DBConnection class.
+	 *
+	 * @param servletContext
+	 */
+	private void initDBConnection(ServletContext servletContext) {
+		String dbConnectionFCN = servletContext.getInitParameter("DbConnectionFCN");
+		DBConnection.setDBConnectionFCN(dbConnectionFCN);
+	}
+
     /**
      * Method for initializing localization resources.
      *
@@ -90,19 +99,13 @@ public class ContextListener implements ServletContextListener {
      */
 	private void initLocalization(ServletContext servletContext) {
         String localesFileName = servletContext.getInitParameter("locales");
-
-        // obtain reale path on server
         String localesFileRealPath = servletContext.getRealPath(localesFileName);
-
-        // locad descriptions
         Properties locales = new Properties();
         try {
             locales.load(new FileInputStream(localesFileRealPath));
         } catch (IOException e) {
             throw new IllegalStateException("Cannot load locales properties");
         }
-
-        // save descriptions to servlet context
         servletContext.setAttribute("locales", locales);
 	}
 

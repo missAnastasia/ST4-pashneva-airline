@@ -7,7 +7,6 @@ public class Path {
 
     public static final String HOST = "localhost:8080";
 
-    // pages
     public static final String PAGE_LOGIN = "/loginView.jsp";
     public static final String PAGE_REGISTER_CLIENT = "/registerClientView.jsp";
     public static final String PAGE_STAFF_FLIGHTS = "/WEB-INF/jsp/staff/staffFlightsView.jsp";
@@ -50,34 +49,25 @@ public class Path {
     public static final String PAGE_SETTINGS = "/settingsView.jsp";
     public static final String PAGE_PRODUCTS = "/WEB-INF/jsp/client/productsView.jsp";
 
-    // commands
     public static final String COMMAND = "/controller?command=";
     public static final String COMMAND_CONFIRM_PASSWORD = "/controller?command=confirmNewPasswordCommand&login=";
-    public static final String COMMAND_HOME = "/controller?command=getHomePageCommand";
     public static final String COMMAND_DISPATCHER_FLIGHT_INFO = "/redirect?command=getDispatcherFlightInfoPageCommand";
     public static final String COMMAND_DISPATCHER_REQUEST_INFO = "/controller?command=getDispatcherRequestInfoPageCommand&request_id=";
     public static final String COMMAND_ADMIN_REQUEST_INFO = "/controller?command=getAdminRequestInfoPageCommand&request_id=";
     public static final String COMMAND_ADMIN_FLIGHTS = "/controller?command=getAdminFlightsPageCommand";
     public static final String COMMAND_ADMIN_FLIGHT_INFO = "/controller?command=getAdminFlightInfoPageCommand&flight_id=";
-    public static final String COMMAND_LOGIN = "/controller?command=loginCommand";
     public static final String COMMAND_USER_INFO = "/redirect?command=getUserInfoPageCommand";
     public static final String COMMAND_STAFF_FLIGHTS = "/redirect?command=getStaffFlightsPageCommand";
     public static final String COMMAND_DISPATCHER_FLIGHTS = "/redirect?command=getDispatcherFlightsPageCommand";
     public static final String COMMAND_DISPATCHER_REQUESTS = "/controller?command=getDispatcherRequestsPageCommand";
     public static final String COMMAND_ADMIN_STAFF = "/controller?command=getAdminStaffPageCommand";
     public static final String COMMAND_ADMIN_STAFF_INFO = "/controller?command=getAdminStaffInfoPageCommand&staff_id=";
-    public static final String COMMAND_DISPATCHER_ADD_REQUEST = "/controller?command=getDispatcherAddRequestPageCommand";
     public static final String COMMAND_DISPATCHER_BRIGADES = "/redirect?command=getDispatcherBrigadesPageCommand";
     public static final String COMMAND_DISPATCHER_BRIGADE_INFO = "/redirect?command=getDispatcherBrigadeInfoPageCommand";
-    public static final String COMMAND_PRODUCTS = "/controller?command=getProductsPageCommand";
-    public static final String COMMAND_ADMIN_USER_ACCOUNTS = "/redirect?command=getUserAccountsPageCommand";
-    /*public static final String COMMAND_HOME = "controller?command=getHomePageCommand";*/
 
     public static final String COMMAND_MESSAGE_SUCCESS = "/controller?command=getSuccessMessagePageCommand&message=";
     public static final String COMMAND_MESSAGE_ERROR = "/controller?command=getErrorMessagePageCommand&message=";
 
     private Path() {
     }
-    /*public static final String COMMAND_LIST_ORDERS = "/controller?command=listOrders";
-    public static final String COMMAND_LIST_MENU = "/controller?command=listMenu";*/
 }

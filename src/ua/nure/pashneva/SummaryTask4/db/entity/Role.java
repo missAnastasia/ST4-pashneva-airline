@@ -22,17 +22,6 @@ public enum Role {
     }
 
     /**
-     * Method for obtaining ordinal number of the enum object by its name.
-     *
-     * @param name name of object.
-     * @return int value of ordinal number of object.
-     */
-    public static int getRoleOrdinal(String name) {
-        Role role = Role.valueOf(name) ;
-        return role.ordinal() + 1;
-    }
-
-    /**
      * Method for obtaining ordinal number of the enum object by its instance.
      *
      * @param role object of enum which ordinal number must be obtained.

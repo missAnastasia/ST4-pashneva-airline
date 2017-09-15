@@ -7,7 +7,6 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  *
  */
 public class RequestToAdmin extends Entity {
-
     private int number;
     private User user;
     private RequestStatus requestStatus;

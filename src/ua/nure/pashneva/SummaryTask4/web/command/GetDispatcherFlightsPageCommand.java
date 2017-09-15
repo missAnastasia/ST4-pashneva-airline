@@ -5,7 +5,6 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.db.entity.comparator.ComparatorFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.search.SearcherFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
@@ -84,6 +83,18 @@ public class GetDispatcherFlightsPageCommand extends Command {
                 }
             }
             LOG.trace("Flights --> " + flights.toString());
+
+            Map<String, String> compareValues = new HashMap<>();
+            compareValues.put("no_compare", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_dispatcher_jsp.compare.no_compare"));
+            compareValues.put("compare_by_number", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_dispatcher_jsp.compare.by_number"));
+            compareValues.put("compare_by_departure_point", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_dispatcher_jsp.compare.by_departure_point"));
+            compareValues.put("compare_by_arrival_point", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_dispatcher_jsp.compare.by_arrival_point"));
+            LOG.trace("Compare values --> " + compareValues.toString());
+            request.setAttribute("compare_values", compareValues);
 
             String compare = request.getParameter("compare");
             if (compare != null && !(compare.isEmpty())) {

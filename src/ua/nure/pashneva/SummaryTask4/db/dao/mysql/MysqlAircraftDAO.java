@@ -1,15 +1,13 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.AircraftDAO;
-import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Aircraft;
-import ua.nure.pashneva.SummaryTask4.db.entity.Post;
-import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
-import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,64 +34,43 @@ public class MysqlAircraftDAO implements AircraftDAO {
     private static final String AIRCRAFT_NAME = "type";
 
     @Override
-    public Aircraft read(int id) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public Aircraft read(int id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_AIRCRAFT_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+
+        ResultSet resultSet = statement.executeQuery();
+
         Aircraft aircraft = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_AIRCRAFT_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                aircraft = extractAircraft(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            aircraft = extractAircraft(resultSet);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return aircraft;
     }
 
     @Override
-    public List<Aircraft> readAll() throws DBException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
+    public List<Aircraft> readAll() throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(GET_ALL_AIRCRAFT);
+
         List<Aircraft> aircraftList = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(GET_ALL_AIRCRAFT);
-
-            while (resultSet.next()) {
-                Aircraft aircraft = extractAircraft(resultSet);
-                aircraftList.add(aircraft);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Aircraft aircraft = extractAircraft(resultSet);
+            aircraftList.add(aircraft);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return aircraftList;
     }
 
-    private Aircraft extractAircraft(ResultSet resultSet) throws DBException {
+    private Aircraft extractAircraft(ResultSet resultSet) throws Exception {
         Aircraft aircraft = new Aircraft();
-        try {
-            aircraft.setId(resultSet.getInt(ENTITY_ID));
-            aircraft.setTypeName(resultSet.getString(AIRCRAFT_NAME));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
+        aircraft.setId(resultSet.getInt(ENTITY_ID));
+        aircraft.setTypeName(resultSet.getString(AIRCRAFT_NAME));
         return aircraft;
     }
 }

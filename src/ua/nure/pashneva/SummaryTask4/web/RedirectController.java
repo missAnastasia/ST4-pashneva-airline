@@ -9,11 +9,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.sql.Date;
 
-
+/**
+ * Servlet controller for executing redirect to command.
+ *
+ * @author Anastasia Pashneva
+ *
+ */
 public class RedirectController extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -23,9 +26,7 @@ public class RedirectController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         process(request, response);
-
     }
 
     @Override
@@ -34,15 +35,16 @@ public class RedirectController extends HttpServlet {
         doGet(request, response);
     }
 
+    /**
+     * Main method of this controller.
+     */
     private void process(HttpServletRequest request,
                          HttpServletResponse response) throws IOException, ServletException {
         LOG.debug("Controller starts");
 
-        // extract command name from the request
         String commandName = request.getParameter("command");
         LOG.trace("Request parameter: command --> " + commandName);
 
-        // obtain command object by its name
         Command command = CommandContainer.get(commandName);
         LOG.trace("Obtained command --> " + command);
 
@@ -52,26 +54,6 @@ public class RedirectController extends HttpServlet {
         if (compare != null && !(compare.isEmpty())) {
             path.append("&compare=").append(compare);
         }
-
-        /*String numberAttr = (String) request.getAttribute("number");
-        if (numberAttr != null && !(numberAttr.isEmpty())) {
-            path.append("&number=").append(numberAttr);
-        }
-
-        String fromCityAttr = (String) request.getAttribute("from_city");
-        if (fromCityAttr != null && !(fromCityAttr.isEmpty())) {
-            path.append("&from_city=").append(fromCityAttr);
-        }
-
-        String toCityAttr = (String) request.getAttribute("to_city");
-        if (toCityAttr != null && !(toCityAttr.isEmpty())) {
-            path.append("&to_city=").append(toCityAttr);
-        }
-
-        Date dateAttr = (Date) request.getAttribute("departure_date");
-        if (dateAttr != null) {
-            path.append("&departure_date=").append(dateAttr.toString());
-        }*/
 
         String fromCity = request.getParameter("from_city");
         if (fromCity != null && (!fromCity.isEmpty())) {
@@ -92,8 +74,6 @@ public class RedirectController extends HttpServlet {
         if (flightId != null && (!flightId.isEmpty())) {
             path.append("&flight_id=").append(flightId);
         }
-
-
 
         String flightStatusId = request.getParameter("flight_status_id");
         if (flightStatusId != null && (!flightStatusId.isEmpty())) {

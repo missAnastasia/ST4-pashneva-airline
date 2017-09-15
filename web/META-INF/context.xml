@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Context path="/ST4-airline">
     <Resource
-            name="jdbc/db"
+            name="jdbc/db_mysql"
             auth="Container"
             type="javax.sql.DataSource"
             maxTotal="100"

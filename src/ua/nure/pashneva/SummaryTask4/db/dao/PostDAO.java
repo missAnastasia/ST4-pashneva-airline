@@ -1,9 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
-import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Post;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.util.List;
 
@@ -21,16 +19,16 @@ public interface PostDAO {
      * @param id post identifier (primary unique key)
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from tables posts and posts_lang.
-     * @throws DBException
+     * @throws Exception
      */
-    Post read(Language language, int id) throws DBException;
+    Post read(Language language, int id) throws Exception;
 
     /**
      * Method of obtaining all posts from the database.
      *
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from tables posts and posts_lang.
-     * @throws DBException
+     * @throws Exception
      */
-    List<Post> readAll(Language language) throws DBException;
+    List<Post> readAll(Language language) throws Exception;
 }

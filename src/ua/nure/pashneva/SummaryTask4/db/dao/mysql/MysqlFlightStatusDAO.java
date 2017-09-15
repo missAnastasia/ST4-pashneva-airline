@@ -1,15 +1,13 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.FlightStatusDAO;
 import ua.nure.pashneva.SummaryTask4.db.entity.FlightStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,69 +27,47 @@ public class MysqlFlightStatusDAO implements FlightStatusDAO {
     private static final String FLIGHT_STATUS_NAME = "f_s_l.name";
 
     @Override
-    public FlightStatus read(Language language, int id) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public FlightStatus read(Language language, int id) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_STATUS_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         FlightStatus flightStatus = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_STATUS_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                flightStatus = extractFlightStatus(resultSet);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            flightStatus = extractFlightStatus(resultSet);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flightStatus;
     }
 
     @Override
-    public List<FlightStatus> readAll(Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<FlightStatus> readAll(Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_ALL_STATUSES);
+
+        int k = 1;
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<FlightStatus> statuses = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_ALL_STATUSES);
-
-            int k = 1;
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                FlightStatus flightStatus = extractFlightStatus(resultSet);
-                statuses.add(flightStatus);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            FlightStatus flightStatus = extractFlightStatus(resultSet);
+            statuses.add(flightStatus);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return statuses;
     }
 
-    private static FlightStatus extractFlightStatus(ResultSet resultSet) throws DBException {
+    private static FlightStatus extractFlightStatus(ResultSet resultSet) throws Exception {
         FlightStatus flightStatus = new FlightStatus();
-        try {
-            flightStatus.setId(resultSet.getInt(ENTITY_ID));
-            flightStatus.setName(resultSet.getString(FLIGHT_STATUS_NAME));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
+        flightStatus.setId(resultSet.getInt(ENTITY_ID));
+        flightStatus.setName(resultSet.getString(FLIGHT_STATUS_NAME));
         return flightStatus;
     }
 }

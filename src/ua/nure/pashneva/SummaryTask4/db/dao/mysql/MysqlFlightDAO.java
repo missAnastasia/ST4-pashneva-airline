@@ -1,13 +1,18 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
 import org.apache.log4j.Logger;
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.dao.FlightDAO;
-import ua.nure.pashneva.SummaryTask4.db.entity.*;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
+import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
+import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -58,473 +63,352 @@ public class MysqlFlightDAO implements FlightDAO {
     private static final String FLIGHT_LANG_ARRIVAL_POINT = "f_l.arrival_point";
 
     @Override
-    public boolean create(Flight flight, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        try {
-            connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+    public boolean create(Flight flight, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+        LOG.debug("statement.executeUpdate() > 0");
+
+        boolean result = false;
+        if (flight.getId() != 0) {
             LOG.debug("statement.executeUpdate() > 0");
-
-            if (flight.getId() != 0) {
-                LOG.debug("statement.executeUpdate() > 0");
-                return create(connection, flight, language);
-            }
-
-            statement = connection.prepareStatement(ADD_FLIGHT,
-                    Statement.RETURN_GENERATED_KEYS);
-            LOG.debug("statement.executeUpdate() > 0");
-
-            int k = 1;
-            statement.setString(k++, flight.getNumber());
-            statement.setString(k++, flight.getDate());
-            statement.setString(k++, flight.getTime());
-            statement.setInt(k++, flight.getFlightStatus().getId());
-            statement.setInt(k++, flight.getAircraft().getId());
-            statement.setNull(k++, java.sql.Types.INTEGER);
-            LOG.debug("statement.executeUpdate() > 0");
-
-            if (statement.executeUpdate() > 0) {
-                LOG.debug("statement.executeUpdate() > 0");
-                MysqlDAOFactory.setGeneratedId(flight, statement);
-                return create(connection, flight, language);
-            }
-            return false;
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+            result = create(connection, flight, language);
+            DBConnection.getInstance().close(connection);
+            return result;
         }
+
+        PreparedStatement statement = connection.prepareStatement(ADD_FLIGHT,
+                Statement.RETURN_GENERATED_KEYS);
+        LOG.debug("statement.executeUpdate() > 0");
+
+        int k = 1;
+        statement.setString(k++, flight.getNumber());
+        statement.setString(k++, flight.getDate());
+        statement.setString(k++, flight.getTime());
+        statement.setInt(k++, flight.getFlightStatus().getId());
+        statement.setInt(k++, flight.getAircraft().getId());
+        statement.setNull(k++, java.sql.Types.INTEGER);
+        LOG.debug("statement.executeUpdate() > 0");
+
+        if (statement.executeUpdate() > 0) {
+            LOG.debug("statement.executeUpdate() > 0");
+            MysqlDAOFactory.setGeneratedId(flight, statement);
+            result =  create(connection, flight, language);
+        }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
-    private boolean create(Connection connection, Flight flight, Language language) throws SQLException {
+    private boolean create(Connection connection, Flight flight, Language language) throws Exception {
         PreparedStatement statement = connection.prepareStatement(ADD_FLIGHT_LANG);
+
         int k = 1;
         statement.setInt(k++, flight.getId());
         statement.setInt(k++, language.getId());
         statement.setString(k++, flight.getDeparturePoint());
         statement.setString(k++, flight.getArrivalPoint());
 
+        boolean result = false;
         if (statement.executeUpdate() > 0) {
             connection.commit();
-            return true;
+            result = true;
+        } else {
+            DBConnection.getInstance().rollback(connection);
         }
-        DBConnection.getInstance().rollback(connection);
-        return false;
+        return result;
     }
 
     @Override
-    public Flight read(int id, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public Flight read(int id, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         Flight flight = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                flight = extractFlight(resultSet, language);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            flight = extractFlight(resultSet, language);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flight;
     }
 
     @Override
-    public Flight readByNumber(String number, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public Flight readByNumber(String number, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_NUMBER);
+
+        int k = 1;
+        statement.setString(k++, number);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         Flight flight = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_NUMBER);
-
-            int k = 1;
-            statement.setString(k++, number);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                flight = extractFlight(resultSet, language);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            flight = extractFlight(resultSet, language);
         }
-        return flight;
+
+       DBConnection.getInstance().close(connection, statement, resultSet);
+       return flight;
     }
 
     @Override
-    public List<Flight> readByDeparturePoint(String departure, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Flight> readByDeparturePoint(String departure, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_DEPARTURE_POINT);
+
+        int k = 1;
+        statement.setString(k++, departure);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_DEPARTURE_POINT);
-
-            int k = 1;
-            statement.setString(k++, departure);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flights;
     }
 
     @Override
-    public List<Flight> readByArrivalPoint(String arrival, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Flight> readByArrivalPoint(String arrival, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_ARRIVAL_POINT);
+
+        int k = 1;
+        statement.setString(k++, arrival);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_ARRIVAL_POINT);
-
-            int k = 1;
-            statement.setString(k++, arrival);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flights;
     }
 
     @Override
-    public List<Flight> readByDate(String date, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Flight> readByDate(String date, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_DATE);
+
+        int k = 1;
+        statement.setString(k++, date);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_DATE);
-
-            int k = 1;
-            statement.setString(k++, date);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
-        return flights;
-    }
 
-   /* @Override
-    public List<Flight> readByTime(String time, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_);
-
-            int k = 1;
-            statement.setString(k++, time);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
-        }
-        return flights;
-    }*/
-
-    @Override
-    public List<Flight> readByBrigade(Brigade brigade, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_BRIGADE);
-
-            int k = 1;
-            statement.setInt(k++, brigade.getId());
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
-        }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flights;
     }
 
     @Override
-    public List<Flight> readByStaff(Staff staff, Language language) throws DBException {
+    public List<Flight> readByBrigade(Brigade brigade, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_BRIGADE);
+
+        int k = 1;
+        statement.setInt(k++, brigade.getId());
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Flight> flights = new ArrayList<>();
-        Brigade brigade = null;
-        try {
-            brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff, language);
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
-        flights = readByBrigade(brigade, language);
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flights;
     }
 
     @Override
-    public List<Flight> readByStatus(int flightStatusId, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_FLIGHT_BY_STATUS);
-
-            int k = 1;
-            statement.setInt(k++, flightStatusId);
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
-        }
+    public List<Flight> readByStaff(Staff staff, Language language) throws Exception {
+        Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff, language);
+        List<Flight> flights = readByBrigade(brigade, language);
         return flights;
     }
 
     @Override
-    public List<Flight> readAll(Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<Flight> readByStatus(int flightStatusId, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_STATUS);
+
+        int k = 1;
+        statement.setInt(k++, flightStatusId);
+        statement.setInt(k++, language.getId());
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<Flight> flights = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_ALL_FLIGHTS);
-
-            int k = 1;
-            statement.setInt(k++, language.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                Flight flight = extractFlight(resultSet, language);
-                flights.add(flight);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return flights;
     }
 
     @Override
-    public boolean update(Flight flight, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public List<Flight> readAll(Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_ALL_FLIGHTS);
 
-        try {
-            connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
-            statement = connection.prepareStatement(UPDATE_FLIGHT_BY_ID);
+        int k = 1;
+        statement.setInt(k++, language.getId());
 
-            int k = 1;
-            statement.setString(k++, flight.getNumber());
-            statement.setString(k++, flight.getDate());
-            statement.setString(k++, flight.getTime());
-            statement.setInt(k++, flight.getAircraft().getId());
-            statement.setInt(k++, flight.getId());
+        ResultSet resultSet = statement.executeQuery();
 
-            if (statement.executeUpdate() > 0) {
-                return update(connection, flight, language);
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+        List<Flight> flights = new ArrayList<>();
+        while (resultSet.next()) {
+            Flight flight = extractFlight(resultSet, language);
+            flights.add(flight);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
+        return flights;
     }
 
-    private boolean update(Connection connection, Flight flight, Language language) throws SQLException {
+    @Override
+    public boolean update(Flight flight, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_BY_ID);
+
+        int k = 1;
+        statement.setString(k++, flight.getNumber());
+        statement.setString(k++, flight.getDate());
+        statement.setString(k++, flight.getTime());
+        statement.setInt(k++, flight.getAircraft().getId());
+        statement.setInt(k++, flight.getId());
+
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = update(connection, flight, language);
+        }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
+    }
+
+    private boolean update(Connection connection, Flight flight, Language language) throws Exception {
         PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_LANG_BY_ID);
+
         int k = 1;
         statement.setString(k++, flight.getDeparturePoint());
         statement.setString(k++, flight.getArrivalPoint());
         statement.setInt(k++, flight.getId());
         statement.setInt(k++, language.getId());
 
+        boolean result = false;
         if (statement.executeUpdate() > 0) {
             connection.commit();
-            return true;
+            result = true;
+        } else {
+            DBConnection.getInstance().rollback(connection);
         }
-        DBConnection.getInstance().rollback(connection);
-        return false;
+        return result;
     }
 
     @Override
-    public boolean updateBrigade(Flight flight, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public boolean updateBrigade(Flight flight, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_BRIGADE_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(UPDATE_FLIGHT_BRIGADE_BY_ID);
+        int k = 1;
+        statement.setInt(k++, flight.getBrigade().getId());
+        statement.setInt(k++, flight.getId());
 
-            int k = 1;
-            statement.setInt(k++, flight.getBrigade().getId());
-            statement.setInt(k++, flight.getId());
-
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = true;
         }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
     @Override
-    public boolean updateStatus(Flight flight, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public boolean updateStatus(Flight flight, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_STATUS_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(UPDATE_FLIGHT_STATUS_BY_ID);
+        int k = 1;
+        statement.setInt(k++, flight.getFlightStatus().getId());
+        statement.setInt(k++, flight.getId());
 
-            int k = 1;
-            statement.setInt(k++, flight.getFlightStatus().getId());
-            statement.setInt(k++, flight.getId());
-
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return true;
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = true;
         }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
     @Override
-    public boolean delete(int flightId) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public boolean delete(int flightId) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
+        PreparedStatement statement = connection.prepareStatement(DELETE_FLIGHT_LANG_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
-            statement = connection.prepareStatement(DELETE_FLIGHT_LANG_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, flightId);
-
-            if (statement.executeUpdate() > 0) {
-                return deleteFlight(connection, flightId);
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
-        }
-    }
-
-    private boolean deleteFlight(Connection connection, int flightId) throws SQLException {
-        PreparedStatement statement = connection.prepareStatement(DELETE_FLIGHT_BY_ID);
         int k = 1;
         statement.setInt(k++, flightId);
 
+        boolean result = false;
         if (statement.executeUpdate() > 0) {
-            connection.commit();
-            return true;
+            result = deleteFlight(connection, flightId);
         }
-        DBConnection.getInstance().rollback(connection);
-        return false;
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
-    private Flight extractFlight(ResultSet resultSet, Language language) throws DBException {
-        Flight flight = new Flight();
-        try {
-            flight.setId(resultSet.getInt(ENTITY_ID));
-            flight.setNumber(resultSet.getString(FLIGHT_NUMBER));
-            flight.setDate(resultSet.getString(FLIGHT_DEPARTURE_DATE));
-            flight.setTime(resultSet.getString(FLIGHT_DEPARTURE_TIME));
-            flight.setDeparturePoint(resultSet.getString(FLIGHT_LANG_DEPARTURE_POINT));
-            flight.setArrivalPoint(resultSet.getString(FLIGHT_LANG_ARRIVAL_POINT));
-            flight.setBrigade(DAOFactory.getInstance().getBrigadeDAO().read(resultSet.getInt(FLIGHT_BRIGADE_ID), language));
-            flight.setFlightStatus(DAOFactory.getInstance().getFlightStatusDAO().read(language, resultSet.getInt(FLIGHT_STATUS_ID)));
-            flight.setAircraft(DAOFactory.getInstance().getAircraftDAO().read(resultSet.getInt(FLIGHT_AIRCRAFT_ID)));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
+    private boolean deleteFlight(Connection connection, int flightId) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(DELETE_FLIGHT_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, flightId);
+
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            connection.commit();
+            result = true;
+        } else {
+            DBConnection.getInstance().rollback(connection);
         }
+        return result;
+    }
+
+    private Flight extractFlight(ResultSet resultSet, Language language) throws Exception {
+        Flight flight = new Flight();
+        flight.setId(resultSet.getInt(ENTITY_ID));
+        flight.setNumber(resultSet.getString(FLIGHT_NUMBER));
+        flight.setDate(resultSet.getString(FLIGHT_DEPARTURE_DATE));
+        flight.setTime(resultSet.getString(FLIGHT_DEPARTURE_TIME));
+        flight.setDeparturePoint(resultSet.getString(FLIGHT_LANG_DEPARTURE_POINT));
+        flight.setArrivalPoint(resultSet.getString(FLIGHT_LANG_ARRIVAL_POINT));
+        flight.setBrigade(DAOFactory.getInstance().getBrigadeDAO().read(resultSet.getInt(FLIGHT_BRIGADE_ID), language));
+        flight.setFlightStatus(DAOFactory.getInstance().getFlightStatusDAO().read(language, resultSet.getInt(FLIGHT_STATUS_ID)));
+        flight.setAircraft(DAOFactory.getInstance().getAircraftDAO().read(resultSet.getInt(FLIGHT_AIRCRAFT_ID)));
         return flight;
     }
 }

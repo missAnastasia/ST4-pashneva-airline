@@ -6,10 +6,6 @@ public class Aircraft extends Entity {
     public Aircraft() {
     }
 
-    public Aircraft(String typeName) {
-        this.typeName = typeName;
-    }
-
     public String getTypeName() {
         return typeName;
     }

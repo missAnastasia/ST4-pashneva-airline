@@ -52,7 +52,7 @@ public class GetAdminFlightsPageCommand extends Command {
                 flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
                 if (flights.size() == 0) {
                     String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                            .getString("flights_dispatcher_jsp.no_flights");
+                            .getString("flights_admin_jsp.no_flights");
                     request.setAttribute("message", message);
                 }
             } else {
@@ -83,6 +83,18 @@ public class GetAdminFlightsPageCommand extends Command {
                 }
             }
             LOG.trace("Flights --> " + flights.toString());
+
+            Map<String, String> compareValues = new HashMap<>();
+            compareValues.put("no_compare", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_admin_jsp.compare.no_compare"));
+            compareValues.put("compare_by_number", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_admin_jsp.compare.by_number"));
+            compareValues.put("compare_by_departure_point", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_admin_jsp.compare.by_departure_point"));
+            compareValues.put("compare_by_arrival_point", ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("flights_admin_jsp.compare.by_arrival_point"));
+            LOG.trace("Compare values --> " + compareValues.toString());
+            request.setAttribute("compare_values", compareValues);
 
             String compare = request.getParameter("compare");
             if (compare != null && !(compare.isEmpty())) {

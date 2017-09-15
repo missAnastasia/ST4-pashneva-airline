@@ -5,16 +5,12 @@ import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.*;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
-import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Locale;
 import java.util.ResourceBundle;
 

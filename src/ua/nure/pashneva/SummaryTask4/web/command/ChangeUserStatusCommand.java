@@ -1,9 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
-import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.db.entity.UserStatus;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 
 import javax.servlet.ServletException;

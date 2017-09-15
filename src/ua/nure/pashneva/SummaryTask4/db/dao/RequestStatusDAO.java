@@ -2,7 +2,6 @@ package ua.nure.pashneva.SummaryTask4.db.dao;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.util.List;
 
@@ -19,17 +18,17 @@ public interface RequestStatusDAO {
      * @param id request status identifier (primary unique key)
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table request_statuses.
-     * @throws DBException
+     * @throws Exception
      */
-    RequestStatus read(Language language, int id) throws DBException;
+    RequestStatus read(Language language, int id) throws Exception;
 
     /**
      * Method of obtaining all request statuses from the database.
      *
      * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table request_statuses.
-     * @throws DBException
+     * @throws Exception
      */
-    List<RequestStatus> readAll(Language language) throws DBException;
+    List<RequestStatus> readAll(Language language) throws Exception;
 
 }

@@ -1,7 +1,6 @@
 package ua.nure.pashneva.SummaryTask4.db.dao;
 
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
 import java.util.List;
 
@@ -14,61 +13,28 @@ import java.util.List;
 public interface LanguageDAO {
 
     /**
-     *
-     * @param language
-     * @return
-     * @throws DBException
-     */
-    boolean create(Language language) throws DBException;
-
-    /**
-     * Method of obtaining a language from the database.
-     *
-     * @param id language identifier (primary unique key)
-     * @return object, which contains values of all fields from table languages.
-     * @throws DBException
-     */
-    Language read(int id) throws DBException;
-
-    /**
      * Method of obtaining a language from the database.
      *
      * @param name language name (e.g. Russian, English)
      * @return object, which contains values of all fields from table languages.
-     * @throws DBException
+     * @throws Exception
      */
-    Language readByName(String name) throws DBException;
+    Language readByName(String name) throws Exception;
 
     /**
      * Method of obtaining a language from the database.
      *
      * @param prefix language prefix (e.g. ru, en)
      * @return object, which contains values of all fields from table languages.
-     * @throws DBException
+     * @throws Exception
      */
-    Language readByPrefix(String prefix) throws DBException;
+    Language readByPrefix(String prefix) throws Exception;
 
     /**
      * Method of obtaining all languages from the database.
      *
      * @return collection (List) of all languages.
-     * @throws DBException
+     * @throws Exception
      */
-    List<Language> readAll() throws DBException;
-
-    /**
-     *
-     * @param language
-     * @return
-     * @throws DBException
-     */
-    boolean update(Language language) throws DBException;
-
-    /**
-     *
-     * @param language
-     * @return
-     * @throws DBException
-     */
-    boolean delete(Language language) throws DBException;
+    List<Language> readAll() throws Exception;
 }

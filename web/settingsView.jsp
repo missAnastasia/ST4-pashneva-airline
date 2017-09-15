@@ -2,7 +2,7 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 
 <html>
-<c:set var="title" value="Home Page" />
+<c:set var="title" value="Settings" />
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
@@ -14,7 +14,7 @@
         <h2><fmt:message key="settings_jsp.h2"/></h2>
     </div>
 	<div class="main-content-div">
-		<form action="controller?command=changeLocaleCommand" method="post">
+		<form action="${pageContext.request.contextPath}/controller?command=changeLocaleCommand" method="post">
 			<h3><fmt:message key="settings_jsp.label.set_locale"/></h3>
 			<select name="locale" class="search-select" id="bottom-margin-select">
 				<c:forEach items="${applicationScope.locales}" var="locale">

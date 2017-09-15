@@ -1,12 +1,16 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
+import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.dao.RequestToAdminDAO;
-import ua.nure.pashneva.SummaryTask4.db.entity.*;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
+import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,278 +50,162 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     private static final String REQUEST_NUMBER = "number";
 
     @Override
-    public boolean create(RequestToAdmin request) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet generatedKeys = null;
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(ADD_REQUEST,
-                    Statement.RETURN_GENERATED_KEYS);
+    public boolean create(RequestToAdmin request) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(ADD_REQUEST,
+                Statement.RETURN_GENERATED_KEYS);
 
-            int k = 1;
-            statement.setInt(k++, request.getNumber());
-            statement.setInt(k++, request.getUser().getId());
-            statement.setInt(k++, request.getRequestStatus().getId());
-            statement.setString(k++, request.getMessage());
-            statement.setString(k++, request.getDate());
+        int k = 1;
+        statement.setInt(k++, request.getNumber());
+        statement.setInt(k++, request.getUser().getId());
+        statement.setInt(k++, request.getRequestStatus().getId());
+        statement.setString(k++, request.getMessage());
+        statement.setString(k++, request.getDate());
 
-            if (statement.executeUpdate() > 0) {
-               MysqlDAOFactory.setGeneratedId(request, statement);
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, generatedKeys);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            MysqlDAOFactory.setGeneratedId(request, statement);
+            result = true;
         }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
     @Override
-    public RequestToAdmin read(int id, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public RequestToAdmin read(int id, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_REQUEST_BY_ID);
+
+        int k = 1;
+        statement.setInt(k++, id);
+
+        ResultSet resultSet = statement.executeQuery();
+
         RequestToAdmin request = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, id);
-
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                request = extractRequestToAdmin(resultSet, language);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        if (resultSet.next()) {
+            request = extractRequestToAdmin(resultSet, language);
         }
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return request;
     }
 
     @Override
-    public RequestToAdmin readByNumber(int number, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
-        RequestToAdmin request = null;
+    public List<RequestToAdmin> readByStatus(RequestStatus requestStatus, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_REQUEST_BY_STATUS);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_BY_NUMBER);
+        int k = 1;
+        statement.setInt(k++, requestStatus.getId());
 
-            int k = 1;
-            statement.setInt(k++, number);
+        ResultSet resultSet = statement.executeQuery();
 
-            resultSet = statement.executeQuery();
-
-            if (resultSet.next()) {
-                request = extractRequestToAdmin(resultSet, language);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
-        }
-        return request;
-    }
-
-    @Override
-    public List<RequestToAdmin> readByStatus(RequestStatus requestStatus, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
         List<RequestToAdmin> requests = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_BY_STATUS);
-
-            int k = 1;
-            statement.setInt(k++, requestStatus.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                RequestToAdmin request = extractRequestToAdmin(resultSet, language);
-                requests.add(request);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            RequestToAdmin request = extractRequestToAdmin(resultSet, language);
+            requests.add(request);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return requests;
     }
 
     @Override
-    public List<RequestToAdmin> readByDate(String date, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<RequestToAdmin> readByDate(String date, Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(GET_REQUEST_BY_DATE);
+
+        int k = 1;
+        statement.setString(k++, date);
+
+        ResultSet resultSet = statement.executeQuery();
+
         List<RequestToAdmin> requests = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_BY_DATE);
-
-            int k = 1;
-            statement.setString(k++, date);
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                RequestToAdmin request = extractRequestToAdmin(resultSet, language);
-                requests.add(request);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            RequestToAdmin request = extractRequestToAdmin(resultSet, language);
+            requests.add(request);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return requests;
     }
 
     @Override
-    public List<RequestToAdmin> readByUser(User user, Language language) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-        ResultSet resultSet = null;
+    public List<RequestToAdmin> readAll(Language language) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        Statement statement = connection.createStatement();
+        ResultSet resultSet = statement.executeQuery(GET_ALL_REQUESTS);
+
         List<RequestToAdmin> requests = new ArrayList<>();
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(GET_REQUEST_BY_USER_ID);
-
-            int k = 1;
-            statement.setInt(k++, user.getId());
-
-            resultSet = statement.executeQuery();
-
-            while (resultSet.next()) {
-                RequestToAdmin request = extractRequestToAdmin(resultSet, language);
-                requests.add(request);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        while (resultSet.next()) {
+            RequestToAdmin request = extractRequestToAdmin(resultSet, language);
+            requests.add(request);
         }
+
+        DBConnection.getInstance().close(connection, statement, resultSet);
         return requests;
     }
 
     @Override
-    public List<RequestToAdmin> readAll(Language language) throws DBException {
-        Connection connection = null;
-        Statement statement = null;
-        ResultSet resultSet = null;
-        List<RequestToAdmin> requests = new ArrayList<>();
+    public boolean update(RequestToAdmin request) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_REQUEST_MESSAGE_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(GET_ALL_REQUESTS);
+        int k = 1;
+        statement.setString(k++, request.getMessage());
+        statement.setInt(k++, request.getId());
 
-            while (resultSet.next()) {
-                RequestToAdmin request = extractRequestToAdmin(resultSet, language);
-                requests.add(request);
-            }
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement, resultSet);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = true;
         }
-        return requests;
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
     @Override
-    public boolean update(RequestToAdmin request) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public boolean updateStatus(RequestToAdmin request) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_REQUEST_STATUS_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(UPDATE_REQUEST_MESSAGE_BY_ID);
+        int k = 1;
+        statement.setInt(k++, request.getRequestStatus().getId());
+        statement.setInt(k++, request.getId());
 
-            int k = 1;
-            statement.setString(k++, request.getMessage());
-            statement.setInt(k++, request.getId());
-
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = true;
         }
+
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
     @Override
-    public boolean updateStatus(RequestToAdmin request) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
+    public boolean delete(int requestId) throws Exception {
+        Connection connection = DBConnection.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(DELETE_REQUEST_BY_ID);
 
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(UPDATE_REQUEST_STATUS_BY_ID);
+        int k = 1;
+        statement.setInt(k++, requestId);
 
-            int k = 1;
-            statement.setInt(k++, request.getRequestStatus().getId());
-            statement.setInt(k++, request.getId());
-
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            result = true;
         }
+        DBConnection.getInstance().close(connection, statement);
+        return result;
     }
 
-    @Override
-    public boolean delete(int requestId) throws DBException {
-        Connection connection = null;
-        PreparedStatement statement = null;
-
-        try {
-            connection = DBConnection.getInstance().getConnection();
-            statement = connection.prepareStatement(DELETE_REQUEST_BY_ID);
-
-            int k = 1;
-            statement.setInt(k++, requestId);
-
-            if (statement.executeUpdate() > 0) {
-                return true;
-            }
-            return false;
-        } catch (SQLException e) {
-            throw new DBException(e.getMessage(), e);
-        } finally {
-            DBConnection.getInstance().close(connection, statement);
-        }
-    }
-
-    private RequestToAdmin extractRequestToAdmin(ResultSet resultSet, Language language) throws DBException {
+    private RequestToAdmin extractRequestToAdmin(ResultSet resultSet, Language language) throws Exception {
         RequestToAdmin request = new RequestToAdmin();
-        try {
-            request.setId(resultSet.getInt(ENTITY_ID));
-            request.setUser(DAOFactory.getInstance().getUserDAO().read(resultSet.getInt(REQUEST_USER_ID)));
-            request.setRequestStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, resultSet.getInt(REQUEST_STATUS_ID)));
-            request.setMessage(resultSet.getString(REQUEST_MESSAGE));
-            request.setDate(resultSet.getString(REQUEST_DATE));
-            request.setNumber(resultSet.getInt(REQUEST_NUMBER));
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
+        request.setId(resultSet.getInt(ENTITY_ID));
+        request.setUser(DAOFactory.getInstance().getUserDAO().read(resultSet.getInt(REQUEST_USER_ID)));
+        request.setRequestStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, resultSet.getInt(REQUEST_STATUS_ID)));
+        request.setMessage(resultSet.getString(REQUEST_MESSAGE));
+        request.setDate(resultSet.getString(REQUEST_DATE));
+        request.setNumber(resultSet.getInt(REQUEST_NUMBER));
         return request;
     }
 }

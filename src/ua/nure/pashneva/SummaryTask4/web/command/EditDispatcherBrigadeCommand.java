@@ -60,7 +60,7 @@ public class EditDispatcherBrigadeCommand extends Command {
             }
         } catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                    .getString("message.error.failed_edit_brigade");
+                    .getString("message.error.failed_update_brigade");
             throw new AppException(message);
         }
         LOG.trace("Command finished");

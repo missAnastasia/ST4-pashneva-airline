@@ -26,26 +26,26 @@
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="staff-name-td"><h3><fmt:message key="requests_admin_jsp.user"/></h3></td>
-                                    <td class="staff-post-td">
+                                    <td class="item-left-td"><h3><fmt:message key="requests_admin_jsp.user"/></h3></td>
+                                    <td class="item-right-td">
                                             ${request_item.getUser().getLogin()}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="staff-name-td"><h3><fmt:message key="requests_admin_jsp.request_status"/></h3></td>
-                                    <td class="staff-post-td">
+                                    <td class="item-left-td"><h3><fmt:message key="requests_admin_jsp.request_status"/></h3></td>
+                                    <td class="item-right-td">
                                             ${request_item.getRequestStatus().getName()}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="staff-name-td"><h3><fmt:message key="requests_admin_jsp.message"/></h3></td>
-                                    <td class="staff-post-td">
+                                    <td class="item-left-td"><h3><fmt:message key="requests_admin_jsp.message"/></h3></td>
+                                    <td class="item-right-td">
                                             ${request_item.getMessage()}
                                     </td>
                                 </tr>
                                 <tr>
-                                    <td class="staff-name-td"><h3><fmt:message key="requests_admin_jsp.date"/></h3></td>
-                                    <td class="staff-post-td">
+                                    <td class="item-left-td"><h3><fmt:message key="requests_admin_jsp.date"/></h3></td>
+                                    <td class="item-right-td">
                                             ${request_item.getDate()}
                                     </td>
                                 </tr>

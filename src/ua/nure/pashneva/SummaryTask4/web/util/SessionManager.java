@@ -4,12 +4,10 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.entity.Role;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
 
-import javax.servlet.ServletRequest;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import java.sql.Connection;
 
 /**
  * Class which provides opportunities to store data into session.

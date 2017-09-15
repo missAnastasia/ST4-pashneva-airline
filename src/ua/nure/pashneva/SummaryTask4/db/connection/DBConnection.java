@@ -1,10 +1,7 @@
-package ua.nure.pashneva.SummaryTask4.db;
+package ua.nure.pashneva.SummaryTask4.db.connection;
 
 import org.apache.log4j.Logger;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
-import javax.naming.Context;
-import javax.naming.InitialContext;
 import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -17,12 +14,13 @@ import java.sql.Statement;
  * @author Anastasia Pashneva
  *
  */
-public class DBConnection {
+public abstract class DBConnection {
 
     private static DBConnection instance;
+    private static String dbConnectionFCN;
     private static final Logger LOG = Logger.getLogger(DBConnection.class);
 
-    private DataSource dataSource;
+    protected DataSource dataSource;
 
     /**
      * Method for obtaining the DBConnection object. <br/>
@@ -30,58 +28,20 @@ public class DBConnection {
      *
      * @return instance of DBConnection class
      */
-    public static DBConnection getInstance() {
+    public static synchronized DBConnection getInstance() throws Exception {
         if (instance == null) {
-            instance = new DBConnection();
+            Class<?> clazz = Class.forName(DBConnection.dbConnectionFCN);
+            instance = (DBConnection) clazz.newInstance();
         }
         return instance;
     }
 
-    private DBConnection() {
+    protected DBConnection() {
     }
 
-    /**
-     * Method for obtaining Connection object.
-     *
-     * @return an instance of Connection class, which opens connection to database from datasource.
-     */
-    public Connection getConnection() throws DBException {
-        Connection conn = null;
-        try {
-            Context initContext = new InitialContext();
-            LOG.trace("InitialContext has been initialized");
-            dataSource = (DataSource) initContext.lookup("java:comp/env/jdbc/db");
-            LOG.trace("DataSource has been initialized");
-            conn = dataSource.getConnection();
-            LOG.trace("Connection has been gotten --> " + conn);
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
-        return conn;
-    }
-
-    /**
-     * Method for obtaining Connection object without autocommit.
-     *
-     * @return an instance of Connection class, which opens connection to database from datasource.
-     */
-    public Connection getConnectionWithoutAutoCommit() throws DBException {
-        Connection conn = null;
-        try {
-            Context initContext = new InitialContext();
-            LOG.trace("InitialContext has been initialized");
-            dataSource = (DataSource) initContext.lookup("java:comp/env/jdbc/db");
-            LOG.trace("DataSource has been initialized");
-            conn = dataSource.getConnection();
-            LOG.trace("Connection has been gotten --> " + conn);
-            conn.setAutoCommit(false);
-            LOG.trace("Connection autoCommit --> " + conn.getAutoCommit());
-            conn.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
-            LOG.trace("Connection transactionIsolation --> " + conn.getTransactionIsolation());
-        } catch (Exception e) {
-            throw new DBException(e.getMessage(), e);
-        }
-        return conn;
+    public static void setDBConnectionFCN(String dbConnectionFCN) {
+        instance = null;
+        DBConnection.dbConnectionFCN = dbConnectionFCN;
     }
 
     /**
@@ -169,4 +129,20 @@ public class DBConnection {
             }
         }
     }
+
+    /**
+     * Method for obtaining Connection object.
+     *
+     * @return an instance of Connection class, which opens connection to database from datasource.
+     * @throws Exception
+     */
+    public abstract Connection getConnection() throws Exception;
+
+    /**
+     * Method for obtaining Connection object without autocommit.
+     *
+     * @return an instance of Connection class, which opens connection to database from datasource.
+     * @throws Exception
+     */
+    public abstract Connection getConnectionWithoutAutoCommit() throws Exception;
 }

@@ -4,14 +4,12 @@ import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Aircraft;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
-import ua.nure.pashneva.SummaryTask4.db.entity.Post;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 

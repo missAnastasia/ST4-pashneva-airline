@@ -1,20 +1,14 @@
 package ua.nure.pashneva.SummaryTask4.web.filter;
 
 import org.apache.log4j.Logger;
-import ua.nure.pashneva.SummaryTask4.db.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.User;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
-import ua.nure.pashneva.SummaryTask4.web.util.Path;
 import ua.nure.pashneva.SummaryTask4.web.util.SessionManager;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Connection;
-import java.util.ResourceBundle;
 
 /**
  * Filter for saving cookie for session.

@@ -2,7 +2,8 @@ package ua.nure.pashneva.SummaryTask4.db.entity.search;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.db.entity.*;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 
 import java.util.*;
 
@@ -32,6 +33,7 @@ public class StaffSearcher implements Searcher<Staff> {
             Set<Staff> staffSet = new HashSet<>();
             LOG.debug("staffSet --> " + staffSet.toString());
             LOG.debug("staffList size --> " + staffList.size());
+
             for (int i = 0; i < staffList.size(); i++) {
                 int count = 0;
                 LOG.debug("for i = " + i + ", count --> " + count);
@@ -42,15 +44,18 @@ public class StaffSearcher implements Searcher<Staff> {
                         LOG.debug("count --> " + count);
                     }
                 }
+
                 if (count == params.size()) {
                     LOG.debug("if count < " + params.size());
                     staffSet.add(staffList.get(i));
                     LOG.debug("staffSet.add " + staffList.get(i).toString());
                 }
             }
+
             LOG.trace("Staff Set --> " + staffSet.toString());
             staffList = new ArrayList<>(staffSet);
         }
+
         LOG.trace("Staff List --> " + staffList.toString());
         return staffList;
     }

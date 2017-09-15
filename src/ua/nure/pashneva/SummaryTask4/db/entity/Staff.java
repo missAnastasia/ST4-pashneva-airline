@@ -1,9 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-import ua.nure.pashneva.SummaryTask4.exception.DBException;
 
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,7 +28,6 @@ public class Staff extends Entity{
         this.user = user;
         this.post = post;
     }
-
 
     public User getUser() {
         return user;

@@ -37,8 +37,8 @@ public class GetStaffFlightsPageCommand extends Command {
             LOG.trace("Language --> " + language);
             List<Flight> flights = DAOFactory.getInstance().getFlightDAO()
                     .readByStaff(DAOFactory.getInstance().getStaffDAO()
-                    .readByUserLogin(SessionManager.getLoginedUser(request.getSession())
-                    .getLogin(), language), language);
+                    .readByUserId(SessionManager.getLoginedUser(request.getSession())
+                    .getId(), language), language);
             if (flights.size() == 0) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("flights_staff_jsp.no_flights");

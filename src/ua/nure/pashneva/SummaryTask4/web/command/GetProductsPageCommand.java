@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.web.command;
 
-import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 

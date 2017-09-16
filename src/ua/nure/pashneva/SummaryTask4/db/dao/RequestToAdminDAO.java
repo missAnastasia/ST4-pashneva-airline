@@ -4,6 +4,7 @@ import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public interface RequestToAdminDAO {
      * @return object which contains values of all fields from table request_to_admin.
      * @throws Exception
      */
-    List<RequestToAdmin> readByDate(String date, Language language) throws Exception;
+    List<RequestToAdmin> readByDate(Date date, Language language) throws Exception;
 
     /**
      * Method of obtaining all requests to admin from the database.

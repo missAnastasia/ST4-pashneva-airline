@@ -52,6 +52,7 @@ public class EditAdminFlightCommand extends Command {
                 }
 
                 Flight flight = new Flight();
+                flight.setId(Integer.parseInt(flightId));
                 flight.setNumber(number);
                 flight.setFlightStatus(DAOFactory.getInstance().getFlightStatusDAO().read(currentLanguage, 10));
                 flight.setAircraft(DAOFactory.getInstance().getAircraftDAO().read(Integer.parseInt(aircraftId)));

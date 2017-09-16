@@ -7,6 +7,6 @@ import java.util.Comparator;
 public class RequestToAdminDateComparator implements Comparator<RequestToAdmin> {
     @Override
     public int compare(RequestToAdmin requestToAdmin1, RequestToAdmin requestToAdmin2) {
-        return requestToAdmin2.getDate().compareTo(requestToAdmin1.getDate());
+        return requestToAdmin1.getDate().compareTo(requestToAdmin2.getDate());
     }
 }

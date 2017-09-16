@@ -9,10 +9,7 @@ import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -81,8 +78,8 @@ public class MysqlFlightDAO implements FlightDAO {
 
         int k = 1;
         statement.setString(k++, flight.getNumber());
-        statement.setString(k++, flight.getDate());
-        statement.setString(k++, flight.getTime());
+        statement.setDate(k++, flight.getDate());
+        statement.setTime(k++, flight.getTime());
         statement.setInt(k++, flight.getFlightStatus().getId());
         statement.setInt(k++, flight.getAircraft().getId());
         statement.setNull(k++, java.sql.Types.INTEGER);
@@ -200,12 +197,12 @@ public class MysqlFlightDAO implements FlightDAO {
     }
 
     @Override
-    public List<Flight> readByDate(String date, Language language) throws Exception {
+    public List<Flight> readByDate(Date date, Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(GET_FLIGHT_BY_DATE);
 
         int k = 1;
-        statement.setString(k++, date);
+        statement.setDate(k++, date);
         statement.setInt(k++, language.getId());
 
         ResultSet resultSet = statement.executeQuery();
@@ -296,8 +293,8 @@ public class MysqlFlightDAO implements FlightDAO {
 
         int k = 1;
         statement.setString(k++, flight.getNumber());
-        statement.setString(k++, flight.getDate());
-        statement.setString(k++, flight.getTime());
+        statement.setDate(k++, flight.getDate());
+        statement.setTime(k++, flight.getTime());
         statement.setInt(k++, flight.getAircraft().getId());
         statement.setInt(k++, flight.getId());
 
@@ -402,8 +399,8 @@ public class MysqlFlightDAO implements FlightDAO {
         Flight flight = new Flight();
         flight.setId(resultSet.getInt(ENTITY_ID));
         flight.setNumber(resultSet.getString(FLIGHT_NUMBER));
-        flight.setDate(resultSet.getString(FLIGHT_DEPARTURE_DATE));
-        flight.setTime(resultSet.getString(FLIGHT_DEPARTURE_TIME));
+        flight.setDate(resultSet.getDate(FLIGHT_DEPARTURE_DATE));
+        flight.setTime(resultSet.getTime(FLIGHT_DEPARTURE_TIME));
         flight.setDeparturePoint(resultSet.getString(FLIGHT_LANG_DEPARTURE_POINT));
         flight.setArrivalPoint(resultSet.getString(FLIGHT_LANG_ARRIVAL_POINT));
         flight.setBrigade(DAOFactory.getInstance().getBrigadeDAO().read(resultSet.getInt(FLIGHT_BRIGADE_ID), language));

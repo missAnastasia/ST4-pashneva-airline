@@ -1,5 +1,7 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
+import java.sql.Date;
+
 /**
  * Objects of this class are strings from the table request_to_admin.
  *
@@ -11,7 +13,7 @@ public class RequestToAdmin extends Entity {
     private User user;
     private RequestStatus requestStatus;
     private String message;
-    private String date;
+    private Date date;
 
     public RequestToAdmin() {
     }
@@ -48,11 +50,11 @@ public class RequestToAdmin extends Entity {
         this.requestStatus = requestStatus;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 

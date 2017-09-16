@@ -7,10 +7,7 @@ import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestStatus;
 import ua.nure.pashneva.SummaryTask4.db.entity.RequestToAdmin;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +57,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
         statement.setInt(k++, request.getUser().getId());
         statement.setInt(k++, request.getRequestStatus().getId());
         statement.setString(k++, request.getMessage());
-        statement.setString(k++, request.getDate());
+        statement.setDate(k++, request.getDate());
 
         boolean result = false;
         if (statement.executeUpdate() > 0) {
@@ -111,12 +108,12 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
     }
 
     @Override
-    public List<RequestToAdmin> readByDate(String date, Language language) throws Exception {
+    public List<RequestToAdmin> readByDate(Date date, Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(GET_REQUEST_BY_DATE);
 
         int k = 1;
-        statement.setString(k++, date);
+        statement.setDate(k++, date);
 
         ResultSet resultSet = statement.executeQuery();
 
@@ -204,7 +201,7 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
         request.setUser(DAOFactory.getInstance().getUserDAO().read(resultSet.getInt(REQUEST_USER_ID)));
         request.setRequestStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, resultSet.getInt(REQUEST_STATUS_ID)));
         request.setMessage(resultSet.getString(REQUEST_MESSAGE));
-        request.setDate(resultSet.getString(REQUEST_DATE));
+        request.setDate(resultSet.getDate(REQUEST_DATE));
         request.setNumber(resultSet.getInt(REQUEST_NUMBER));
         return request;
     }

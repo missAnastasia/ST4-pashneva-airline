@@ -42,12 +42,11 @@ public class AddDispatcherRequestCommand extends Command {
                 requestToAdmin.setMessage(requestMessage);
 
                 Date currentDate = new Date();
-                DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                String date = dateFormat.format(currentDate);
+                java.sql.Date date = new java.sql.Date(currentDate.getTime());
                 requestToAdmin.setDate(date);
                 LOG.trace("Date --> " + requestToAdmin.getDate());
 
-                dateFormat = new SimpleDateFormat("yyyyMMdd");
+                DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd");
                 StringBuilder number = new StringBuilder();
                 number.append(dateFormat.format(currentDate));
                 LOG.trace("Number --> " + number.toString());

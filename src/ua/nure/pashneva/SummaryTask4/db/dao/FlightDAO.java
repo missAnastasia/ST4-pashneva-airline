@@ -5,6 +5,7 @@ import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 
+import java.sql.Date;
 import java.util.List;
 
 /**
@@ -70,7 +71,7 @@ public interface FlightDAO {
      * @return collection (List) of flights with adjusted date.
      * @throws Exception
      */
-    List<Flight> readByDate(String date, Language language) throws Exception;
+    List<Flight> readByDate(Date date, Language language) throws Exception;
 
     /**
      * Method of obtaining a flight from the database.

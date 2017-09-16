@@ -3,6 +3,11 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 
+import java.sql.Date;
+import java.sql.Time;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,8 +19,8 @@ import java.util.List;
  */
 public class Flight extends Entity {
     private String number;
-    private String date;
-    private String time;
+    private Date date;
+    private Time time;
     private String departurePoint;
     private String arrivalPoint;
     private Brigade brigade;
@@ -35,19 +40,19 @@ public class Flight extends Entity {
         this.number = number;
     }
 
-    public String getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
-    public String getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 
@@ -135,16 +140,22 @@ public class Flight extends Entity {
                 '}';
     }
 
-    public static String getDateFromString(String input) {
-        return input.split("T")[0];
+    public static java.sql.Date getDateFromString(String input) throws ParseException {
+        String date = input.split("T")[0];
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        return new Date(dateFormat.parse(date).getTime());
     }
 
-    public static String getTimeFromString(String input) {
-        return input.split("T")[1];
+    public static Time getTimeFromString(String input) throws ParseException {
+        String time = input.split("T")[1];
+        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+        return new Time(dateFormat.parse(time).getTime());
     }
 
-    public static String getDateAndTimeFromStrings(String inputDate, String inputTime) {
-        return inputDate + "T" + inputTime;
+    public static String getDateAndTimeFromStrings(java.sql.Date inputDate, java.sql.Time inputTime) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        DateFormat timeFormat = new SimpleDateFormat("hh:mm");
+        return dateFormat.format(inputDate) + "T" + timeFormat.format(inputTime);
     }
 
     public List<Brigade> getAvailableBrigades(Language language) throws Exception {

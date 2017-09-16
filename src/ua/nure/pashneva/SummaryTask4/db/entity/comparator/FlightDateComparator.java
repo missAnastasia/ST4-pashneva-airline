@@ -14,7 +14,7 @@ public class FlightDateComparator implements Comparator<Flight> {
 
     @Override
     public int compare(Flight flight1, Flight flight2) {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
+        /*SimpleDateFormat format = new SimpleDateFormat("yyyy-mm-dd");
         Date parsed1 = new Date();
         Date parsed2 = new Date();
         try {
@@ -22,7 +22,7 @@ public class FlightDateComparator implements Comparator<Flight> {
             parsed2 = format.parse(flight2.getDate());
         } catch (ParseException e) {
             LOG.trace(e.getMessage());
-        }
-        return parsed2.compareTo(parsed1);
+        }*/
+        return flight2.getDate().compareTo(flight1.getDate());
     }
 }

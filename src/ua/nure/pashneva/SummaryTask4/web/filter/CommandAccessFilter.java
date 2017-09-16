@@ -83,18 +83,15 @@ public class CommandAccessFilter implements Filter {
 
 	public void init(FilterConfig fConfig) throws ServletException {
 		LOG.debug("Filter initialization starts");
-		
-		// roles
+
 		accessMap.put(Role.ADMIN, asList(fConfig.getInitParameter("admin")));
 		accessMap.put(Role.STAFF, asList(fConfig.getInitParameter("staff")));
 		accessMap.put(Role.DISPATCHER, asList(fConfig.getInitParameter("dispatcher")));
 		LOG.trace("Access map --> " + accessMap);
 
-		// commons
 		commons = asList(fConfig.getInitParameter("common"));
 		LOG.trace("Common commands --> " + commons);
 
-		// out of control
 		outOfControl = asList(fConfig.getInitParameter("out-of-control"));
 		LOG.trace("Out of control commands --> " + outOfControl);
 		
@@ -115,5 +112,4 @@ public class CommandAccessFilter implements Filter {
 		}
 		return list;		
 	}
-	
 }

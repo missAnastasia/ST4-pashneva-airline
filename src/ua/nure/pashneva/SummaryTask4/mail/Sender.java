@@ -54,23 +54,22 @@ class Sender {
                 return new PasswordAuthentication(userName, password);
             }
         });
+
         LOG.debug("Creating message");
-            Message message = new MimeMessage(session);
-            //от кого
-            message.setFrom(new InternetAddress(userName));
-            LOG.trace("Sending from -->" + userName);
-            //кому
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
+        Message message = new MimeMessage(session);
+        message.setFrom(new InternetAddress(userName));
+        LOG.trace("Sending from -->" + userName);
+
+        message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
         LOG.trace("Sending to -->" + toEmail);
-            //тема сообщения
-            message.setSubject(subject);
+
+        message.setSubject(subject);
         LOG.trace("Message subject -->" + subject);
-            //текст
-            message.setText(text);
+
+        message.setText(text);
         LOG.trace("Message text -->" + text);
 
-            //отправляем сообщение
-            Transport.send(message);
+        Transport.send(message);
         LOG.debug("Message sent");
     }
 }

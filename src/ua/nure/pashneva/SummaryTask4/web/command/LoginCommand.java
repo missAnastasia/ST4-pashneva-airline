@@ -41,7 +41,6 @@ public class LoginCommand extends Command {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
-		// obtain login and password from a request
 
 		String login = request.getParameter("login");
 		LOG.trace("Request parameter: login --> " + login);
@@ -90,7 +89,7 @@ public class LoginCommand extends Command {
             throw new AppException("Wrong captcha!");
         }*/
 
-        SessionManager.storeLoginedUser(session, user, userRole);
+        SessionManager.storeAuthorizedUser(session, user, userRole);
         //session.setAttribute("user", user);
         LOG.trace("Set the session attribute: user --> " + user);
 

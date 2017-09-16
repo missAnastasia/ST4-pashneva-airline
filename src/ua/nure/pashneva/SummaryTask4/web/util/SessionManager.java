@@ -27,16 +27,15 @@ public class SessionManager {
      * Method for storing user that is logged in system.
      *
      * @param session object of HttpSession for storing the user.
-     * @param loginedUser object that contains data of logged in user.
+     * @param user object that contains data of logged in user.
      * @param userRole object which contains value of user role.
      */
-    public static void storeLoginedUser(HttpSession session, User loginedUser, Role userRole) {
-        session.setAttribute("user", loginedUser);
-        LOG.trace("Logined user has been saved into session --> " + loginedUser);
+    public static void storeAuthorizedUser(HttpSession session, User user, Role userRole) {
+        session.setAttribute("user", user);
+        LOG.trace("User has been saved into session --> " + user);
         session.setAttribute("userRole", userRole);
         LOG.trace("User role has been saved into session --> " + userRole);
     }
-
 
     /**
      * Method for obtaining the logged in user object.
@@ -44,19 +43,13 @@ public class SessionManager {
      * @param session object of HttpSession which contains user object as attribute.
      * @return object which contains data of logged in user.
      */
-    public static User getLoginedUser(HttpSession session) {
-        User loginedUser = (User) session.getAttribute("user");
-        return loginedUser;
+    public static User getAuthorizedUser(HttpSession session) {
+        return (User) session.getAttribute("user");
     }
 
     public static void storeUserToConfirmNewPassword(HttpSession session, User userToConfirm) {
         session.setAttribute("userToConfirm", userToConfirm);
         LOG.trace("User to confirm has been saved in session --> " + userToConfirm);
-    }
-
-    public static User getUserToConfirmPassword(HttpSession session) {
-        User userToConfirm = (User) session.getAttribute("userToConfirm");
-        return userToConfirm;
     }
 
     /**
@@ -68,7 +61,6 @@ public class SessionManager {
     public static void storeUserCookie(HttpServletResponse response, User user) {
         LOG.debug("Saving user cookie starts");
         Cookie cookieUserName = new Cookie(ATT_NAME_USER_NAME, user.getLogin());
-        // 1 day (Convert to seconds)
         cookieUserName.setMaxAge(COOKIE_MAX_AGE);
         response.addCookie(cookieUserName);
         LOG.debug("Saving user cookie finished");

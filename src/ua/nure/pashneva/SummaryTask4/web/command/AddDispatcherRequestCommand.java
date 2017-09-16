@@ -61,7 +61,7 @@ public class AddDispatcherRequestCommand extends Command {
                 requestToAdmin.setNumber(Integer.parseInt(number.toString()));
                 LOG.trace("Number --> " + requestToAdmin.getNumber());
 
-                requestToAdmin.setUser(SessionManager.getLoginedUser(request.getSession()));
+                requestToAdmin.setUser(SessionManager.getAuthorizedUser(request.getSession()));
                 LOG.trace("Request to admin from user --> " + requestToAdmin.getUser());
 
                 requestToAdmin.setRequestStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, 3));

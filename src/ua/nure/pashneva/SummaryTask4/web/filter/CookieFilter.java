@@ -25,7 +25,8 @@ public class CookieFilter implements Filter {
 
     @Override
     public void init(FilterConfig fConfig) throws ServletException {
-
+        LOG.debug("Filter initialization starts");
+        LOG.debug("Filter initialization finished");
     }
 
     @Override
@@ -43,7 +44,7 @@ public class CookieFilter implements Filter {
         LOG.trace("Request uri --> " + req.getRequestURI());
 
         HttpSession session = req.getSession();
-        User userInSession = SessionManager.getLoginedUser(session);
+        User userInSession = SessionManager.getAuthorizedUser(session);
         LOG.trace("userInSession --> " + userInSession);
         if (userInSession != null) {
             LOG.debug("userInSession checking starts");
@@ -60,7 +61,7 @@ public class CookieFilter implements Filter {
                     User user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
                     LOG.trace("user --> " + user);
                     LOG.trace("user role --> " + user.getRole());
-                    SessionManager.storeLoginedUser(session, user, user.getRole());
+                    SessionManager.storeAuthorizedUser(session, user, user.getRole());
                 } catch (Exception e) {
                     throw new ServletException(e.getMessage(), e);
                 }

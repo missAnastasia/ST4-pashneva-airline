@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.dao.FlightDAO;
@@ -18,11 +17,9 @@ import java.util.List;
  * Implementation for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlFlightDAO implements FlightDAO {
 
-    private static final Logger LOG = Logger.getLogger(MysqlFlightDAO.class);
     /**
      * String fields which contain sql queries to tables flights,
      * flights_lang, flight_statuses, flight_statuses_lang,
@@ -62,11 +59,9 @@ public class MysqlFlightDAO implements FlightDAO {
     @Override
     public boolean create(Flight flight, Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnectionWithoutAutoCommit();
-        LOG.debug("statement.executeUpdate() > 0");
 
         boolean result = false;
         if (flight.getId() != 0) {
-            LOG.debug("statement.executeUpdate() > 0");
             result = create(connection, flight, language);
             DBConnection.getInstance().close(connection);
             return result;
@@ -74,7 +69,6 @@ public class MysqlFlightDAO implements FlightDAO {
 
         PreparedStatement statement = connection.prepareStatement(ADD_FLIGHT,
                 Statement.RETURN_GENERATED_KEYS);
-        LOG.debug("statement.executeUpdate() > 0");
 
         int k = 1;
         statement.setString(k++, flight.getNumber());
@@ -83,34 +77,13 @@ public class MysqlFlightDAO implements FlightDAO {
         statement.setInt(k++, flight.getFlightStatus().getId());
         statement.setInt(k++, flight.getAircraft().getId());
         statement.setNull(k++, java.sql.Types.INTEGER);
-        LOG.debug("statement.executeUpdate() > 0");
 
         if (statement.executeUpdate() > 0) {
-            LOG.debug("statement.executeUpdate() > 0");
             MysqlDAOFactory.setGeneratedId(flight, statement);
             result =  create(connection, flight, language);
         }
 
         DBConnection.getInstance().close(connection, statement);
-        return result;
-    }
-
-    private boolean create(Connection connection, Flight flight, Language language) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(ADD_FLIGHT_LANG);
-
-        int k = 1;
-        statement.setInt(k++, flight.getId());
-        statement.setInt(k++, language.getId());
-        statement.setString(k++, flight.getDeparturePoint());
-        statement.setString(k++, flight.getArrivalPoint());
-
-        boolean result = false;
-        if (statement.executeUpdate() > 0) {
-            connection.commit();
-            result = true;
-        } else {
-            DBConnection.getInstance().rollback(connection);
-        }
         return result;
     }
 
@@ -307,25 +280,6 @@ public class MysqlFlightDAO implements FlightDAO {
         return result;
     }
 
-    private boolean update(Connection connection, Flight flight, Language language) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_LANG_BY_ID);
-
-        int k = 1;
-        statement.setString(k++, flight.getDeparturePoint());
-        statement.setString(k++, flight.getArrivalPoint());
-        statement.setInt(k++, flight.getId());
-        statement.setInt(k++, language.getId());
-
-        boolean result = false;
-        if (statement.executeUpdate() > 0) {
-            connection.commit();
-            result = true;
-        } else {
-            DBConnection.getInstance().rollback(connection);
-        }
-        return result;
-    }
-
     @Override
     public boolean updateBrigade(Flight flight, Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -379,6 +333,70 @@ public class MysqlFlightDAO implements FlightDAO {
         return result;
     }
 
+    /**
+     * Private method for adding localized flight data into table flights_lang.
+     *
+     * @param connection object with information about connection to database.
+     * @param flight object with localized flight data.
+     * @param language object of Language class which contains data of current locale.
+     * @return true - localized flight data added to database, otherwise - false.
+     * @throws Exception
+     */
+    private boolean create(Connection connection, Flight flight, Language language) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(ADD_FLIGHT_LANG);
+
+        int k = 1;
+        statement.setInt(k++, flight.getId());
+        statement.setInt(k++, language.getId());
+        statement.setString(k++, flight.getDeparturePoint());
+        statement.setString(k++, flight.getArrivalPoint());
+
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            connection.commit();
+            result = true;
+        } else {
+            DBConnection.getInstance().rollback(connection);
+        }
+        return result;
+    }
+
+    /**
+     * Private method for updating localized flight data in table flights_lang.
+     *
+     * @param connection object with information about connection to database.
+     * @param flight object with localized flight data.
+     * @param language object of Language class which contains data of current locale.
+     * @return true - localized flight data updated in database, otherwise - false.
+     * @throws Exception
+     */
+    private boolean update(Connection connection, Flight flight, Language language) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_LANG_BY_ID);
+
+        int k = 1;
+        statement.setString(k++, flight.getDeparturePoint());
+        statement.setString(k++, flight.getArrivalPoint());
+        statement.setInt(k++, flight.getId());
+        statement.setInt(k++, language.getId());
+
+        boolean result = false;
+        if (statement.executeUpdate() > 0) {
+            connection.commit();
+            result = true;
+        } else {
+            DBConnection.getInstance().rollback(connection);
+        }
+        return result;
+    }
+
+    /**
+     * Private method for deleting localized flight data from table flights_lang.
+     *
+     * @param connection object with information about connection to database.
+     * @param flightId flight identifier which data must be deleted from table flights_lang.
+     * @return true - localized flight data deleted from database, otherwise - false.
+     * @throws Exception
+     */
     private boolean deleteFlight(Connection connection, int flightId) throws Exception {
         PreparedStatement statement = connection.prepareStatement(DELETE_FLIGHT_BY_ID);
 
@@ -395,6 +413,15 @@ public class MysqlFlightDAO implements FlightDAO {
         return result;
     }
 
+    /**
+     * Private method for obtaining flight data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from tables
+     *                  flights and flights_lang.
+     * @param language object of Language class which contains data about current locale.
+     * @return object of Flight which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private Flight extractFlight(ResultSet resultSet, Language language) throws Exception {
         Flight flight = new Flight();
         flight.setId(resultSet.getInt(ENTITY_ID));

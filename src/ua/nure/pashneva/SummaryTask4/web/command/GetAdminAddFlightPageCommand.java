@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Command for obtaining adminAddFlightView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminAddFlightPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminAddFlightPageCommand.class);
@@ -20,12 +25,14 @@ public class GetAdminAddFlightPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
         try {
             List<Language> languages = DAOFactory.getInstance().getLanguageDAO().readAll();
-            LOG.trace("Languages --> " + languages);
+            LOG.trace("Attribute languages --> " + languages);
             request.setAttribute("languages", languages);
+
             List<Aircraft> aircraft = DAOFactory.getInstance().getAircraftDAO().readAll();
-            LOG.trace("Aircraft --> " + aircraft);
+            LOG.trace("Attribute aircraft --> " + aircraft);
             request.setAttribute("aircraft", aircraft);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);

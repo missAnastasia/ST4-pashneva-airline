@@ -8,7 +8,6 @@ import java.util.List;
  * The data manipulation interface in the table languages.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface LanguageDAO {
 

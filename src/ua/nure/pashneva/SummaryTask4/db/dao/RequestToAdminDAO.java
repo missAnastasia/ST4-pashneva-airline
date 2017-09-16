@@ -11,7 +11,6 @@ import java.util.List;
  * The data manipulation interface in the table request_to_admin.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface RequestToAdminDAO {
     /**
@@ -29,6 +28,7 @@ public interface RequestToAdminDAO {
      * Method of obtaining a request to admin from the database.
      *
      * @param id request identifier (primary unique key)
+     * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table request_to_admin.
      * @throws Exception
      */
@@ -39,6 +39,7 @@ public interface RequestToAdminDAO {
      *
      * @param requestStatus object of RequestStatus enum which contains
      *                      value of request status (completed/rejected).
+     * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table request_to_admin.
      * @throws Exception
      */
@@ -48,6 +49,7 @@ public interface RequestToAdminDAO {
      * Method of obtaining a request to admin from the database.
      *
      * @param date date of request creation
+     * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table request_to_admin.
      * @throws Exception
      */
@@ -56,6 +58,7 @@ public interface RequestToAdminDAO {
     /**
      * Method of obtaining all requests to admin from the database.
      *
+     * @param language object of Language class which contains data of current locale.
      * @return collection (List) of all users.
      * @throws Exception
      */

@@ -30,13 +30,9 @@ class Sender {
      */
     private Properties serverProperties = new Properties();
 
-    private static final Logger LOG = Logger.getLogger(Sender.class);
-
-    public Sender(String userName, String password, Properties serverProperties) {
+    Sender(String userName, String password, Properties serverProperties) {
         this.userName = userName;
-        LOG.trace("UserName -->" + userName);
         this.password = password;
-        LOG.trace("Password -->" + password);
         this.serverProperties = serverProperties;
     }
 
@@ -55,21 +51,12 @@ class Sender {
             }
         });
 
-        LOG.debug("Creating message");
         Message message = new MimeMessage(session);
         message.setFrom(new InternetAddress(userName));
-        LOG.trace("Sending from -->" + userName);
-
         message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(toEmail));
-        LOG.trace("Sending to -->" + toEmail);
-
         message.setSubject(subject);
-        LOG.trace("Message subject -->" + subject);
-
         message.setText(text);
-        LOG.trace("Message text -->" + text);
 
         Transport.send(message);
-        LOG.debug("Message sent");
     }
 }

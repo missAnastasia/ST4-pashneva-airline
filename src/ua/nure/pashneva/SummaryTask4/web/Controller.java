@@ -16,7 +16,6 @@ import java.io.IOException;
  * Main servlet controller.
  * 
  * @author Anastasia Pashneva
- * 
  */
 public class Controller extends HttpServlet {
 	

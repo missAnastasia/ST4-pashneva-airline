@@ -1,12 +1,12 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
 /**
- * Objects of this enum are strings from table request_statuses.
+ * Objects of this class are strings from table request_statuses.
  *
  * @author Anastasia Pashneva
- *
  */
 public class  RequestStatus extends Entity {
+
     private String name;
 
     public RequestStatus() {

@@ -16,6 +16,11 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for confirmation of changing user password in database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class ConfirmNewPasswordCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(ConfirmNewPasswordCommand.class);
@@ -23,6 +28,7 @@ public class ConfirmNewPasswordCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
         HttpSession session = request.getSession();
         String locale = (String) Config.get(session, Config.FMT_LOCALE);
         if (locale == null) {
@@ -31,21 +37,26 @@ public class ConfirmNewPasswordCommand extends Command {
         }
 
         User userToConfirm = (User) session.getAttribute("userToConfirm");
+        LOG.trace("Attribute userToConfirm  --> " + userToConfirm);
         String login = request.getParameter("login");
+        LOG.trace("Parameter login --> " + login);
+
         if (userToConfirm == null ||
                 login == null || login.isEmpty() || !login.equals(userToConfirm.getLogin())) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_to_confirm");
             throw new AppException(message);
         } else {
-            /*userToConfirm.setUserStatus(UserStatus.UNBLOCKED);*/
             try {
+                LOG.trace("User --> " + userToConfirm);
                 DAOFactory.getInstance().getUserDAO().updatePassword(userToConfirm);
             } catch (Exception e) {
                 throw new AppException(e.getMessage());
             }
         }
+        LOG.info("User updated in DB --> " + userToConfirm);
         SessionManager.storeUserToConfirmNewPassword(session, null);
+
         LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +
                 ResourceBundle.getBundle("resources", new Locale(locale))

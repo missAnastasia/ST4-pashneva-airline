@@ -16,33 +16,41 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for adding new brigade to database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class AddDispatcherBrigadeCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(AddDispatcherBrigadeCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
+        String brigadeNumber = request.getParameter("brigade_number");
+        LOG.trace("Parameter brigade_number --> " + brigadeNumber);
+
+        if (brigadeNumber == null || brigadeNumber.isEmpty()) {
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("message.error.empty_fields");
+            throw new AppException(message);
+        }
+
+        Brigade brigade = new Brigade();
+        brigade.setNumber(brigadeNumber);
+
+        String[] staffIds = request.getParameterValues("staff_id");
+
         try {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-
-            String brigadeNumber = request.getParameter("brigade_number");
-            if (brigadeNumber == null || brigadeNumber.isEmpty()) {
-                String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                        .getString("message.error.empty_fields");
-                throw new AppException(message);
-            }
-
-            Brigade brigade = new Brigade();
-            brigade.setNumber(brigadeNumber);
-
-            String[] staffIds = request.getParameterValues("staff_id");
             if (staffIds.length > 0) {
                 for (int i = 0; i < staffIds.length; i++) {
                     Staff staff = DAOFactory.getInstance().getStaffDAO().read(Integer.parseInt(staffIds[i]), language);
@@ -50,14 +58,15 @@ public class AddDispatcherBrigadeCommand extends Command {
                 }
             }
             LOG.trace("Brigade --> " + brigade);
-            DAOFactory.getInstance().getBrigadeDAO().create(brigade);
 
+            DAOFactory.getInstance().getBrigadeDAO().create(brigade);
+            LOG.info("Brigade inserted into DB --> " + brigade);
         } catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_add_brigade");
             throw new AppException(message);
         }
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_DISPATCHER_BRIGADES);
     }
 }

@@ -12,7 +12,6 @@ import java.util.List;
  * The data manipulation interface in the table flights.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface FlightDAO {
 
@@ -32,6 +31,7 @@ public interface FlightDAO {
      * Method of obtaining a flight from the database.
      *
      * @param id flight identifier (primary unique key).
+     * @param language object of Language class which contains data about current locale.
      * @return object which contains values of all fields from table flights.
      * @throws Exception
      */
@@ -41,6 +41,7 @@ public interface FlightDAO {
      * Method of obtaining a flight from the database.
      *
      * @param number flight number.
+     * @param language object of Language class which contains data about current locale.
      * @return object which contains values of all fields from table flights.
      * @throws Exception
      */
@@ -50,6 +51,7 @@ public interface FlightDAO {
      * Method of obtaining a flight from the database.
      *
      * @param departure flight point of departure (city name).
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted point of departure.
      * @throws Exception
      */
@@ -59,6 +61,7 @@ public interface FlightDAO {
      * Method of obtaining a flight from the database.
      *
      * @param arrival flight point of arrival (city name).
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted point of arrival.
      * @throws Exception
      */
@@ -67,7 +70,8 @@ public interface FlightDAO {
     /**
      * Method of obtaining a flight from the database.
      *
-     * @param date string which contains a value of flight date in format yyyy-mm-dd.
+     * @param date object of java.sql.Data which contains a value of flight date.
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted date.
      * @throws Exception
      */
@@ -78,6 +82,7 @@ public interface FlightDAO {
      *
      * @param brigade an instance of Brigade class,
      *                  which contains data of flight brigade.
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted brigade.
      * @throws Exception
      */
@@ -88,6 +93,7 @@ public interface FlightDAO {
      *
      * @param staff   an instance of Staff class,
      *                  which contains data of the staff from brigade.
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted brigade and stuff.
      * @throws Exception
      */
@@ -97,6 +103,7 @@ public interface FlightDAO {
      * Method of obtaining a flight from the database.
      *
      * @param flightStatusId flight status identifier (primary unique key).
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of flights with adjusted flight status.
      * @throws Exception
      */
@@ -105,6 +112,7 @@ public interface FlightDAO {
     /**
      * Method of obtaining all flights from the database.
      *
+     * @param language object of Language class which contains data about current locale.
      * @return collection (List) of all flights.
      * @throws Exception
      */
@@ -116,6 +124,7 @@ public interface FlightDAO {
      *
      * @param flight object that contains flight data.
      *             The identifier must be present.
+     * @param language object of Language class which contains data about current locale.
      * @return true - flight data was successfully updated in database, otherwise - false.
      * @throws Exception
      */
@@ -125,6 +134,7 @@ public interface FlightDAO {
      * Method of updating flight brigade in database. <br/>
      * Only brigade field is updated.
      *
+     * @param language object of Language class which contains data about current locale.
      * @return true - brigade was successfully updated in database, otherwise - false.
      * @throws Exception
      */
@@ -134,6 +144,7 @@ public interface FlightDAO {
      * Method of updating flight status in database. <br/>
      * Only flightStatus field is updated.
      *
+     * @param language object of Language class which contains data about current locale.
      * @return true - flight status was successfully updated in database, otherwise - false.
      * @throws Exception
      */

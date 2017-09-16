@@ -58,9 +58,7 @@
         <init-param>
             <param-name>admin</param-name>
             <param-value>
-                getEditUserPageCommand
                 changeUserStatusCommand
-                getUserAccountsPageCommand
                 getAdminNewRequestsPageCommand
                 getAdminRequestInfoPageCommand
                 changeRequestStatusCommand
@@ -128,10 +126,8 @@
         <init-param>
             <param-name>out-of-control</param-name>
             <param-value>
-                getLoginPageCommand
                 loginCommand
                 changeLocaleCommand
-                getSettingsPageCommand
                 getErrorMessagePageCommand
             </param-value>
         </init-param>

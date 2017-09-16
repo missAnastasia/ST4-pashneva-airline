@@ -11,6 +11,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implements RequestStatusDAO interface and all its methods.
+ * Implementation for MySQL DBMS.
+ *
+ * @author Anastasia Pashneva
+ */
 public class MysqlRequestStatusDAO implements RequestStatusDAO {
 
     /**
@@ -64,6 +70,14 @@ public class MysqlRequestStatusDAO implements RequestStatusDAO {
         return statuses;
     }
 
+    /**
+     * Private method for obtaining request status data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from
+     *                  tables request_statuses and request_statuses_lang.
+     * @return object of RequestStatus which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private static RequestStatus extractRequestStatus(ResultSet resultSet) throws Exception {
         RequestStatus requestStatus = new RequestStatus();
         requestStatus.setId(resultSet.getInt(ENTITY_ID));

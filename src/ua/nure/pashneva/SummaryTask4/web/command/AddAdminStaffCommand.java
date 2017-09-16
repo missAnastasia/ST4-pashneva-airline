@@ -15,7 +15,9 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
+ * Command for adding new staff to database.
  *
+ * @author Anastasia Pashneva
  */
 public class AddAdminStaffCommand extends Command {
 
@@ -23,33 +25,35 @@ public class AddAdminStaffCommand extends Command {
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
+        String login = request.getParameter("login");
+        LOG.trace("Parameter login --> " + login);
+        String password = request.getParameter("password");
+        LOG.trace("Parameter password --> " + password);
+        String firstName = request.getParameter("first_name");
+        LOG.trace("Parameter first_name --> " + firstName);
+        String secondName = request.getParameter("second_name");
+        LOG.trace("Parameter second_name --> " + secondName);
+        String postId = request.getParameter("post_id");
+        LOG.trace("Parameter post_id --> " + postId);
+
+        if (login == null || password == null || login.isEmpty() || password.isEmpty() ||
+                firstName == null || firstName.isEmpty() || secondName == null || secondName.isEmpty() ||
+                postId == null || postId.isEmpty()) {
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("message.error.empty_fields");
+            throw new AppException(message);
+        }
+
         try {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-
-            String login = request.getParameter("login");
-            LOG.trace("Login --> " + login);
-            String password = request.getParameter("password");
-            LOG.trace("Password --> " + password);
-            String firstName = request.getParameter("first_name");
-            LOG.trace("First name --> " + firstName);
-            String secondName = request.getParameter("second_name");
-            LOG.trace("Second name --> " + secondName);
-            String postId = request.getParameter("post_id");
-
-            if (login == null || password == null || login.isEmpty() || password.isEmpty() ||
-                    firstName == null || firstName.isEmpty() || secondName == null || secondName.isEmpty() ||
-                    postId == null || postId.isEmpty()) {
-                String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                        .getString("message.error.empty_fields");
-                throw new AppException(message);
-            }
 
             Post post = DAOFactory.getInstance().getPostDAO().read(language, Integer.parseInt(postId));
             LOG.trace("Post --> " + post);
@@ -61,13 +65,14 @@ public class AddAdminStaffCommand extends Command {
                 Staff staff = new Staff(user, post);
                 LOG.trace("Staff --> " + staff);
                 DAOFactory.getInstance().getStaffDAO().create(staff);
+                LOG.info("Staff inserted into DB --> " + staff);
             }
         } catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_add_staff");
             throw new AppException(message);
         }
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_ADMIN_STAFF);
     }
 }

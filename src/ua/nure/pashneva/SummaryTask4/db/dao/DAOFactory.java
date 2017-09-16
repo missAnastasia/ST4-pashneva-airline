@@ -5,7 +5,6 @@ package ua.nure.pashneva.SummaryTask4.db.dao;
  * This class allows to switch from one database to another.
  *
  * @author Anastasia Pashneva
- *
  */
 public abstract class DAOFactory {
 
@@ -52,14 +51,77 @@ public abstract class DAOFactory {
      *          which is determined by the factory settings {@link DAOFactory}.
      */
     public abstract UserDAO getUserDAO();
+
+    /**
+     * Method for obtaining DAO for the Language entity.
+     *
+     * @return The implementation of the LanguageDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract LanguageDAO getLanguageDAO();
+
+    /**
+     * Method for obtaining DAO for the Aircraft entity.
+     *
+     * @return The implementation of the AircraftDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract AircraftDAO getAircraftDAO();
+
+    /**
+     * Method for obtaining DAO for the Staff entity.
+     *
+     * @return The implementation of the StaffDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract StaffDAO getStaffDAO();
+
+    /**
+     * Method for obtaining DAO for the Brigade entity.
+     *
+     * @return The implementation of the BrigadeDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract BrigadeDAO getBrigadeDAO();
+
+    /**
+     * Method for obtaining DAO for the Flight entity.
+     *
+     * @return The implementation of the FlightDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract FlightDAO getFlightDAO();
+
+    /**
+     * Method for obtaining DAO for the RequestToAdmin entity.
+     *
+     * @return The implementation of the RequestToAdminDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract RequestToAdminDAO getRequestToAdminDAO();
+
+    /**
+     * Method for obtaining DAO for the FlightStatus entity.
+     *
+     * @return The implementation of the FlightStatusDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract FlightStatusDAO getFlightStatusDAO();
+
+    /**
+     * Method for obtaining DAO for the RequestStatus entity.
+     *
+     * @return The implementation of the RequestStatusDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract RequestStatusDAO getRequestStatusDAO();
+
+    /**
+     * Method for obtaining DAO for the Post entity.
+     *
+     * @return The implementation of the PostDAO
+     *          which is determined by the factory settings {@link DAOFactory}.
+     */
     public abstract PostDAO getPostDAO();
 
 }

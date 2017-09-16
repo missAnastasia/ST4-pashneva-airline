@@ -13,31 +13,39 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for deleting staff from database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class DeleteAdminStaffCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(DeleteAdminStaffCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
         String staffId = request.getParameter("staff_id");
-        LOG.trace("staffId --> " + staffId);
+        LOG.trace("Parameter staff_id --> " + staffId);
+
         if (staffId != null && !(staffId.isEmpty())) {
             try {
                 DAOFactory.getInstance().getStaffDAO().delete(Integer.parseInt(staffId));
+                LOG.info("Deleted from DB with staffId --> " + staffId);
             } catch (Exception e) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.error.failed_delete_staff");
                 throw new AppException(message);
             }
         }
-
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_ADMIN_STAFF);
     }
 }

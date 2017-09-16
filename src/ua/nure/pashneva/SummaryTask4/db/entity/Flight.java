@@ -15,9 +15,9 @@ import java.util.List;
  * Objects of this class are strings from the table flights.
  *
  * @author Anastasia Pashneva
- *
  */
 public class Flight extends Entity {
+
     private String number;
     private Date date;
     private Time time;
@@ -140,42 +140,47 @@ public class Flight extends Entity {
                 '}';
     }
 
+    /**
+     * Static method for obtaining java.sql.Date object with flight departure date
+     * from input string.
+     *
+     * @param input string with contains date and time in certain format.
+     * @return java.sql.Date object with flight departure date.
+     * @throws ParseException
+     */
     public static java.sql.Date getDateFromString(String input) throws ParseException {
         String date = input.split("T")[0];
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         return new Date(dateFormat.parse(date).getTime());
     }
 
+    /**
+     * Static method for obtaining java.sql.Time object with flight departure time
+     * from input string.
+     *
+     * @param input string with contains date and time in certain format.
+     * @return java.sql.Time object with flight departure time.
+     * @throws ParseException
+     */
     public static Time getTimeFromString(String input) throws ParseException {
         String time = input.split("T")[1];
         DateFormat dateFormat = new SimpleDateFormat("hh:mm");
         return new Time(dateFormat.parse(time).getTime());
     }
 
+    /**
+     * Static method for obtaining string which concatenates string values of
+     * java.sql.Date object with flight departure date and
+     * java.sql.Time object with flight departure time in certain format.
+     *
+     * @param inputDate java.sql.Date object with flight departure date.
+     * @param inputTime java.sql.Time object with flight departure time.
+     * @return string with departure date and time values.
+     * @throws ParseException
+     */
     public static String getDateAndTimeFromStrings(java.sql.Date inputDate, java.sql.Time inputTime) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
         DateFormat timeFormat = new SimpleDateFormat("hh:mm");
         return dateFormat.format(inputDate) + "T" + timeFormat.format(inputTime);
-    }
-
-    public List<Brigade> getAvailableBrigades(Language language) throws Exception {
-        List<Brigade> unavailableBrigades = new ArrayList<>();
-        List<Brigade> availableBrigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
-        LOG.trace("availableBrigades before checking --> " + availableBrigades);
-        List<Flight> sameDateFlights = DAOFactory.getInstance().getFlightDAO().readByDate(date, language);
-        LOG.trace("sameDateFlights (date: " + date + ") --> " + sameDateFlights);
-
-        for (Brigade brigade : availableBrigades) {
-            for (Flight flight : sameDateFlights) {
-                if (!(flight.equals(this)) && brigade.equals(flight.getBrigade())) {
-                    unavailableBrigades.add(brigade);
-                }
-            }
-        }
-
-        LOG.trace("unavailableBrigades --> " + unavailableBrigades);
-        availableBrigades.removeAll(unavailableBrigades);
-        LOG.trace("availableBrigades after checking --> " + availableBrigades);
-        return availableBrigades;
     }
 }

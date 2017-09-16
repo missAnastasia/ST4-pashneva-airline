@@ -13,31 +13,39 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for deleting flight from database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class DeleteAdminFlightCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(DeleteAdminFlightCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
         String flightId = request.getParameter("flight_id");
-        LOG.trace("flightId --> " + flightId);
+        LOG.trace("Parameter flight_id --> " + flightId);
+
         if (flightId != null && !(flightId.isEmpty())) {
             try {
                 DAOFactory.getInstance().getFlightDAO().delete(Integer.parseInt(flightId));
+                LOG.info("Deleted from DB with flightId --> " + flightId);
             } catch (Exception e) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.error.failed_delete_flight");
                 throw new AppException(message);
             }
         }
-
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_ADMIN_FLIGHTS);
     }
 }

@@ -11,11 +11,17 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implements FlightStatusDAO interface and all its methods.
+ * Implementation for MySQL DBMS.
+ *
+ * @author Anastasia Pashneva
+ */
 public class MysqlFlightStatusDAO implements FlightStatusDAO {
 
     /**
      * String fields which contain sql queries to tables
-     * tables flight_statuses and flight_statuses_lang of MySQL database.
+     * flight_statuses and flight_statuses_lang of MySQL database.
      */
     private static final String GET_FLIGHT_STATUS_BY_ID = "SELECT * FROM (flight_statuses f_s INNER JOIN flight_statuses_lang f_s_l ON f_s.id=f_s_l.flight_status_id) WHERE f_s.id=? AND f_s_l.lang_id=?";
     private static final String GET_ALL_STATUSES = "SELECT * FROM (flight_statuses f_s INNER JOIN flight_statuses_lang f_s_l ON f_s.id=f_s_l.flight_status_id) WHERE f_s_l.lang_id=?";
@@ -64,6 +70,14 @@ public class MysqlFlightStatusDAO implements FlightStatusDAO {
         return statuses;
     }
 
+    /**
+     * Private method for obtaining flight status data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from tables
+     *                 flight_statuses and flight_statuses_lang.
+     * @return object of FlightStatus which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private static FlightStatus extractFlightStatus(ResultSet resultSet) throws Exception {
         FlightStatus flightStatus = new FlightStatus();
         flightStatus.setId(resultSet.getInt(ENTITY_ID));

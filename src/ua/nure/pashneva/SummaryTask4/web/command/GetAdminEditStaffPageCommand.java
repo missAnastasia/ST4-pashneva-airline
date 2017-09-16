@@ -15,6 +15,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Command for obtaining adminEditStaffView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminEditStaffPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminEditStaffPageCommand.class);
@@ -22,25 +27,32 @@ public class GetAdminEditStaffPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String staffId = request.getParameter("staff_id");
+        LOG.trace("Parameter staff_id --> " + staffId);
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String staffId = request.getParameter("staff_id");
-            LOG.trace("staffId --> " + staffId);
+
             Staff staff = new Staff();
             if (staffId != null && !(staffId.isEmpty())) {
                 staff = DAOFactory.getInstance().getStaffDAO().read(Integer.parseInt(staffId), language);
             }
-            LOG.trace("Staff --> " + staff);
+
+            LOG.trace("Attribute staff_item --> " + staff);
             request.setAttribute("staff_item", staff);
+
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
-            LOG.trace("Posts --> " + posts);
+            LOG.trace("Attribute posts --> " + posts);
             request.setAttribute("posts", posts);
+
+            LOG.info("Staff to update --> " + staff);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

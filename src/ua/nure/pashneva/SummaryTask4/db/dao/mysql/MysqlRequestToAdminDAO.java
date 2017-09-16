@@ -16,7 +16,6 @@ import java.util.List;
  * Implementation for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
 
@@ -26,10 +25,8 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
      */
     private static final String GET_ALL_REQUESTS = "SELECT * FROM requests_to_admin";
     private static final String GET_REQUEST_BY_ID = "SELECT * FROM requests_to_admin WHERE id=?";
-    private static final String GET_REQUEST_BY_NUMBER = "SELECT * FROM requests_to_admin WHERE number=?";
     private static final String GET_REQUEST_BY_STATUS = "SELECT * FROM requests_to_admin WHERE request_status_id=?";
     private static final String GET_REQUEST_BY_DATE = "SELECT * FROM requests_to_admin WHERE date=?";
-    private static final String GET_REQUEST_BY_USER_ID = "SELECT * FROM requests_to_admin WHERE user_id=?";
     private static final String ADD_REQUEST = "INSERT INTO requests_to_admin VALUE(DEFAULT, ?, ?, ?, ?, ?)";
     private static final String UPDATE_REQUEST_STATUS_BY_ID = "UPDATE requests_to_admin SET request_status_id=? WHERE id=?";
     private static final String UPDATE_REQUEST_MESSAGE_BY_ID = "UPDATE requests_to_admin SET message=? WHERE id=?";
@@ -195,6 +192,15 @@ public class MysqlRequestToAdminDAO implements RequestToAdminDAO {
         return result;
     }
 
+    /**
+     * Private method for obtaining request to admin data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from
+     *                  table requests_to_admin.
+     * @param language object of Language class which contains data about current locale.
+     * @return object of RequestToAdmin which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private RequestToAdmin extractRequestToAdmin(ResultSet resultSet, Language language) throws Exception {
         RequestToAdmin request = new RequestToAdmin();
         request.setId(resultSet.getInt(ENTITY_ID));

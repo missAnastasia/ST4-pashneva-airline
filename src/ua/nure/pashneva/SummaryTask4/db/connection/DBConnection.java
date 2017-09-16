@@ -9,24 +9,37 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 /**
- * Class that provides the ability to receive and close a connection to a database.
+ * Abstract class that provides the ability to receive and close connections
+ * to databases of different DBMS from DBConnection implementations.
  *
  * @author Anastasia Pashneva
- *
  */
 public abstract class DBConnection {
 
-    private static DBConnection instance;
-    private static String dbConnectionFCN;
     private static final Logger LOG = Logger.getLogger(DBConnection.class);
 
+    /**
+     * Private static class field that stores the DBConnection object.
+     */
+    private static DBConnection instance;
+
+    /**
+     * Private static class field that contains the full qualified class name
+     * whose object will return {@link #getInstance()}.
+     */
+    private static String dbConnectionFCN;
+
+    /**
+     * Protected class field with obtained by implementation DataSource object.
+     */
     protected DataSource dataSource;
 
     /**
      * Method for obtaining the DBConnection object. <br/>
-     * Only one instance of the class is created.
+     * The class settings determines which DBConnection implementation will be returned.
      *
-     * @return instance of DBConnection class
+     * @return an instance of the DBConnection child whose name is contained in {@link #dbConnectionFCN}.
+     * @throws Exception
      */
     public static synchronized DBConnection getInstance() throws Exception {
         if (instance == null) {
@@ -84,7 +97,7 @@ public abstract class DBConnection {
     }
 
     /**
-     * Method for closing statement.
+     * Private method for closing statement.
      *
      * @param statement object which is an instance of Statement class.
      */
@@ -99,7 +112,7 @@ public abstract class DBConnection {
     }
 
     /**
-     * Method for closing result set.
+     * Private method for closing result set.
      *
      * @param resultSet object that contains data set obtained from database.
      */

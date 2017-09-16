@@ -15,6 +15,12 @@ import java.io.IOException;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for preparing to change user password in database
+ * by sending confirmation message to user e-mail address.
+ *
+ * @author Anastasia Pashneva
+ */
 public class ChangePasswordCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(ChangePasswordCommand.class);
@@ -23,8 +29,6 @@ public class ChangePasswordCommand extends Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
 
-        // obtain login and password from a request
-
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
@@ -32,10 +36,10 @@ public class ChangePasswordCommand extends Command {
         }
 
         String newPassword = request.getParameter("new_password");
-        LOG.trace("Request parameter: newPassword --> " + newPassword);
+        LOG.trace("Parameter new_password --> " + newPassword);
 
         String oldPassword = request.getParameter("old_password");
-        LOG.trace("Request parameter: oldPassword --> " + oldPassword);
+        LOG.trace("Parameter old_password --> " + oldPassword);
 
 
         if (oldPassword == null || oldPassword.isEmpty() ||
@@ -63,19 +67,13 @@ public class ChangePasswordCommand extends Command {
 
         try {
             SessionManager.storeUserToConfirmNewPassword(request.getSession(), user);
-            //boolean success = DAOFactory.getInstance().getUserDAO().updatePassword(user);
-            //LOG.trace("Request parameter: update user --> " + success);
+            LOG.trace("Stored into session: user --> " + user);
         } catch (Exception e) {
             throw new AppException(e.getMessage());
         }
 
-        //LOG.trace("Update in DB: user --> " + user);
-
-        LOG.trace("Stored into session: user --> " + user);
-
-        LOG.debug("Sending email to --> " + user.getLogin());
-
         MailManager.sendNewPasswordConfirmationMail(user.getLogin(), request);
+        LOG.info("Sent email to --> " + user.getLogin());
 
         LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_MESSAGE_SUCCESS +

@@ -9,7 +9,6 @@ import java.util.List;
  * The data manipulation interface in the tables flight_statuses and flight_statuses_lang.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface FlightStatusDAO {
 

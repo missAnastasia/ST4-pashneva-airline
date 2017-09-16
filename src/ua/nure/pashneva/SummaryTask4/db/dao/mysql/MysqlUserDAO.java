@@ -174,6 +174,14 @@ public class MysqlUserDAO  implements UserDAO {
         return result;
     }
 
+    /**
+     * Private method for obtaining user data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from
+     *                  tables users.
+     * @return object of User which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private User extractUser(ResultSet resultSet) throws Exception {
         User user = new User();
         user.setId(resultSet.getInt(ENTITY_ID));

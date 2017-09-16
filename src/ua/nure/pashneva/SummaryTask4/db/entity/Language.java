@@ -4,7 +4,6 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  * Objects of this class are strings from the table languages.
  *
  * @author Anastasia Pashneva
- *
  */
 public class Language {
 

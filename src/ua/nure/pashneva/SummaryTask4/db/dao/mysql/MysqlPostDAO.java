@@ -11,7 +11,12 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
-
+/**
+ * Class that implements PostDAO interface and all its methods.
+ * Implementation for MySQL DBMS.
+ *
+ * @author Anastasia Pashneva
+ */
 public class MysqlPostDAO implements PostDAO {
 
     /**
@@ -65,6 +70,13 @@ public class MysqlPostDAO implements PostDAO {
         return posts;
     }
 
+    /**
+     * Private method for obtaining post data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from table posts.
+     * @return object of Post which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private static Post extractPost(ResultSet resultSet) throws Exception {
         Post post = new Post();
         post.setId(resultSet.getInt(ENTITY_ID));

@@ -4,9 +4,9 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  * Objects of this enum are strings from table roles.
  *
  * @author Anastasia Pashneva
- *
  */
 public enum Role {
+
     ADMIN,
     DISPATCHER,
     STAFF;

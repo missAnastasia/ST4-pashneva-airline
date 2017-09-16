@@ -7,9 +7,9 @@ import java.util.List;
  * Objects of this class are strings from the table brigades.
  *
  * @author Anastasia Pashneva
- *
  */
 public class Brigade extends Entity{
+
     private List<Staff> staff;
     private String number;
 

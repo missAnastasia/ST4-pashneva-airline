@@ -18,6 +18,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for obtaining adminNewRequestsView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminNewRequestsPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminNewRequestsPageCommand.class);
@@ -25,35 +30,39 @@ public class GetAdminNewRequestsPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
 
             List<RequestToAdmin> requests = DAOFactory.getInstance().getRequestToAdminDAO()
                     .readByStatus(DAOFactory.getInstance().getRequestStatusDAO().read(language, 3), language);
-
-            LOG.trace("RequestToAdmin --> " + request.toString());
 
             if (requests.size() == 0) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("requests_admin_jsp.no_requests");
                 request.setAttribute("message", message);
             }
-            /*LOG.trace("Flights --> " + flights.toString());*/
-            Comparator<RequestToAdmin> comparator = ComparatorFactory.getInstance().getRequestToAdminComparator("compare_by_creation_date");
+
+            Comparator<RequestToAdmin> comparator = ComparatorFactory.getInstance()
+                    .getRequestToAdminComparator("compare_by_creation_date");
             if (comparator != null) {
                 requests.sort(comparator);
             }
+
+            LOG.trace("Attribute requests --> " + request);
             request.setAttribute("requests", requests);
+
+            LOG.info("New requests to admin --> " + request);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        request.getRequestDispatcher(Path.PAGE_ADMIN_REQUESTS).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_ADMIN_REQUESTS).forward(request, response);
     }
 }

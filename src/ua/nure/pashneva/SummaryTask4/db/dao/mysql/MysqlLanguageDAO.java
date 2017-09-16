@@ -11,16 +11,25 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Class that implements LanguageDAO interface and all its methods.
+ * Implementation for MySQL DBMS.
+ *
+ * @author Anastasia Pashneva
+ */
 public class MysqlLanguageDAO implements LanguageDAO {
 
+    /**
+     * String fields which contain sql queries to tables
+     * table languages of MySQL database.
+     */
     private static final String GET_ALL_LANGS = "SELECT * FROM languages";
-    private static final String GET_LANG_BY_ID = "SELECT * FROM languages WHERE id=?";
     private static final String GET_LANG_BY_NAME = "SELECT * FROM languages WHERE name=?";
     private static final String GET_LANG_BY_PREFIX = "SELECT * FROM languages WHERE prefix=?";
-    private static final String ADD_LANG = "INSERT INTO languages VALUE(DEFAULT, ?, ?)";
-    private static final String UPDATE_LANG_BY_ID = "UPDATE languages SET (name=?, prefix=?) WHERE id=?";
-    private static final String DELETE_LANG_BY_ID = "DELETE FROM languages WHERE id=?";
 
+    /**
+     * String fields which contain column names of table languages.
+     */
     private static final String ENTITY_ID = "id";
     private static final String LANG_NAME = "name";
     private static final String LANG_PREFIX = "prefix";
@@ -78,6 +87,13 @@ public class MysqlLanguageDAO implements LanguageDAO {
         return languages;
     }
 
+    /**
+     * Private method for obtaining language data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from table languages.
+     * @return object of Language which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private Language extractLanguage(ResultSet resultSet) throws Exception {
         Language language = new Language();
         language.setId(resultSet.getInt(ENTITY_ID));

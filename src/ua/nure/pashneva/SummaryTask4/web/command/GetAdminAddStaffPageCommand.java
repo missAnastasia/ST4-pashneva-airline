@@ -14,6 +14,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Command for obtaining adminAddStaffView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminAddStaffPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminEditStaffPageCommand.class);
@@ -21,16 +26,19 @@ public class GetAdminAddStaffPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
         try {
             String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
             if (locale == null) {
                 locale = request.getLocale().getLanguage();
                 LOG.trace("Current locale --> " + locale);
             }
+
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
+            LOG.trace("Attribute language --> " + language);
+
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
-            LOG.trace("Posts --> " + posts);
+            LOG.trace("Attribute posts --> " + posts);
             request.setAttribute("posts", posts);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);

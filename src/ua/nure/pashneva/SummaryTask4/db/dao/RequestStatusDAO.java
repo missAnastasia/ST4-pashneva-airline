@@ -9,7 +9,6 @@ import java.util.List;
  * The data manipulation interface in the tables request_statuses and request_statuses_lang.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface RequestStatusDAO {
     /**

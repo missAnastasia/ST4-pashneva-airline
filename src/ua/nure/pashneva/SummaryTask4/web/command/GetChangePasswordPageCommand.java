@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Command for obtaining changePasswordView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetChangePasswordPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetChangePasswordPageCommand.class);

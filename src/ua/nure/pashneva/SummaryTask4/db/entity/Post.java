@@ -1,12 +1,12 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
 /**
- * Objects of this enum are strings from table posts.
+ * Objects of this class are strings from table posts.
  *
  * @author Anastasia Pashneva
- *
  */
 public class Post extends Entity {
+
     private String name;
 
     public Post() {

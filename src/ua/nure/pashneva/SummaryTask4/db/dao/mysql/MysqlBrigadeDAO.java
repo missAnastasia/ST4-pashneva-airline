@@ -4,13 +4,11 @@ import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 import ua.nure.pashneva.SummaryTask4.db.dao.BrigadeDAO;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Brigade;
+import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +17,6 @@ import java.util.List;
  * Implementation for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlBrigadeDAO implements BrigadeDAO {
 
@@ -32,10 +29,7 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     private static final String ADD_BRIGADE = "INSERT INTO brigades VALUE(DEFAULT, ?)";
     private static final String ADD_BRIGADES_STAFF = "INSERT INTO brigades_staff VALUE(DEFAULT, ?, ?)";
     private static final String UPDATE_BRIGADE_BY_ID = "UPDATE brigades SET number=? WHERE id=?";
-    private static final String UPDATE_STAFF_BY_BRIGADE_ID = "UPDATE brigades_staff SET staff_id=? WHERE brigade_id=?";
-    private static final String UPDATE_BRIGADE_BY_STAFF_ID = "UPDATE brigades_staff SET brigade_id=? WHERE staff_id=?";
     private static final String DELETE_BRIGADE_BY_ID = "DELETE FROM brigades WHERE id=?";
-    private static final String DELETE_STAFF_FROM_BRIGADE_BY_ID = "DELETE FROM brigades_staff WHERE staff_id=?";
     private static final String DELETE_ALL_STAFF_FROM_BRIGADE = "DELETE FROM brigades_staff WHERE brigade_id=?";
 
     /**
@@ -61,24 +55,6 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
 
         DBConnection.getInstance().close(connection, statement);
         return result;
-    }
-
-    private boolean addStaffToBrigade(Connection connection, Brigade brigade) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(ADD_BRIGADES_STAFF);
-
-        for (Staff staff : brigade.getStaff()) {
-            int k = 1;
-            statement.setInt(k++, brigade.getId());
-            statement.setInt(k++, staff.getId());
-
-            if (!(statement.executeUpdate() > 0)) {
-                DBConnection.getInstance().rollback(connection);
-                return false;
-            }
-        }
-
-        connection.commit();
-        return true;
     }
 
     @Override
@@ -120,6 +96,24 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
     }
 
     @Override
+    public List<Brigade> getAvailableBrigades(Date flightDate, Language language) throws Exception {
+        List<Brigade> unavailableBrigades = new ArrayList<>();
+        List<Brigade> availableBrigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
+        List<Flight> sameDateFlights = DAOFactory.getInstance().getFlightDAO().readByDate(flightDate, language);
+
+        for (Brigade brigade : availableBrigades) {
+            for (Flight flight : sameDateFlights) {
+                if (!(flight.equals(this)) && brigade.equals(flight.getBrigade())) {
+                    unavailableBrigades.add(brigade);
+                }
+            }
+        }
+
+        availableBrigades.removeAll(unavailableBrigades);
+        return availableBrigades;
+    }
+
+    @Override
     public List<Brigade> readAll(Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
         Statement statement = connection.createStatement();
@@ -156,19 +150,6 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         return result;
     }
 
-    private boolean deleteAllStaffFromBrigade(Connection connection, Brigade brigade) throws Exception {
-        PreparedStatement statement = connection.prepareStatement(DELETE_ALL_STAFF_FROM_BRIGADE);
-
-        int k = 1;
-        statement.setInt(k++, brigade.getId());
-
-        if (!(statement.executeUpdate() > 0)) {
-            DBConnection.getInstance().rollback(connection);
-            return false;
-        }
-        return true;
-    }
-
     @Override
     public boolean delete(int id) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
@@ -186,6 +167,63 @@ public class MysqlBrigadeDAO implements BrigadeDAO {
         return result;
     }
 
+    /**
+     * Private method for inserting data of belonging staff to adjusted brigade into table brigades_staff.
+     *
+     * @param connection object with information about connection to database.
+     * @param brigade object which contains data of brigade with staff whose data must be
+     *                inserted into database.
+     * @return true - brigades staff data added to table brigades_staff, otherwise - false.
+     * @throws Exception
+     */
+    private boolean addStaffToBrigade(Connection connection, Brigade brigade) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(ADD_BRIGADES_STAFF);
+
+        for (Staff staff : brigade.getStaff()) {
+            int k = 1;
+            statement.setInt(k++, brigade.getId());
+            statement.setInt(k++, staff.getId());
+
+            if (!(statement.executeUpdate() > 0)) {
+                DBConnection.getInstance().rollback(connection);
+                return false;
+            }
+        }
+
+        connection.commit();
+        return true;
+    }
+
+    /**
+     * Private method for deleting all data from the table brigades_staff with adjusted brigade.
+     *
+     * @param connection object with information about connection to database.
+     * @param brigade object which contains data of brigade with staff whose data must be
+     *                deleted from database.
+     * @return true - brigades staff data deleted from table brigades_staff, otherwise - false.
+     * @throws Exception
+     */
+    private boolean deleteAllStaffFromBrigade(Connection connection, Brigade brigade) throws Exception {
+        PreparedStatement statement = connection.prepareStatement(DELETE_ALL_STAFF_FROM_BRIGADE);
+
+        int k = 1;
+        statement.setInt(k++, brigade.getId());
+
+        if (!(statement.executeUpdate() > 0)) {
+            DBConnection.getInstance().rollback(connection);
+            return false;
+        }
+        return true;
+    }
+
+    /**
+     * Private method for obtaining brigade data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from table brigades.
+     * @param language object of Language class which contains data about current locale.
+     * @return object of Brigade which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private Brigade extractBrigade(ResultSet resultSet, Language language) throws Exception {
         Brigade brigade = new Brigade();
         brigade.setId(resultSet.getInt(ENTITY_ID));

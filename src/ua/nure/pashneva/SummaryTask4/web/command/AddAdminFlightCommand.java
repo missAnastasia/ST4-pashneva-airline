@@ -16,38 +16,42 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for adding new flight to database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class AddAdminFlightCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(AddAdminFlightCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
+        String number = request.getParameter("flight_number");
+        LOG.trace("Parameter flight_number --> " + number);
+        String aircraftId = request.getParameter("aircraft_id");
+        LOG.trace("Parameter aircraft_id --> " + aircraftId);
+        String dateTime = request.getParameter("date_time");
+        LOG.trace("Parameter date_time --> " + dateTime);
+
+        if (number == null || number.isEmpty() || aircraftId == null || aircraftId.isEmpty() || dateTime == null ||
+                dateTime.isEmpty()) {
+            String message = ResourceBundle.getBundle("resources", new Locale(locale))
+                    .getString("message.error.empty_fields");
+            throw new AppException(message);
+        }
+
         try {
             Language currentLanguage = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + currentLanguage);
-
             List<Language> languages = DAOFactory.getInstance().getLanguageDAO().readAll();
-            LOG.trace("Languages --> " + languages);
-
-            String number = request.getParameter("flight_number");
-            LOG.trace("number --> " + number);
-            String aircraftId = request.getParameter("aircraft_id");
-            LOG.trace("aircraftId --> " + aircraftId);
-            String dateTime = request.getParameter("date_time");
-            LOG.trace("dateTime --> " + dateTime);
-
-            if (number == null || number.isEmpty() || aircraftId == null || aircraftId.isEmpty() || dateTime == null ||
-                    dateTime.isEmpty()) {
-                String message = ResourceBundle.getBundle("resources", new Locale(locale))
-                        .getString("message.error.empty_fields");
-                throw new AppException(message);
-            }
 
             Flight flight = new Flight();
             flight.setNumber(number);
@@ -56,13 +60,11 @@ public class AddAdminFlightCommand extends Command {
             flight.setDate(Flight.getDateFromString(dateTime));
             flight.setTime(Flight.getTimeFromString(dateTime));
 
-            LOG.trace("Flight --> " + flight);
-
             for (Language language : languages) {
                 String langFrom = request.getParameter(language.getPrefix() + "_from");
-                LOG.trace("langFrom --> " + langFrom);
+                LOG.trace("Parameter " + language.getPrefix() + "_from --> " + langFrom);
                 String langTo = request.getParameter(language.getPrefix() + "_to");
-                LOG.trace("langTo --> " + langTo);
+                LOG.trace("Parameter " + language.getPrefix() + "_to --> " + langTo);
 
                 if (langFrom == null || langFrom.isEmpty() || langTo == null ||
                         langTo.isEmpty()){
@@ -73,16 +75,18 @@ public class AddAdminFlightCommand extends Command {
 
                 flight.setDeparturePoint(langFrom);
                 flight.setArrivalPoint(langTo);
-                LOG.trace("Flight_lang --> " + flight);
+
+                LOG.trace("Flight --> " + flight);
                 DAOFactory.getInstance().getFlightDAO().create(flight, language);
-                LOG.trace("Flight_lang --> " + flight);
+
+                LOG.info("Flight inserted into DB --> " + flight);
             }
         } catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_add_flight");
             throw new AppException(message);
         }
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         response.sendRedirect(Path.COMMAND_ADMIN_FLIGHTS);
     }
 }

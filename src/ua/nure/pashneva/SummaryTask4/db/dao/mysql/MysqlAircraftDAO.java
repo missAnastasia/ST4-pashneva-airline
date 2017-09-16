@@ -16,7 +16,6 @@ import java.util.List;
  * Implementation for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlAircraftDAO implements AircraftDAO {
 
@@ -63,10 +62,18 @@ public class MysqlAircraftDAO implements AircraftDAO {
             Aircraft aircraft = extractAircraft(resultSet);
             aircraftList.add(aircraft);
         }
+
         DBConnection.getInstance().close(connection, statement, resultSet);
         return aircraftList;
     }
 
+    /**
+     * Method for obtaining aircraft data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from table aircraft.
+     * @return object of Aircraft which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private Aircraft extractAircraft(ResultSet resultSet) throws Exception {
         Aircraft aircraft = new Aircraft();
         aircraft.setId(resultSet.getInt(ENTITY_ID));

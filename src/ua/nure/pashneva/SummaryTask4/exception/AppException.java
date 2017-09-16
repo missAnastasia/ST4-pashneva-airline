@@ -4,7 +4,6 @@ package ua.nure.pashneva.SummaryTask4.exception;
  * An exception that provides information on an application error.
  * 
  * @author Anastasia Pashneva
- * 
  */
 public class AppException extends Exception {
 

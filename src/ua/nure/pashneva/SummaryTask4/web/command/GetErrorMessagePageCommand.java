@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Command for obtaining errorMessageView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetErrorMessagePageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetErrorMessagePageCommand.class);
@@ -17,7 +22,7 @@ public class GetErrorMessagePageCommand extends Command {
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
         String message = request.getParameter("message");
-        LOG.trace("Request parameter: message --> " + message);
+        LOG.trace("Parameter message --> " + message);
         request.setAttribute("message", message);
         request.getRequestDispatcher(Path.PAGE_ERROR_PAGE).forward(request, response);
         LOG.debug("Command finished");

@@ -1,5 +1,10 @@
 package ua.nure.pashneva.SummaryTask4.db.entity.search;
 
+/**
+ * Abstract factory for obtaining SearcherFactory implementations.
+ *
+ * @author Anastasia Pashneva
+ */
 public class SearcherFactory {
     /**
      * A private class field that stores the SearcherFactory object.
@@ -25,9 +30,20 @@ public class SearcherFactory {
         return instance;
     }
 
+    /**
+     * Method for obtaining Searcher for the Flight entity.
+     *
+     * @return The implementation of the FlightSearcher.
+     */
     public FlightSearcher getFlightSearcher() {
         return new FlightSearcher();
     }
+
+    /**
+     * Method for obtaining Searcher for the Staff entity.
+     *
+     * @return The implementation of the StaffSearcher.
+     */
     public StaffSearcher getStaffSearcher() {
         return new StaffSearcher();
     }

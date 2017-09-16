@@ -9,7 +9,6 @@ import java.util.List;
  * The data manipulation interface in the table staff.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface StaffDAO {
 
@@ -28,6 +27,7 @@ public interface StaffDAO {
      * Method of obtaining a staff from the database.
      *
      * @param id staff identifier (primary unique key)
+     * @param language object of Language class which contains data of current locale.
      * @return object which contains values of all fields from table staff.
      * @throws Exception
      */
@@ -37,6 +37,7 @@ public interface StaffDAO {
      * Method of obtaining a staff from the database.
      *
      * @param postId id of staff post object.
+     * @param language object of Language class which contains data of current locale.
      * @return collection (List) of objects which contains values of all fields from table staff
      *         with adjusted post.
      * @throws Exception
@@ -47,6 +48,7 @@ public interface StaffDAO {
      * Method of obtaining a staff from the database.
      *
      * @param userId id of user
+     * @param language object of Language class which contains data of current locale.
      * @return collection (List) of objects which contains values of all fields from table staff
      *         with adjusted user login.
      * @throws Exception
@@ -57,6 +59,7 @@ public interface StaffDAO {
      * Method of obtaining a staff from the database.
      *
      * @param brigadeId id of brigade.
+     * @param language object of Language class which contains data of current locale.
      * @return collection (List) of objects which contains values of all fields from table staff
      *         with adjusted brigadeId.
      * @throws Exception
@@ -64,8 +67,19 @@ public interface StaffDAO {
     List<Staff> readByBrigadeId(int brigadeId, Language language) throws Exception;
 
     /**
+     * Method for obtaining all staff from th database who don`t belong to any brigade.
+     *
+     * @param language
+     * @param language object of Language class which contains data of current locale.
+     * @return collection (List) of objects which contains values of all fields from table staff.
+     * @throws Exception
+     */
+    List<Staff> readFreeStaff(Language language) throws Exception;
+
+    /**
      * Method of obtaining all staff from the database.
      *
+     * @param language object of Language class which contains data of current locale.
      * @return collection (List) of all staff.
      * @throws Exception
      */

@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
+/**
+ * Command for obtaining adminFlightInfoView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminFlightInfoPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminFlightInfoPageCommand.class);
@@ -20,21 +25,28 @@ public class GetAdminFlightInfoPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String flightId = request.getParameter("flight_id");
+        LOG.trace("Parameter flight_id --> " + flightId);
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String flightId = request.getParameter("flight_id");
+
             Flight flight = new Flight();
             if (flightId != null && !(flightId.isEmpty())) {
                 flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
             }
-            LOG.trace("Flight --> " + flight);
+
+            LOG.trace("Attribute flight --> " + flight);
             request.setAttribute("flight", flight);
+
+            LOG.info("Flight go obtain info --> " + flight);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

@@ -18,15 +18,13 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 
 /**
- * Login command.
- * 
- * @author D.Kolesnikov
- * 
+ * Command for proceed user log in.
+ *
+ * @author Anastasia Pashneva
  */
 public class LoginCommand extends Command {
 
 	private static final long serialVersionUID = -3071536593627692473L;
-
 	private static final Logger LOG = Logger.getLogger(LoginCommand.class);
 
 	@Override
@@ -43,10 +41,12 @@ public class LoginCommand extends Command {
         }
 
 		String login = request.getParameter("login");
-		LOG.trace("Request parameter: login --> " + login);
+		LOG.trace("Parameter login --> " + login);
 
-		String password = request.getParameter("password");
-		if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
+        String password = request.getParameter("password");
+        LOG.trace("Parameter password --> " + password);
+
+        if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
 		    String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.empty_fields");
 			throw new AppException(message);
@@ -75,69 +75,32 @@ public class LoginCommand extends Command {
         }
 
 		Role userRole = user.getRole();
-		LOG.trace("userRole --> " + userRole);
-
-		/*if (user.getUserStatus().equals(UserStatus.BLOCKED)) {
-			String message = ResourceBundle.getBundle("resources", request.getLocale())
-					.getString("message.error.blocked_account");
-			throw new AppException(message);
-		}*/
-
-        /*String userCaptchaResponse = request.getParameter("jcaptcha");
-        boolean captchaPassed = SimpleImageCaptchaServlet.validateResponse(request, userCaptchaResponse);
-        if(!captchaPassed){
-            throw new AppException("Wrong captcha!");
-        }*/
-
         SessionManager.storeAuthorizedUser(session, user, userRole);
-        //session.setAttribute("user", user);
-        LOG.trace("Set the session attribute: user --> " + user);
-
-        //session.setAttribute("userRole", userRole);
-        LOG.trace("Set the session attribute: userRole --> " + userRole);
+        LOG.trace("Set the session attribute user --> " + user);
+        LOG.trace("Set the session attribute userRole --> " + userRole);
 
         LOG.info("User " + user + " logged as " + userRole.toString().toLowerCase());
 
         String rememberMe = request.getParameter("rememberMe");
         boolean remember = "Y".equals(rememberMe);
 
-        // If user checked "Remember me".
-        if (remember)  {
+        if (remember) {
             SessionManager.storeUserCookie(response, user);
-        }
-
-		// Else delete cookie.
-		else  {
+        } else {
             SessionManager.deleteUserCookie(response);
         }
-
         LOG.debug("Command finished");
 
-        // Sending email
-        /*Sender sslSender = new Sender("miss.anastasia.1408@properties.com", "anastasia_main_mail_1408");
-        sslSender.send("This is Subject", "SSL: This is text!", "miss.anastasia.1408@properties.com", "anastasiia.pashnieva@nure.ua");
-*/
-		/*response.sendRedirect(Path.PAGE_HOME);*/
-
-        /*try {
-            System.out.println(DAOFactory.getInstance().getCarDAO().readAll().toString());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }*/
-
-
         if (userRole == Role.ADMIN) {
-            /*response.sendRedirect(Path.COMMAND_ADMIN_USER_ACCOUNTS);*/
             response.sendRedirect(Path.COMMAND_ADMIN_FLIGHTS);
         }
+
         if (userRole == Role.DISPATCHER) {
-            //forward = Path.COMMAND_LIST_MENU;
             response.sendRedirect(Path.COMMAND_DISPATCHER_FLIGHTS);
         }
+
         if (userRole == Role.STAFF) {
             response.sendRedirect(Path.COMMAND_STAFF_FLIGHTS);
 		}
-
     }
-
 }

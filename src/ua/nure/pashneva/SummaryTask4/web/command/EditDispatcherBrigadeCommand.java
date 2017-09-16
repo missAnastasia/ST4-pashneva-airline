@@ -17,26 +17,36 @@ import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for updating brigade in database.
+ *
+ * @author Anastasia Pashneva
+ */
 public class EditDispatcherBrigadeCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(EditDispatcherBrigadeCommand.class);
 
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
-        LOG.trace("Command starts");
+        LOG.debug("Command starts");
+
         String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
         if (locale == null) {
             locale = request.getLocale().getLanguage();
             LOG.trace("Current locale --> " + locale);
         }
+
+        String brigadeId = request.getParameter("brigade_id");
+        LOG.trace("Parameter brigade_id --> " + brigadeId);
+
         try {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String brigadeId = request.getParameter("brigade_id");
+
             if (brigadeId != null && !(brigadeId.isEmpty())) {
                 Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(Integer.parseInt(brigadeId), language);
 
                 String brigadeNumber = request.getParameter("brigade_number");
+                LOG.trace("Parameter brigade_number --> " + brigadeNumber);
                 if (brigadeNumber == null || brigadeNumber.isEmpty()) {
                     String message = ResourceBundle.getBundle("resources", new Locale(locale))
                             .getString("message.error.empty_fields");
@@ -47,8 +57,6 @@ public class EditDispatcherBrigadeCommand extends Command {
                 brigade.getStaff().clear();
 
                 String[] staffIds = request.getParameterValues("staff_id");
-                LOG.trace("staffIds --> " + Arrays.toString(staffIds));
-
                 if (staffIds != null && staffIds.length > 0) {
                     for (int i = 0; i < staffIds.length; i++) {
                         Staff staff = DAOFactory.getInstance().getStaffDAO().read(Integer.parseInt(staffIds[i]), language);
@@ -57,13 +65,14 @@ public class EditDispatcherBrigadeCommand extends Command {
                 }
                 LOG.trace("Brigade --> " + brigade);
                 DAOFactory.getInstance().getBrigadeDAO().update(brigade);
+                LOG.info("Brigade updated in DB --> " + brigade);
             }
         } catch (Exception e) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))
                     .getString("message.error.failed_update_brigade");
             throw new AppException(message);
         }
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         request.getRequestDispatcher(Path.COMMAND_DISPATCHER_BRIGADE_INFO).forward(request, response);
     }
 }

@@ -8,9 +8,9 @@ import java.util.List;
  * The data manipulation interface in the table aircraft.
  *
  * @author Anastasia Pashneva
- *
  */
 public interface AircraftDAO {
+
     /**
      * Method of obtaining a aircraft from the database.
      *
@@ -19,6 +19,7 @@ public interface AircraftDAO {
      * @throws Exception
      */
     Aircraft read(int id) throws Exception;
+
     /**
      * Method of obtaining a aircraft from the database.
      *

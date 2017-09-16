@@ -16,6 +16,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * Command for obtaining adminStaffView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetAdminStaffPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetAdminStaffPageCommand.class);
@@ -23,20 +28,20 @@ public class GetAdminStaffPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
-            Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
 
-            String postToSearchId = request.getParameter("post_id");
-            LOG.trace("Post to search id --> " + postToSearchId);
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String postToSearchId = request.getParameter("post_id");
+        LOG.trace("Parameter post_id --> " + postToSearchId);
+
+        try {
+            Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
 
             List<Staff> staffList = null;
-
             if (postToSearchId == null || postToSearchId.isEmpty()) {
                 staffList = DAOFactory.getInstance().getStaffDAO().readAll(language);
                 if (staffList.size() == 0) {
@@ -48,30 +53,30 @@ public class GetAdminStaffPageCommand extends Command {
                 Map<String, String> params = new HashMap<>();
                 params.put("post_id", postToSearchId);
                 staffList = SearcherFactory.getInstance().getStaffSearcher().search(language, params);
+
                 for (Map.Entry<String, String> entry : params.entrySet()) {
                     request.setAttribute(entry.getKey(), entry.getValue());
                 }
+
                 if (staffList.size() == 0) {
                     String message = ResourceBundle.getBundle("resources", new Locale(locale))
                             .getString("message.error.cannot_find_entity");
                     request.setAttribute("message", message);
                 }
             }
-            LOG.trace("Staff --> " + staffList.toString());
 
-            /*LOG.trace("Flights --> " + flights.toString());*/
-            /*Comparator<RequestToAdmin> comparator = ComparatorFactory.getInstance().getRequestToAdminComparator("compare_by_creation_date");
-            if (comparator != null) {
-                requests.sort(comparator);
-            }*/
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
-            LOG.trace("Posts --> " + posts.toString());
+            LOG.trace("Attribute posts --> " + posts);
             request.setAttribute("posts", posts);
+
+            LOG.trace("Attribute staff --> " + staffList);
             request.setAttribute("staff", staffList);
+
+            LOG.info("Staff --> " + staffList);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        request.getRequestDispatcher(Path.PAGE_ADMIN_STAFF).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_ADMIN_STAFF).forward(request, response);
     }
 }

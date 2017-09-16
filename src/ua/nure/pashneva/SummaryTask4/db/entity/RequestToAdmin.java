@@ -6,9 +6,9 @@ import java.sql.Date;
  * Objects of this class are strings from the table request_to_admin.
  *
  * @author Anastasia Pashneva
- *
  */
 public class RequestToAdmin extends Entity {
+
     private int number;
     private User user;
     private RequestStatus requestStatus;

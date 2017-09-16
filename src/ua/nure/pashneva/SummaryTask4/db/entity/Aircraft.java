@@ -1,6 +1,12 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
+/**
+ * Objects of this class are strings from the table aircraft.
+ *
+ * @author Anastasia Pashneva
+ */
 public class Aircraft extends Entity {
+
     private String typeName;
 
     public Aircraft() {

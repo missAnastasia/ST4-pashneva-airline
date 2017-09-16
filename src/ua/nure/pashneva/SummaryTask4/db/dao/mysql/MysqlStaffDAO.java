@@ -19,7 +19,6 @@ import java.util.List;
  * Implementation for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlStaffDAO implements StaffDAO {
 
@@ -150,6 +149,18 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
+    public List<Staff> readFreeStaff(Language language) throws Exception {
+        List<Staff> freeStaff = new ArrayList<>();
+        List<Staff> allStaff = readAll(language);
+        for (Staff s : allStaff) {
+            if (DAOFactory.getInstance().getBrigadeDAO().readByStaff(s, language) == null) {
+                freeStaff.add(s);
+            }
+        }
+        return freeStaff;
+    }
+
+    @Override
     public List<Staff> readAll(Language language) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(GET_ALL_STAFF);
@@ -205,6 +216,15 @@ public class MysqlStaffDAO implements StaffDAO {
         return result;
     }
 
+    /**
+     * Private method for obtaining staff data from ResultSet.
+     *
+     * @param resultSet instance of ResultSet which contains selected data from
+     *                  table staff.
+     * @param language object of Language class which contains data about current locale.
+     * @return object of Staff which contains data obtained from ResultSet.
+     * @throws Exception
+     */
     private Staff extractStaff(ResultSet resultSet, Language language) throws Exception {
         Staff staff = new Staff();
         staff.setId(resultSet.getInt(ENTITY_ID));

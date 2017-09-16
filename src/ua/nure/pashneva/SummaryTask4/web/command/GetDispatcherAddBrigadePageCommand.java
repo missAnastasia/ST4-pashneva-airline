@@ -36,7 +36,7 @@ public class GetDispatcherAddBrigadePageCommand extends Command {
 
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
             request.setAttribute("posts", posts);
-            List<Staff> freeStaff = Staff.readFreeStaff(language);
+            List<Staff> freeStaff = DAOFactory.getInstance().getStaffDAO().readFreeStaff(language);
             Map<Post, List<Staff>> staff = new HashMap<>();
             for (Post p : posts) {
                 List<Staff> temp = new ArrayList<>();

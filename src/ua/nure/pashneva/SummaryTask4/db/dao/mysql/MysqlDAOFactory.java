@@ -12,11 +12,8 @@ import java.sql.SQLException;
  * Realization of DAOFactory for MySQL DBMS.
  *
  * @author Anastasia Pashneva
- *
  */
 public class MysqlDAOFactory extends DAOFactory {
-
-    private static final Logger LOG = Logger.getLogger(MysqlDAOFactory.class);
 
     @Override
     public UserDAO getUserDAO() {
@@ -68,16 +65,19 @@ public class MysqlDAOFactory extends DAOFactory {
         return new MysqlPostDAO();
     }
 
-    public static void setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {
-        LOG.debug("setGeneratedId starts");
+    /**
+     * Static method for obtaining generated entity identifiers value returned by PreparedStatement object.
+     *
+     * @param entity object of Entity child which identifier must be obtained.
+     * @param statement object of PreparedStatement which returns ResultSet og generated keys.
+     * @throws SQLException
+     */
+    static void setGeneratedId(Entity entity, PreparedStatement statement) throws SQLException {
         ResultSet generatedKeys = statement.getGeneratedKeys();
         try {
             if (generatedKeys.next()) {
-                LOG.debug("generatedKeys.next() = true");
                 entity.setId(generatedKeys.getInt(1));
-                LOG.trace("entity.getId() --> " + entity.getId());
             }
-            LOG.debug("setGeneratedId finished");
         } finally {
             generatedKeys.close();
         }

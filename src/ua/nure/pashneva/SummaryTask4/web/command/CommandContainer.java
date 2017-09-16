@@ -6,10 +6,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 /**
- * Holder for all commands.<br/>
+ * Holder for all commands.
  * 
- * @author D.Kolesnikov
- * 
+ * @author Anastasia Pashneva
  */
 public class CommandContainer {
 	
@@ -19,15 +18,11 @@ public class CommandContainer {
 	
 	static {
 		commands.put("loginCommand", new LoginCommand());
-		commands.put("getLoginPageCommand", new GetLoginPageCommand());
 		commands.put("logoutCommand", new LogoutCommand());
 		commands.put("getUserInfoPageCommand", new GetUserInfoPageCommand());
 		commands.put("noCommand", new NoCommand());
-		commands.put("getEditUserPageCommand", new GetEditUserPageCommand());
 		commands.put("changeLocaleCommand", new ChangeLocaleCommand());
-		commands.put("getSettingsPageCommand", new GetSettingsPageCommand());
 		commands.put("getErrorMessagePageCommand", new GetErrorMessagePageCommand());
-		commands.put("updateUserInfoCommand", new UpdateUserInfoCommand());
 		commands.put("getChangePasswordPageCommand", new GetChangePasswordPageCommand());
 		commands.put("changePasswordCommand", new ChangePasswordCommand());
 		commands.put("confirmNewPasswordCommand", new ConfirmNewPasswordCommand());

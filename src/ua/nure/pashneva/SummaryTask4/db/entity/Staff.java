@@ -9,9 +9,9 @@ import java.util.List;
  * Objects of this class are strings from the table staff.
  *
  * @author Anastasia Pashneva
- *
  */
 public class Staff extends Entity{
+
     private User user;
     private Post post;
 
@@ -73,16 +73,5 @@ public class Staff extends Entity{
                 ", post=" + post +
                 ", id=" + id +
                 '}';
-    }
-
-    public static List<Staff> readFreeStaff(Language language) throws Exception {
-        List<Staff> freeStaff = new ArrayList<>();
-        List<Staff> allStaff = DAOFactory.getInstance().getStaffDAO().readAll(language);
-        for (Staff s : allStaff) {
-            if (DAOFactory.getInstance().getBrigadeDAO().readByStaff(s, language) == null) {
-                freeStaff.add(s);
-            }
-        }
-        return freeStaff;
     }
 }

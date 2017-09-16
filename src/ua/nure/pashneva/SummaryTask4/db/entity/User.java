@@ -4,14 +4,14 @@ package ua.nure.pashneva.SummaryTask4.db.entity;
  * Objects of this class are strings from the table users.
  *
  * @author Anastasia Pashneva
- *
  */
 public class User extends Entity{
-    protected String login;
-    protected String password;
-    protected String firstName;
-    protected String secondName;
-    protected Role role;
+
+    private String login;
+    private String password;
+    private String firstName;
+    private String secondName;
+    private Role role;
 
     public User() {
     }

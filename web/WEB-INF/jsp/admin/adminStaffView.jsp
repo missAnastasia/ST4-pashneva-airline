@@ -6,9 +6,8 @@
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
-<jsp:include page="/WEB-INF/jsp/_header.jsp"/>
-<jsp:include page="/WEB-INF/jsp/_menu_admin.jsp"/>
-</div>
+<div id="wrapper">
+    <jsp:include page="../_header.jsp"/>
 <div id="page" class="container">
     <div class="title">
         <h2><fmt:message key="staff_admin_jsp.h2"/></h2>
@@ -68,5 +67,6 @@
     </div>
 </div>
 <jsp:include page="/WEB-INF/jsp/_footer.jsp"/>
+</div>
 </body>
 </html>

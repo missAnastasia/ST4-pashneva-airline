@@ -31,4 +31,3 @@
         <cstmtf:copyright/>
     </div>
 </div>
-</div>

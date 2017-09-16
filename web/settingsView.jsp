@@ -6,9 +6,8 @@
 <%@ include file="/WEB-INF/jspf/head_main.jspf" %>
 
 <body>
+<div id="wrapper">
 <jsp:include page="WEB-INF/jsp/_header.jsp"/>
-<cstmtf:menu_user_role/>
-</div>
 <div id="page" class="container">
     <div class="title">
         <h2><fmt:message key="settings_jsp.h2"/></h2>
@@ -28,5 +27,6 @@
 	</div>
 	</div>
 <jsp:include page="WEB-INF/jsp/_footer.jsp"/>
+</div>
 </body>
 </html>

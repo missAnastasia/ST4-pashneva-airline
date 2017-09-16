@@ -1,7 +1,7 @@
 <%@ include file="/WEB-INF/jspf/directive/taglib.jspf" %>
 <%@ include file="/WEB-INF/jspf/directive/page.jspf" %>
 
-<div id="wrapper">
+
     <div id="header-wrapper">
         <div id="header" class="container">
             <div id="logo">
@@ -26,3 +26,5 @@
             </c:choose>
             </div>
         </div>
+        <cstmtf:menu_user_role/>
+    </div>

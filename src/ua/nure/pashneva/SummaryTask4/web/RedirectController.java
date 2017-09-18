@@ -43,7 +43,7 @@ public class RedirectController extends HttpServlet {
         LOG.debug("Controller starts");
 
         String commandName = request.getParameter("command");
-        LOG.trace("Request parameter: command --> " + commandName);
+        LOG.trace("Parameter command --> " + commandName);
 
         Command command = CommandContainer.get(commandName);
         LOG.trace("Obtained command --> " + command);
@@ -106,6 +106,7 @@ public class RedirectController extends HttpServlet {
         }
 
         LOG.trace("Path --> " + path);
+        LOG.debug("Controller finished");
         response.sendRedirect(path.toString());
     }
 }

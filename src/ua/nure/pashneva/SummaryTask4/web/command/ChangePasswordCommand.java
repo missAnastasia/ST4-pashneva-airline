@@ -36,12 +36,7 @@ public class ChangePasswordCommand extends Command {
         }
 
         String newPassword = request.getParameter("new_password");
-        LOG.trace("Parameter new_password --> " + newPassword);
-
         String oldPassword = request.getParameter("old_password");
-        LOG.trace("Parameter old_password --> " + oldPassword);
-
-
         if (oldPassword == null || oldPassword.isEmpty() ||
                 newPassword == null || newPassword.isEmpty()) {
             String message = ResourceBundle.getBundle("resources", new Locale(locale))

@@ -17,10 +17,11 @@ import java.io.IOException;
 public class GetChangePasswordPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetChangePasswordPageCommand.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        request.getRequestDispatcher(Path.PAGE_CHANGE_PASSWORD).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_CHANGE_PASSWORD).forward(request, response);
     }
 }

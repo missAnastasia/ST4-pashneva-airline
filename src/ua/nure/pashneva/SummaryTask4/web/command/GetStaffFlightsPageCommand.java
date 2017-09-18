@@ -19,6 +19,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for obtaining staffFlightsView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetStaffFlightsPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetStaffFlightsPageCommand.class);
@@ -26,15 +31,16 @@ public class GetStaffFlightsPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
 
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        try {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
+
             List<Flight> flights = DAOFactory.getInstance().getFlightDAO()
                     .readByStaff(DAOFactory.getInstance().getStaffDAO()
                     .readByUserId(SessionManager.getAuthorizedUser(request.getSession())
@@ -44,12 +50,16 @@ public class GetStaffFlightsPageCommand extends Command {
                         .getString("flights_staff_jsp.no_flights");
                 request.setAttribute("message", message);
             }
+
             Comparator<Flight> comparator = ComparatorFactory.getInstance().getFlightComparator("compare_by_departure_date");
             if (comparator != null) {
                 flights.sort(comparator);
             }
-            LOG.trace("Flights --> " + flights.toString());
+
+            LOG.trace("Attribute flights --> " + flights);
             request.setAttribute("flights", flights);
+
+            LOG.info("Flights --> " + flights);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

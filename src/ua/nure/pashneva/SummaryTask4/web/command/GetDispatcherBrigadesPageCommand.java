@@ -16,6 +16,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
+/**
+ * Command for obtaining dispatcherBrigadesView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherBrigadesPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherBrigadesPageCommand.class);
@@ -23,69 +28,30 @@ public class GetDispatcherBrigadesPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
-            Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
 
-            /*String number = request.getParameter("flight_number");
-            LOG.trace("Flight number --> " + number);
-            String fromCity = request.getParameter("from_city");
-            LOG.trace("From city --> " + fromCity);
-            String toCity = request.getParameter("to_city");
-            LOG.trace("To city --> " + toCity);
-            String date = request.getParameter("departure_date");
-            LOG.trace("Departure date --> " + date);*/
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        try {
+            Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
 
             List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
-
-            /*if ((number == null || number.isEmpty()) && (fromCity == null || fromCity.isEmpty()) &&
-                    (toCity == null || toCity.isEmpty()) && (date == null || date.isEmpty())) {
-                flights = DAOFactory.getInstance().getFlightDAO().readAll(language);
-            } else {
-                Map<String, String> params = new HashMap<>();
-                if (number != null && !(number.isEmpty())) {
-                    params.put("flight_number", number);
-                }
-                if (fromCity != null && !(fromCity.isEmpty())) {
-                    params.put("from_city", fromCity);
-                }
-                if (toCity != null && !(toCity.isEmpty())) {
-                    params.put("to_city", toCity);
-                }
-                if (date != null && !(date.isEmpty())) {
-                    params.put("departure_date", date);
-                }
-                flights = SearcherFactory.getInstance().getFlightSearcher().search(language, params);
-                for (Map.Entry<String, String> entry : params.entrySet()) {
-                    request.setAttribute(entry.getKey(), entry.getValue());
-                }
-            }*/
-            LOG.trace("Brigades --> " + brigades.toString());
-
-            /*String compare = request.getParameter("compare");
-            if (compare != null && !(compare.isEmpty())) {
-                Comparator<Flight> comparator = ComparatorFactory.getInstance().getFlightComparator(compare);
-                if (comparator != null) {
-                    flights.sort(comparator);
-                    request.setAttribute("compare", compare);
-                }
-            }*/
             if (brigades.size() == 0) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("brigades_dispatcher_jsp.no_brigades");
                 request.setAttribute("message", message);
             }
-            /*LOG.trace("Flights --> " + flights.toString());*/
+            LOG.trace("Attribute brigades --> " + brigades);
             request.setAttribute("brigades", brigades);
+
+            LOG.info("Brigades --> " + brigades);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        request.getRequestDispatcher(Path.PAGE_DISPATCHER_BRIGADES).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_DISPATCHER_BRIGADES).forward(request, response);
     }
 }

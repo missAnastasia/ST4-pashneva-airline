@@ -24,7 +24,7 @@ public class GetErrorMessagePageCommand extends Command {
         String message = request.getParameter("message");
         LOG.trace("Parameter message --> " + message);
         request.setAttribute("message", message);
-        request.getRequestDispatcher(Path.PAGE_ERROR_PAGE).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_ERROR_PAGE).forward(request, response);
     }
 }

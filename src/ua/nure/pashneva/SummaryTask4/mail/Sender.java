@@ -1,7 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.mail;
 
-import org.apache.log4j.Logger;
-
 import javax.mail.*;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;

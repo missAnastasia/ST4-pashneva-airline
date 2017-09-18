@@ -42,7 +42,7 @@ public class CommandAccessFilter implements Filter {
 		} else {
 			String message = ResourceBundle.getBundle("resources", request.getLocale())
 					.getString("message.error.no_permissions");
-			LOG.trace("Set the request attribute: message --> " + message);
+			LOG.trace("Message --> " + message);
 			HttpServletResponse httpResponse = (HttpServletResponse) response;
 			httpResponse.sendRedirect(Path.COMMAND_MESSAGE_ERROR + message);
 		}

@@ -78,7 +78,6 @@ public class AddAdminFlightCommand extends Command {
 
                 LOG.trace("Flight --> " + flight);
                 DAOFactory.getInstance().getFlightDAO().create(flight, language);
-
                 LOG.info("Flight inserted into DB --> " + flight);
             }
         } catch (Exception e) {

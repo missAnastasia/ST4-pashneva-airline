@@ -19,6 +19,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Command for obtaining dispatcherAddBrigadeView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherBrigadeInfoPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherBrigadeInfoPageCommand.class);
@@ -26,21 +31,26 @@ public class GetDispatcherBrigadeInfoPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String brigadeId = request.getParameter("brigade_id");
+        LOG.trace("Parameter brigade_id --> " + brigadeId);
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String brigadeId = request.getParameter("brigade_id");
+
             Brigade brigade = new Brigade();
             if (brigadeId != null && !(brigadeId.isEmpty())) {
                 brigade = DAOFactory.getInstance().getBrigadeDAO().read(Integer.parseInt(brigadeId), language);
             }
-            LOG.trace("Brigade --> " + brigade);
+            LOG.trace("Attribute brigade --> " + brigade);
             request.setAttribute("brigade", brigade);
+
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
             request.setAttribute("posts", posts);
             Map<Post, List<Staff>> staff = new HashMap<>();
@@ -53,7 +63,10 @@ public class GetDispatcherBrigadeInfoPageCommand extends Command {
                 }
                 staff.put(p, temp);
             }
+            LOG.trace("Attribute staff --> " + staff);
             request.setAttribute("staff", staff);
+
+            LOG.info("Brigade to obtain info --> " + brigade);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

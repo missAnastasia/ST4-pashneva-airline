@@ -24,7 +24,6 @@ import java.util.ResourceBundle;
  */
 public class LoginCommand extends Command {
 
-	private static final long serialVersionUID = -3071536593627692473L;
 	private static final Logger LOG = Logger.getLogger(LoginCommand.class);
 
 	@Override
@@ -44,7 +43,6 @@ public class LoginCommand extends Command {
 		LOG.trace("Parameter login --> " + login);
 
         String password = request.getParameter("password");
-        LOG.trace("Parameter password --> " + password);
 
         if (login == null || password == null || login.isEmpty() || password.isEmpty()) {
 		    String message = ResourceBundle.getBundle("resources", new Locale(locale))

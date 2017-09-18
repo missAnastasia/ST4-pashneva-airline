@@ -20,7 +20,7 @@
                 <div class="box">
                     <div class="lang-form">
                     <a id="lang-link" href="${pageContext.request.contextPath}/settingsView.jsp">
-                        <img id="lang-img" src="${pageContext.request.contextPath}/resources/style/images/1996.png" width="50"/>
+                        <img id="lang-img" src="${pageContext.request.contextPath}/resources/style/images/lang-icon.png" width="50"/>
                     </a>
                     </div>
                 </div>

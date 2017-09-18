@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 
+/**
+ * Command for obtaining dispatcherRequestInfoView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherRequestInfoPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherRequestInfoPageCommand.class);
@@ -20,22 +25,28 @@ public class GetDispatcherRequestInfoPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String requestId = request.getParameter("request_id");
+        LOG.trace("Parameter request_id --> " + requestId);
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String requestId = request.getParameter("request_id");
-            LOG.trace("requestId --> " + requestId);
+
             RequestToAdmin requestToAdmin = new RequestToAdmin();
             if (requestId != null && !(requestId.isEmpty())) {
                 requestToAdmin = DAOFactory.getInstance().getRequestToAdminDAO().read(Integer.parseInt(requestId), language);
             }
-            LOG.trace("RequestToAdmin --> " + requestToAdmin);
+
+            LOG.trace("Attribute request_item --> " + requestToAdmin);
             request.setAttribute("request_item", requestToAdmin);
+
+            LOG.info("Request to admin to obtain info --> " + requestToAdmin);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

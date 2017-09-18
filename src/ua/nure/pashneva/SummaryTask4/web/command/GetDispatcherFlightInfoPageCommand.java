@@ -16,6 +16,11 @@ import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * Command for obtaining dispatcherFlightInfoView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherFlightInfoPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherFlightInfoPageCommand.class);
@@ -23,25 +28,36 @@ public class GetDispatcherFlightInfoPageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
+        String flightId = request.getParameter("flight_id");
+        LOG.trace("Parameter flight_id --> " + flightId);
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
-            String flightId = request.getParameter("flight_id");
+
             Flight flight = new Flight();
             if (flightId != null && !(flightId.isEmpty())) {
                 flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
             }
-            LOG.trace("Flight --> " + flight);
+
+            LOG.trace("Attribute flight --> " + flight);
             request.setAttribute("flight", flight);
+
             List<FlightStatus> statuses = DAOFactory.getInstance().getFlightStatusDAO().readAll(language);
+            LOG.trace("Attribute flight_statuses --> " + statuses);
             request.setAttribute("flight_statuses", statuses);
+
             List<Brigade> brigades = DAOFactory.getInstance().getBrigadeDAO().readAll(language);
+            LOG.trace("Attribute brigades --> " + brigades);
             request.setAttribute("brigades", brigades);
+
+            LOG.info("Flight to obtain info --> " + flight);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

@@ -41,17 +41,18 @@ public class Controller extends HttpServlet {
 		LOG.debug("Controller starts");
 
 		String commandName = request.getParameter("command");
-		LOG.trace("Request parameter: command --> " + commandName);
+		LOG.trace("Parameter command --> " + commandName);
 
 		Command command = CommandContainer.get(commandName);
 		LOG.trace("Obtained command --> " + command);
+
 		try {
 			command.execute(request, response);
+			LOG.debug("Controller finished");
 		} catch (AppException ex) {
-            LOG.trace("Exception message --> " + ex.getMessage());
+			LOG.trace("Exception message --> " + ex.getMessage());
+			LOG.debug("Controller finished");
 			response.sendRedirect(Path.COMMAND_MESSAGE_ERROR + ex.getMessage());
 		}
-		LOG.debug("Controller finished");
 	}
-
 }

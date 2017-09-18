@@ -3,10 +3,7 @@ package ua.nure.pashneva.SummaryTask4.db.entity.comparator;
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.entity.Flight;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Comparator;
-import java.util.Date;
 
 public class FlightDateComparator implements Comparator<Flight> {
 

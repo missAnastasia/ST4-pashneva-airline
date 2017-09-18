@@ -18,6 +18,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Command for obtaining dispatcherAddBrigadeView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherAddBrigadePageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherAddBrigadePageCommand.class);
@@ -25,17 +30,20 @@ public class GetDispatcherAddBrigadePageCommand extends Command {
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
+
+        String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
+        if (locale == null) {
+            locale = request.getLocale().getLanguage();
+            LOG.trace("Current locale --> " + locale);
+        }
+
         try {
-            String locale = (String) Config.get(request.getSession(), Config.FMT_LOCALE);
-            if (locale == null) {
-                locale = request.getLocale().getLanguage();
-                LOG.trace("Current locale --> " + locale);
-            }
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
-            LOG.trace("Language --> " + language);
 
             List<Post> posts = DAOFactory.getInstance().getPostDAO().readAll(language);
+            LOG.trace("Attribute posts --> " + posts);
             request.setAttribute("posts", posts);
+
             List<Staff> freeStaff = DAOFactory.getInstance().getStaffDAO().readFreeStaff(language);
             Map<Post, List<Staff>> staff = new HashMap<>();
             for (Post p : posts) {
@@ -47,11 +55,12 @@ public class GetDispatcherAddBrigadePageCommand extends Command {
                 }
                 staff.put(p, temp);
             }
+            LOG.trace("Attribute staff --> " + staff);
             request.setAttribute("staff", staff);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }
-        LOG.trace("Command finished");
+        LOG.debug("Command finished");
         request.getRequestDispatcher(Path.PAGE_DISPATCHER_ADD_BRIGADE).forward(request, response);
     }
 }

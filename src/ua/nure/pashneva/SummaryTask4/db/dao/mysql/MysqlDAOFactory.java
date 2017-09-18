@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.db.dao.mysql;
 
-import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.*;
 import ua.nure.pashneva.SummaryTask4.db.entity.Entity;
 

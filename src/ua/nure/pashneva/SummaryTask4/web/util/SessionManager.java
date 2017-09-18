@@ -31,10 +31,12 @@ public class SessionManager {
      * @param userRole object which contains value of user role.
      */
     public static void storeAuthorizedUser(HttpSession session, User user, Role userRole) {
+        LOG.debug("Saving authorized user starts");
         session.setAttribute("user", user);
-        LOG.trace("User has been saved into session --> " + user);
+        LOG.trace("User --> " + user);
         session.setAttribute("userRole", userRole);
-        LOG.trace("User role has been saved into session --> " + userRole);
+        LOG.trace("User role --> " + userRole);
+        LOG.debug("Saving authorized user finished");
     }
 
     /**
@@ -48,8 +50,10 @@ public class SessionManager {
     }
 
     public static void storeUserToConfirmNewPassword(HttpSession session, User userToConfirm) {
+        LOG.debug("Saving user to confirm starts");
         session.setAttribute("userToConfirm", userToConfirm);
-        LOG.trace("User to confirm has been saved in session --> " + userToConfirm);
+        LOG.trace("User to confirm --> " + userToConfirm);
+        LOG.debug("Saving user to confirm finished");
     }
 
     /**
@@ -77,6 +81,7 @@ public class SessionManager {
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 if (ATT_NAME_USER_NAME.equals(cookie.getName())) {
+                    LOG.trace("User in cookie --> " + cookie.getValue());
                     return cookie.getValue();
                 }
             }

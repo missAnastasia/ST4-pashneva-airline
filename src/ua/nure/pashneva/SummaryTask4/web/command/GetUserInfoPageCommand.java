@@ -9,13 +9,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Command for obtaining userInfoView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetUserInfoPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetUserInfoPageCommand.class);
+
     @Override
     public void execute(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException, AppException {
         LOG.debug("Command starts");
-        request.getRequestDispatcher(Path.PAGE_USER_INFO).forward(request, response);
         LOG.debug("Command finished");
+        request.getRequestDispatcher(Path.PAGE_USER_INFO).forward(request, response);
     }
 }

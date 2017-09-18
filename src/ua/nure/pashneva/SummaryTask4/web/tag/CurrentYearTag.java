@@ -7,6 +7,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * Handler class of <current-year> tag.
+ *
+ * @author Anastasia PAshneva
+ */
 public class CurrentYearTag extends TagSupport {
 
     public int doStartTag() throws JspException {

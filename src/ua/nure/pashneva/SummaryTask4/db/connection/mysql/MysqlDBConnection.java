@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.db.connection.mysql;
 
-import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.connection.DBConnection;
 
 import javax.naming.Context;

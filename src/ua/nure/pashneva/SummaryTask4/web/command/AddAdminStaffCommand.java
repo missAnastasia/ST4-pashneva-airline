@@ -36,7 +36,6 @@ public class AddAdminStaffCommand extends Command {
         String login = request.getParameter("login");
         LOG.trace("Parameter login --> " + login);
         String password = request.getParameter("password");
-        LOG.trace("Parameter password --> " + password);
         String firstName = request.getParameter("first_name");
         LOG.trace("Parameter first_name --> " + firstName);
         String secondName = request.getParameter("second_name");

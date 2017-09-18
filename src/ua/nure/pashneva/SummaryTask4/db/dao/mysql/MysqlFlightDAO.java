@@ -215,6 +215,7 @@ public class MysqlFlightDAO implements FlightDAO {
     public List<Flight> readByStaff(Staff staff, Language language) throws Exception {
         Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff, language);
         List<Flight> flights = readByBrigade(brigade, language);
+        flights.removeAll(readByStatus(6, language));
         return flights;
     }
 

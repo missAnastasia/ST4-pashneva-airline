@@ -25,7 +25,6 @@ public class ContextListener implements ServletContextListener {
 
 	public void contextDestroyed(ServletContextEvent event) {
 		log("Servlet context destruction starts");
-		// no op
 		log("Servlet context destruction finished");
 	}
 
@@ -65,11 +64,13 @@ public class ContextListener implements ServletContextListener {
 	 * Method for initializing CommandContainer class.
 	 */
 	private void initCommandContainer() {
+        LOG.debug("CommandContainer initialization started");
 		try {
 			Class.forName("ua.nure.pashneva.SummaryTask4.web.command.CommandContainer");
 		} catch (ClassNotFoundException ex) {
 			throw new IllegalStateException("Cannot initialize Command Container");
 		}
+        LOG.debug("CommandContainer initialization finished");
 	}
 
     /**
@@ -78,8 +79,10 @@ public class ContextListener implements ServletContextListener {
      * @param servletContext
      */
 	private void initDAOFactory(ServletContext servletContext) {
+        LOG.debug("DAOFactory initialization started");
 		String daoFactoryFCN = servletContext.getInitParameter("DaoFactoryFCN");
-        DAOFactory.setDaoFactoryFCN(daoFactoryFCN);
+		DAOFactory.setDaoFactoryFCN(daoFactoryFCN);
+        LOG.debug("DAOFactory initialization finished");
 	}
 
 	/**
@@ -88,8 +91,10 @@ public class ContextListener implements ServletContextListener {
 	 * @param servletContext
 	 */
 	private void initDBConnection(ServletContext servletContext) {
+        LOG.debug("DBConnection initialization started");
 		String dbConnectionFCN = servletContext.getInitParameter("DbConnectionFCN");
 		DBConnection.setDBConnectionFCN(dbConnectionFCN);
+        LOG.debug("DBConnection initialization finished");
 	}
 
     /**
@@ -98,6 +103,7 @@ public class ContextListener implements ServletContextListener {
      * @param servletContext
      */
 	private void initLocalization(ServletContext servletContext) {
+        LOG.debug("Localization initialization started");
         String localesFileName = servletContext.getInitParameter("locales");
         String localesFileRealPath = servletContext.getRealPath(localesFileName);
         Properties locales = new Properties();
@@ -107,6 +113,7 @@ public class ContextListener implements ServletContextListener {
             throw new IllegalStateException("Cannot load locales properties");
         }
         servletContext.setAttribute("locales", locales);
+        LOG.debug("Localization initialization finished");
 	}
 
     /**
@@ -115,6 +122,7 @@ public class ContextListener implements ServletContextListener {
      * @param servletContext
      */
     private void initMailProperties(ServletContext servletContext) {
+        LOG.debug("MailProperties initialization started");
         String mailServerPropertiesFileName = servletContext.getInitParameter("mail_server_properties");
         String mailSendersPropertiesFileName = servletContext.getInitParameter("mail_senders_properties");
 
@@ -139,7 +147,7 @@ public class ContextListener implements ServletContextListener {
         } catch (IOException eIO) {
             throw new IllegalStateException("Cannot load mailServerProperties or mailSendersProperties properties");
         }
-
+        LOG.debug("MailProperties initialization finished");
     }
 
     /**

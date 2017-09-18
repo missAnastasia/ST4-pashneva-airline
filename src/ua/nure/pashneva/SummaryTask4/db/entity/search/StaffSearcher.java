@@ -1,6 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.db.entity.search;
 
-import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
 import ua.nure.pashneva.SummaryTask4.db.entity.Language;
 import ua.nure.pashneva.SummaryTask4.db.entity.Staff;

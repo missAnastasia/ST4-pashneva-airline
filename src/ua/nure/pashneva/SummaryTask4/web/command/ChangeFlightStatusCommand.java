@@ -47,9 +47,9 @@ public class ChangeFlightStatusCommand extends Command {
                 Flight flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
                 if (flight != null) {
                     flight.setFlightStatus(flightStatus);
-                    LOG.trace("Flight status --> " + flightStatus.toString());
+                    LOG.trace("Flight status --> " + flightStatus);
                     DAOFactory.getInstance().getFlightDAO().updateStatus(flight, language);
-                    LOG.info("Flight updated in DB --> " + flight.toString());
+                    LOG.info("Flight updated in DB --> " + flight);
                 }
             }
         } catch (Exception e) {

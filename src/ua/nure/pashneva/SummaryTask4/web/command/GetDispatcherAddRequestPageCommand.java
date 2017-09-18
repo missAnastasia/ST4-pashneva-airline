@@ -9,6 +9,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/**
+ * Command for obtaining dispatcherAddRequestView.jsp.
+ *
+ * @author Anastasia Pashneva
+ */
 public class GetDispatcherAddRequestPageCommand extends Command {
 
     private static final Logger LOG = Logger.getLogger(GetDispatcherAddRequestPageCommand.class);

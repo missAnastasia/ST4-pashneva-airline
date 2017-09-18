@@ -45,9 +45,9 @@ public class CookieFilter implements Filter {
 
         HttpSession session = req.getSession();
         User userInSession = SessionManager.getAuthorizedUser(session);
-        LOG.trace("userInSession --> " + userInSession);
+        LOG.trace("User in session --> " + userInSession);
         if (userInSession != null) {
-            LOG.debug("userInSession checking starts");
+            LOG.debug("User in session checking starts");
             session.setAttribute("COOKIE_CHECKED", "CHECKED");
             chain.doFilter(request, response);
             return;
@@ -59,8 +59,8 @@ public class CookieFilter implements Filter {
             if (userName!= null && !(userName.isEmpty())) {
                 try {
                     User user = DAOFactory.getInstance().getUserDAO().readByLogin(userName);
-                    LOG.trace("user --> " + user);
-                    LOG.trace("user role --> " + user.getRole());
+                    LOG.trace("User --> " + user);
+                    LOG.trace("User role --> " + user.getRole());
                     SessionManager.storeAuthorizedUser(session, user, user.getRole());
                 } catch (Exception e) {
                     throw new ServletException(e.getMessage(), e);

@@ -1,10 +1,5 @@
 package ua.nure.pashneva.SummaryTask4.db.entity;
 
-import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
-
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Objects of this class are strings from the table staff.
  *

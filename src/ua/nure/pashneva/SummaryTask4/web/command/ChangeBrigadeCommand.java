@@ -40,14 +40,17 @@ public class ChangeBrigadeCommand extends Command {
             Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
 
             if (flightId != null && !(flightId.isEmpty())) {
-                int brigadeId = Integer.parseInt(request.getParameter("new_brigade_id"));
+                String brigadeId = request.getParameter("new_brigade_id");
                 LOG.trace("Parameter new_brigade_id --> " + brigadeId);
 
-                Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().read(brigadeId, language);
-                LOG.trace("Brigade --> " + brigade.toString());
-
                 Flight flight = DAOFactory.getInstance().getFlightDAO().read(Integer.parseInt(flightId), language);
-                if (flight != null) {
+                if (flight != null && (brigadeId != null && !(brigadeId.isEmpty()))) {
+                    Brigade brigade = null;
+                    if (!brigadeId.equals("no_brigade")) {
+                        brigade = DAOFactory.getInstance().getBrigadeDAO().read(Integer.parseInt(brigadeId), language);
+                    }
+                    LOG.trace("Brigade --> " + brigade);
+
                     flight.setBrigade(brigade);
                     LOG.trace("Flight --> " + flight);
 

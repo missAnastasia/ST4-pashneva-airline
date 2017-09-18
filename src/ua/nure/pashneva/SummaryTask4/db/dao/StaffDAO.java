@@ -98,9 +98,10 @@ public interface StaffDAO {
     /**
      * Method of deleting user from database.
      *
-     * @param staffId staff identifier (primary unique key) who must be deleted.
+     * @param staff object that contains staff data.
+     *             The identifier must be present.
      * @return true - staff was successfully deleted from database, otherwise - false.
      * @throws Exception
      */
-    boolean delete(int staffId) throws Exception;
+    boolean delete(Staff staff) throws Exception;
 }

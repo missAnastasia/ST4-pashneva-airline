@@ -14,10 +14,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.jsp.jstl.core.Config;
 import java.io.IOException;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
+import java.util.*;
 
 /**
  * Command for obtaining staffFlightsView.jsp.
@@ -45,7 +42,14 @@ public class GetStaffFlightsPageCommand extends Command {
                     .readByStaff(DAOFactory.getInstance().getStaffDAO()
                     .readByUserId(SessionManager.getAuthorizedUser(request.getSession())
                     .getId(), language), language);
-            if (flights.size() == 0) {
+            List<Flight> actualFlights = new ArrayList<>();
+            for (Flight f : flights) {
+                if (f.getFlightStatus().getId() != 6) {
+                    actualFlights.add(f);
+                }
+            }
+
+            if (actualFlights.size() == 0) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("flights_staff_jsp.no_flights");
                 request.setAttribute("message", message);
@@ -56,10 +60,10 @@ public class GetStaffFlightsPageCommand extends Command {
                 flights.sort(comparator);
             }
 
-            LOG.trace("Attribute flights --> " + flights);
-            request.setAttribute("flights", flights);
+            LOG.trace("Attribute flights --> " + actualFlights);
+            request.setAttribute("flights", actualFlights);
 
-            LOG.info("Flights --> " + flights);
+            LOG.info("Flights --> " + actualFlights);
         } catch (Exception e) {
             throw new AppException(e.getMessage(), e);
         }

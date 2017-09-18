@@ -215,7 +215,6 @@ public class MysqlFlightDAO implements FlightDAO {
     public List<Flight> readByStaff(Staff staff, Language language) throws Exception {
         Brigade brigade = DAOFactory.getInstance().getBrigadeDAO().readByStaff(staff, language);
         List<Flight> flights = readByBrigade(brigade, language);
-        flights.removeAll(readByStatus(6, language));
         return flights;
     }
 
@@ -287,7 +286,11 @@ public class MysqlFlightDAO implements FlightDAO {
         PreparedStatement statement = connection.prepareStatement(UPDATE_FLIGHT_BRIGADE_BY_ID);
 
         int k = 1;
-        statement.setInt(k++, flight.getBrigade().getId());
+        if (flight.getBrigade() != null) {
+            statement.setInt(k++, flight.getBrigade().getId());
+        } else {
+            statement.setNull(k++, java.sql.Types.INTEGER);
+        }
         statement.setInt(k++, flight.getId());
 
         boolean result = false;

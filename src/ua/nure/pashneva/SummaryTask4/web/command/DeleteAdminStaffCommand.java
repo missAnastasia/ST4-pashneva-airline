@@ -2,6 +2,8 @@ package ua.nure.pashneva.SummaryTask4.web.command;
 
 import org.apache.log4j.Logger;
 import ua.nure.pashneva.SummaryTask4.db.dao.DAOFactory;
+import ua.nure.pashneva.SummaryTask4.db.entity.Language;
+import ua.nure.pashneva.SummaryTask4.db.entity.Staff;
 import ua.nure.pashneva.SummaryTask4.exception.AppException;
 import ua.nure.pashneva.SummaryTask4.web.util.Path;
 
@@ -37,8 +39,13 @@ public class DeleteAdminStaffCommand extends Command {
 
         if (staffId != null && !(staffId.isEmpty())) {
             try {
-                DAOFactory.getInstance().getStaffDAO().delete(Integer.parseInt(staffId));
-                LOG.info("Deleted from DB with staffId --> " + staffId);
+                Language language = DAOFactory.getInstance().getLanguageDAO().readByPrefix(locale);
+
+                Staff staff = DAOFactory.getInstance().getStaffDAO().read(Integer.parseInt(staffId), language);
+                LOG.trace("Staff to delete from DB --> " + staff);
+
+                DAOFactory.getInstance().getStaffDAO().delete(staff);
+                LOG.info("Staff deleted from DB --> " + staff);
             } catch (Exception e) {
                 String message = ResourceBundle.getBundle("resources", new Locale(locale))
                         .getString("message.error.failed_delete_staff");

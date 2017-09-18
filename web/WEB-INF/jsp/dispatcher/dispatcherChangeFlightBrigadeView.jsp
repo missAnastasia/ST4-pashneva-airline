@@ -19,6 +19,7 @@
                     <label class="label-n"><fmt:message key="edit_flight_brigade_dispatcher_jsp.label.brigade"/></label>
                     <label class="label-v">
                         <select name="new_brigade_id">
+                            <option value="no_brigade"><fmt:message key="edit_flight_brigade_dispatcher_jsp.no_brigade"/></option>
                             <c:forEach items="${brigades}" var="brigade">
                                 <c:set var="selected" value="${brigade.getId() == flight.getBrigade().getId() ? 'selected' : '' }"/>
                                 <option value="${brigade.getId()}" ${selected}>${brigade.getNumber()}</option>

@@ -200,16 +200,16 @@ public class MysqlStaffDAO implements StaffDAO {
     }
 
     @Override
-    public boolean delete(int staffId) throws Exception {
+    public boolean delete(Staff staff) throws Exception {
         Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(DELETE_STAFF_BY_ID);
 
         int k = 1;
-        statement.setInt(k++, staffId);
+        statement.setInt(k++, staff.getId());
 
         boolean result = false;
         if (statement.executeUpdate() > 0) {
-            result = true;
+            result = DAOFactory.getInstance().getUserDAO().delete(staff.getUser());
         }
 
         DBConnection.getInstance().close(connection, statement);
